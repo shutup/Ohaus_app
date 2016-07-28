@@ -38,7 +38,7 @@ public class LoginActivity extends BaseActivity {
             setSupportActionBar(mToolbar);
             // Title
             getSupportActionBar().setTitle("");
-            mToolbarTitle.setText("登录");
+            mToolbarTitle.setText(R.string.login_title);
         }
     }
 

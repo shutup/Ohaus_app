@@ -15,6 +15,7 @@ import com.shutup.ohaus_app.R;
 
 public class BaseActivity extends AppCompatActivity {
 
+    public boolean isDark = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

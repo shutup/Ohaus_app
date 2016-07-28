@@ -31,13 +31,12 @@ public class MeActivity extends BaseActivity {
 
     private void initToolBar() {
         if (mToolbar != null) {
+            mToolbar.setNavigationIcon(R.drawable.back_arrow_white);
             setSupportActionBar(mToolbar);
         }
         if (getSupportActionBar() != null){
             getSupportActionBar().setTitle("");
-            mToolbarTitle.setText("我");
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            mToolbarTitle.setText(R.string.menu_me_title);
         }
     }
 

@@ -28,13 +28,12 @@ public class HistoryActivity extends BaseActivity {
 
     private void initToolBar() {
         if (mToolbar != null) {
+            mToolbar.setNavigationIcon(R.drawable.back_arrow_white);
             setSupportActionBar(mToolbar);
         }
         if (getSupportActionBar() != null){
             getSupportActionBar().setTitle("");
             mToolbarTitle.setText(R.string.menu_history_title);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
     }
 

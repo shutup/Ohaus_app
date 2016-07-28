@@ -9,4 +9,6 @@
     <string name="menu_invite_title">邀请朋友</string>
     <string name="menu_setting_title">设置</string>
     <string name="main_page_title">首页</string>
+    <string name="menu_me_title">个人信息</string>
+    <string name="login_title">登录</string>
 </resources>

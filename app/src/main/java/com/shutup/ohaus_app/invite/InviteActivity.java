@@ -29,12 +29,11 @@ public class InviteActivity extends BaseActivity {
     private void initToolBar() {
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
+            mToolbar.setNavigationIcon(R.drawable.back_arrow_white);
         }
         if (getSupportActionBar() != null){
             getSupportActionBar().setTitle("");
             mToolbarTitle.setText(R.string.menu_invite_title);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
     }
 
