@@ -5,7 +5,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Display;
@@ -18,6 +17,7 @@ import android.widget.TextView;
 
 import com.shutup.ohaus_app.BuildConfig;
 import com.shutup.ohaus_app.R;
+import com.shutup.ohaus_app.common.BaseActivity;
 import com.shutup.ohaus_app.downloads.DownloadsActivity;
 import com.shutup.ohaus_app.favorite.FavoriteActivity;
 import com.shutup.ohaus_app.history.HistoryActivity;
@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     @InjectView(R.id.toolbar_title)
     TextView mToolbarTitle;
@@ -101,17 +101,19 @@ public class MainActivity extends AppCompatActivity {
         params.width = (int) (0.74 * display.getWidth());
         mDrawerView.setLayoutParams(params);
         //
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // init drawer toggle
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer, mToolbar, R.string.drawer_open, R.string.drawer_close);
         mDrawerToggle.syncState();
 
-        mDrawer.setDrawerListener(mDrawerToggle);
+        mDrawer.addDrawerListener(mDrawerToggle);
     }
 
     private void initToolBar() {
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("");
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("");
+        }
         mToolbarTitle.setText(R.string.main_page_title);
     }
 }

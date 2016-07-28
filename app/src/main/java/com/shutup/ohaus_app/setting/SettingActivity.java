@@ -31,6 +31,8 @@ public class SettingActivity extends BaseActivity {
             setSupportActionBar(mToolbar);
         }
         if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle("");
+            mToolbarTitle.setText(R.string.menu_setting_title);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
