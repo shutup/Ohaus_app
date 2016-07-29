@@ -18,7 +18,7 @@ import butterknife.InjectView;
 /**
  * Created by shutup on 16/7/29.
  */
-public class MeInfoListAdapter extends BaseAdapter implements MeConstatnts{
+public class MeInfoListAdapter extends BaseAdapter implements MeConstatnts {
 
     private ArrayList<MeInfoItem> mMeInfoItems;
     private Context mContext;
@@ -58,28 +58,43 @@ public class MeInfoListAdapter extends BaseAdapter implements MeConstatnts{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        ViewHolder viewHolder ;
-        if (convertView == null){
+        ViewHolder viewHolder;
+        if (convertView == null) {
             convertView = mLayoutInflater.inflate(R.layout.me_info_layout, null);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
-        }else{
+        } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
+        if (position == 4){
+            viewHolder.mBottomLine.setVisibility(View.GONE);
+        }else{
+            viewHolder.mBottomLine.setVisibility(View.VISIBLE);
+        }
+        if (position == 5){
+            viewHolder.mTopLine.setVisibility(View.VISIBLE);
+        }else{
+            viewHolder.mTopLine.setVisibility(View.GONE);
+        }
         MeInfoItem meInfoItem = mMeInfoItems.get(position);
         viewHolder.mMeInfoTitle.setText(meInfoItem.getTitle());
         viewHolder.mMeInfoValue.setText(meInfoItem.getValue());
 
-        if (meInfoItem.getType() == TYPE_1){
+        if (meInfoItem.getType() == TYPE_1) {
             viewHolder.mUserImageBackArrow.setImageResource(R.drawable.forward_arrow_gray);
-        }else if (meInfoItem.getType() == TYPE_2){
+        } else if (meInfoItem.getType() == TYPE_2) {
             viewHolder.mUserImageBackArrow.setImageResource(R.drawable.down_arrow_orange);
         }
         return convertView;
     }
 
     static class ViewHolder {
+
+        @InjectView(R.id.top_line)
+        View mTopLine;
+        @InjectView(R.id.bottom_line)
+        View mBottomLine;
         @InjectView(R.id.me_info_title)
         TextView mMeInfoTitle;
         @InjectView(R.id.user_image_back_arrow)

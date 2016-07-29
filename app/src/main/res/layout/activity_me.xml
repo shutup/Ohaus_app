@@ -46,10 +46,10 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"/>
     </RelativeLayout>
+
     <ListView
-        android:dividerHeight="1dp"
-        android:divider="@drawable/me_info_divider_line"
         android:id="@+id/userInfoListView"
+        android:divider="@null"
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="0dp">
