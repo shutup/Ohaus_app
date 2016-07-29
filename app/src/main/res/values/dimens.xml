@@ -8,4 +8,7 @@
     <dimen name="drawer_horizontal_margin">46dp</dimen>
     <dimen name="drawer_vertical_margin">24dp</dimen>
     <dimen name="drawer_user_image_size">64dp</dimen>
+    <dimen name="me_left_margin">18dp</dimen>
+    <dimen name="me_right_margin">16dp</dimen>
+    <dimen name="me_info_list_text_size">15sp</dimen>
 </resources>

@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.shutup.ohaus_app.me.MeActivity">
-
-    <include layout="@layout/toolbar"/>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="76dp">
+        android:layout_height="50dp">
         <TextView
+            tools:text="dsa"
+            android:id="@+id/me_info_title"
             android:layout_marginLeft="@dimen/me_left_margin"
             android:layout_marginStart="@dimen/me_left_margin"
             android:gravity="center"
-            android:text="头像"
+            android:textSize="@dimen/me_info_list_text_size"
+            android:textColor="@color/me_info_list_text_color"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"/>
 
@@ -29,16 +28,20 @@
             android:layout_alignParentEnd="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-        <ImageView
-            android:layout_centerVertical="true"
-            android:background="@mipmap/ic_launcher"
+        <TextView
+            tools:text="dad"
+            android:id="@+id/me_info_value"
+            android:gravity="center|right"
+            android:textSize="@dimen/me_info_list_text_size"
+            android:textColor="@color/me_info_list_text_color"
             android:layout_marginRight="9dp"
             android:layout_marginEnd="9dp"
             android:layout_toLeftOf="@id/user_image_back_arrow"
             android:layout_toStartOf="@id/user_image_back_arrow"
-            android:layout_width="58dp"
-            android:layout_height="58dp"/>
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
         <View
+            android:visibility="gone"
             android:layout_marginLeft="@dimen/me_left_margin"
             android:layout_marginStart="@dimen/me_left_margin"
             android:background="#e2e2e2"
@@ -46,13 +49,4 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"/>
     </RelativeLayout>
-    <ListView
-        android:dividerHeight="1dp"
-        android:divider="@drawable/me_info_divider_line"
-        android:id="@+id/userInfoListView"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="0dp">
-
-    </ListView>
 </LinearLayout>

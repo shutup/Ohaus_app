@@ -25,7 +25,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (BuildConfig.DEBUG) Log.d("BaseActivity", getHandSetInfo());
+//        if (BuildConfig.DEBUG) Log.d("BaseActivity", getHandSetInfo());
         if (isXiaoMi()) {
             initStatusBar();
 //            setMiuiStatusBarDarkMode(this, true);

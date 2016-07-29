@@ -9,10 +9,12 @@ import android.widget.TextView;
 import com.shutup.ohaus_app.R;
 import com.shutup.ohaus_app.common.BaseActivity;
 
+import java.util.ArrayList;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class MeActivity extends BaseActivity {
+public class MeActivity extends BaseActivity implements MeConstatnts{
 
     @InjectView(R.id.toolbar_title)
     TextView mToolbarTitle;
@@ -21,12 +23,29 @@ public class MeActivity extends BaseActivity {
     @InjectView(R.id.userInfoListView)
     ListView mUserInfoListView;
 
+    private ArrayList<MeInfoItem> mMeInfoItems;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_me);
         ButterKnife.inject(this);
         initToolBar();
+        initData();
+    }
+
+    private void initData() {
+        mMeInfoItems = new ArrayList<>();
+        mMeInfoItems.add(new MeInfoItem("姓名","", TYPE_1));
+        mMeInfoItems.add(new MeInfoItem("手机","", TYPE_1));
+        mMeInfoItems.add(new MeInfoItem("邮箱","", TYPE_1));
+        mMeInfoItems.add(new MeInfoItem("职务","", TYPE_1));
+        mMeInfoItems.add(new MeInfoItem("公司","", TYPE_1));
+        mMeInfoItems.add(new MeInfoItem("省份","", TYPE_2));
+        mMeInfoItems.add(new MeInfoItem("城市","", TYPE_2));
+
+        mUserInfoListView.setAdapter(new MeInfoListAdapter(mMeInfoItems,this));
+
     }
 
     private void initToolBar() {
