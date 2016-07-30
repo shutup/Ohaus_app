@@ -15,7 +15,7 @@
         android:layout_marginLeft="@dimen/me_left_margin"
         android:layout_marginStart="@dimen/me_left_margin"
         android:gravity="center|start"
-        android:text="城市"/>
+        android:text="@string/me_city_title"/>
 
     <ImageView
         android:id="@+id/user_image_back_arrow"
