@@ -8,51 +8,25 @@
     tools:context="com.shutup.ohaus_app.me.MeActivity">
 
     <include layout="@layout/toolbar"/>
-    <RelativeLayout
+
+    <include layout="@layout/me_info_photo_layout"/>
+
+    <include layout="@layout/me_info_name_layout"/>
+
+    <include layout="@layout/me_info_phone_layout"/>
+
+    <include layout="@layout/me_info_mail_layout"/>
+
+    <include layout="@layout/me_info_job_layout"/>
+
+    <include layout="@layout/me_info_company_layout"/>
+
+    <View
         android:layout_width="match_parent"
-        android:layout_height="76dp">
-        <TextView
-            android:layout_marginLeft="@dimen/me_left_margin"
-            android:layout_marginStart="@dimen/me_left_margin"
-            android:gravity="center"
-            android:text="头像"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"/>
+        android:layout_height="10dp"
+        android:background="#e2e2e2"/>
 
-        <ImageView
-            android:src="@drawable/forward_arrow_gray"
-            android:id="@+id/user_image_back_arrow"
-            android:layout_marginRight="@dimen/me_right_margin"
-            android:layout_marginEnd="@dimen/me_right_margin"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <ImageView
-            android:layout_centerVertical="true"
-            android:background="@mipmap/ic_launcher"
-            android:layout_marginRight="9dp"
-            android:layout_marginEnd="9dp"
-            android:layout_toLeftOf="@id/user_image_back_arrow"
-            android:layout_toStartOf="@id/user_image_back_arrow"
-            android:layout_width="58dp"
-            android:layout_height="58dp"/>
-        <View
-            android:layout_marginLeft="@dimen/me_left_margin"
-            android:layout_marginStart="@dimen/me_left_margin"
-            android:background="#e2e2e2"
-            android:layout_alignParentBottom="true"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"/>
-    </RelativeLayout>
+    <include layout="@layout/me_info_province_layout"/>
 
-    <ListView
-        android:id="@+id/userInfoListView"
-        android:divider="@null"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="0dp">
-
-    </ListView>
+    <include layout="@layout/me_info_city_layout"/>
 </LinearLayout>
