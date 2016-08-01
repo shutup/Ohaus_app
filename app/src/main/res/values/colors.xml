@@ -8,6 +8,10 @@
     <color name="colorAccent">#FF4081</color>
     <color name="CustomeStatusBarColor">#302020</color>
 
+    <!--Login Activity-->
+    <color name="loginBtnNormal">#afFF4081</color>
+    <color name="loginBtnValid">#ffFF4081</color>
+
     <!--Me Info-->
     <color name="me_info_list_divider_color">#e2e2e2</color>
     <color name="me_info_list_text_color">#6f6e6e</color>

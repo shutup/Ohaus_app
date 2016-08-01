@@ -7,6 +7,6 @@
         android:bottomRightRadius="2dp">
     </corners>
     <solid
-        android:color="#FF4081">
+        android:color="@color/loginBtnNormal">
     </solid>
 </shape>

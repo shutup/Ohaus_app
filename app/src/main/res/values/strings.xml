@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Ohaus_app</string>
-    <string name="login_btn_title">登陆</string>
+    <string name="login_btn_title">登录</string>
     <string name="drawer_open">抽屉菜单开</string>
     <string name="drawer_close">抽屉菜单关</string>
     <string name="menu_history_title">浏览历史</string>
@@ -24,4 +24,6 @@
     <string name="btn_select_all_title">全选</string>
     <string name="btn_delete_selected_title">删除</string>
     <string name="btn_reverse_select_title">反选</string>
+    <string name="login_input_phone_title">手机号</string>
+    <string name="login_input_pwd_title">登录密码</string>
 </resources>
