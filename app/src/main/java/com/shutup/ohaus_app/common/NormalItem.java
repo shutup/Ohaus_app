@@ -1,4 +1,4 @@
-package com.shutup.ohaus_app.history;
+package com.shutup.ohaus_app.common;
 
 /**
  * Created by shutup on 16/8/1.

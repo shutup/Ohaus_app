@@ -4,8 +4,53 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.shutup.ohaus_app.favorite.FavoriteActivity">
 
     <include layout="@layout/toolbar"/>
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="vertical">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <LinearLayout
+        android:id="@+id/bottom_bar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/select_all_btn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:text="@string/btn_select_all_title"
+            android:textColor="#ff4a4a4a"
+            android:textSize="14sp"
+            tools:text="@string/btn_select_all_title"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:background="#ff979797"/>
+
+        <Button
+            android:id="@+id/delete_selected_btn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:text="@string/btn_delete_selected_title"
+            android:textColor="#ed3058"
+            android:textSize="14sp"
+            tools:text="@string/btn_delete_selected_title"/>
+    </LinearLayout>
 </LinearLayout>

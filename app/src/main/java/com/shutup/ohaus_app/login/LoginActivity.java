@@ -92,10 +92,10 @@ public class LoginActivity extends BaseActivity {
     private void setLoginBtnStatus() {
         if (isPhoneOk && isPwdOk) {
             mLoginBtn.setBackgroundColor(getResources().getColor(R.color.loginBtnValid));
-            mLoginBtn.setEnabled(true);
+//            mLoginBtn.setEnabled(true);
         } else {
             mLoginBtn.setBackgroundColor(getResources().getColor(R.color.loginBtnNormal));
-            mLoginBtn.setEnabled(false);
+//            mLoginBtn.setEnabled(false);
         }
     }
 

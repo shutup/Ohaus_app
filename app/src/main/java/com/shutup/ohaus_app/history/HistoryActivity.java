@@ -23,6 +23,7 @@ import com.shutup.ohaus_app.R;
 import com.shutup.ohaus_app.common.BaseActivity;
 import com.shutup.ohaus_app.common.Constants;
 import com.shutup.ohaus_app.common.DividerItemDecoration;
+import com.shutup.ohaus_app.common.NormalItem;
 
 import java.util.ArrayList;
 
@@ -42,12 +43,12 @@ public class HistoryActivity extends BaseActivity implements Constants {
     Button mSelectAllBtn;
     @InjectView(R.id.delete_selected_btn)
     Button mDeleteSelectedBtn;
-    @InjectView(R.id.history_bottom_bar)
-    LinearLayout mHistoryBottomBar;
+    @InjectView(R.id.bottom_bar)
+    LinearLayout mBottomBar;
 
     private ArrayList<NormalItem> mNormalItems;
-    private HistoryListAdapter mHistoryListAdapter;
-    private static int currentType = HISTORY_ACTIVITY_NORMAL;
+    private HistoryListAdapter mListAdapter;
+    private static int currentType = ACTIVITY_NORMAL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,12 +64,12 @@ public class HistoryActivity extends BaseActivity implements Constants {
         for (int i = 0; i < 100; i++) {
             mNormalItems.add(new NormalItem("1", "title " + i, "content " + i));
         }
-        mHistoryListAdapter.notifyDataSetChanged();
+        mListAdapter.notifyDataSetChanged();
     }
 
     private void initList() {
         mNormalItems = new ArrayList<>();
-        mHistoryListAdapter = new HistoryListAdapter(mNormalItems);
+        mListAdapter = new HistoryListAdapter(mNormalItems);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -76,9 +77,9 @@ public class HistoryActivity extends BaseActivity implements Constants {
         mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), mRecyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                if (currentType == HISTORY_ACTIVITY_NORMAL) {
+                if (currentType == ACTIVITY_NORMAL) {
                     Toast.makeText(HistoryActivity.this, "clicked", Toast.LENGTH_SHORT).show();
-                } else if (currentType == HISTORY_ACTIVITY_EDIT) {
+                } else if (currentType == ACTIVITY_EDIT) {
 
                 }
             }
@@ -88,7 +89,7 @@ public class HistoryActivity extends BaseActivity implements Constants {
 
             }
         }));
-        mRecyclerView.setAdapter(mHistoryListAdapter);
+        mRecyclerView.setAdapter(mListAdapter);
     }
 
     private void initToolBar() {
@@ -116,22 +117,22 @@ public class HistoryActivity extends BaseActivity implements Constants {
             finish(); // close this activity and return to preview activity (if there is any)
         } else if (item.getItemId() == R.id.menu_edit) {
             if (item.getTitle().toString().contentEquals(getString(R.string.menu_edit))) {
-                currentType = HISTORY_ACTIVITY_EDIT;
+                currentType = ACTIVITY_EDIT;
                 item.setTitle(R.string.menu_cancel);
-                mHistoryBottomBar.setVisibility(View.VISIBLE);
-                mHistoryListAdapter.setType(HISTORY_ACTIVITY_EDIT);
-                mHistoryListAdapter.notifyDataSetChanged();
+                mBottomBar.setVisibility(View.VISIBLE);
+                mListAdapter.setType(ACTIVITY_EDIT);
+                mListAdapter.notifyDataSetChanged();
             } else if (item.getTitle().toString().contentEquals(getString(R.string.menu_cancel))) {
-                for (NormalItem n : mHistoryListAdapter.getNormalItems()
+                for (NormalItem n : mListAdapter.getNormalItems()
                         ) {
                     n.setChecked(false);
                 }
                 mSelectAllBtn.setText(getString(R.string.btn_select_all_title));
-                currentType = HISTORY_ACTIVITY_NORMAL;
+                currentType = ACTIVITY_NORMAL;
                 item.setTitle(R.string.menu_edit);
-                mHistoryBottomBar.setVisibility(View.GONE);
-                mHistoryListAdapter.setType(HISTORY_ACTIVITY_NORMAL);
-                mHistoryListAdapter.notifyDataSetChanged();
+                mBottomBar.setVisibility(View.GONE);
+                mListAdapter.setType(ACTIVITY_NORMAL);
+                mListAdapter.notifyDataSetChanged();
             }
 
         }
@@ -155,28 +156,28 @@ public class HistoryActivity extends BaseActivity implements Constants {
 
     private void deleteSelected() {
         ArrayList<NormalItem> selectedList = new ArrayList<>();
-        for (NormalItem n : mHistoryListAdapter.getNormalItems()) {
+        for (NormalItem n : mListAdapter.getNormalItems()) {
             if (n.isChecked()) {
                 selectedList.add(n);
             }
         }
-        mHistoryListAdapter.getNormalItems().removeAll(selectedList);
-        mHistoryListAdapter.notifyDataSetChanged();
+        mListAdapter.getNormalItems().removeAll(selectedList);
+        mListAdapter.notifyDataSetChanged();
     }
 
     private void selectAll(Button btn) {
         if (btn.getText().toString().contentEquals(getString(R.string.btn_select_all_title))){
             btn.setText(R.string.btn_reverse_select_title);
-            for (NormalItem n : mHistoryListAdapter.getNormalItems()) {
+            for (NormalItem n : mListAdapter.getNormalItems()) {
                 n.setChecked(true);
             }
         }else if(btn.getText().toString().contentEquals(getString(R.string.btn_reverse_select_title))){
-            for (NormalItem n : mHistoryListAdapter.getNormalItems()) {
+            for (NormalItem n : mListAdapter.getNormalItems()) {
                 n.setChecked(false);
             }
             btn.setText(R.string.btn_select_all_title);
         }
-        mHistoryListAdapter.notifyDataSetChanged();
+        mListAdapter.notifyDataSetChanged();
     }
 
     /**

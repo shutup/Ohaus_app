@@ -1,4 +1,4 @@
-package com.shutup.ohaus_app.history;
+package com.shutup.ohaus_app.downloads;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,7 +21,7 @@ import butterknife.InjectView;
 /**
  * Created by shutup on 16/8/1.
  */
-public class HistoryListAdapter extends RecyclerView.Adapter<HistoryListAdapter.MyViewHolder> implements Constants {
+public class DownloadsListAdapter extends RecyclerView.Adapter<DownloadsListAdapter.MyViewHolder> implements Constants {
 
     public ArrayList<NormalItem> getNormalItems() {
         return mNormalItems;
@@ -39,7 +39,7 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryListAdapter.
 
     private int type;
 
-    public HistoryListAdapter(ArrayList<NormalItem> normalItems) {
+    public DownloadsListAdapter(ArrayList<NormalItem> normalItems) {
         mNormalItems = normalItems;
         this.type = ACTIVITY_NORMAL;
     }
