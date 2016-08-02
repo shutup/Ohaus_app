@@ -1,4 +1,4 @@
-package com.shutup.ohaus_app.favorite;
+package com.shutup.ohaus_app.drawer_menu_activity.downloads;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,7 +21,7 @@ import butterknife.InjectView;
 /**
  * Created by shutup on 16/8/1.
  */
-public class FavoriteListAdapter extends RecyclerView.Adapter<FavoriteListAdapter.MyViewHolder> implements Constants {
+public class DownloadsListAdapter extends RecyclerView.Adapter<DownloadsListAdapter.MyViewHolder> implements Constants {
 
     public ArrayList<NormalItem> getNormalItems() {
         return mNormalItems;
@@ -39,7 +39,7 @@ public class FavoriteListAdapter extends RecyclerView.Adapter<FavoriteListAdapte
 
     private int type;
 
-    public FavoriteListAdapter(ArrayList<NormalItem> normalItems) {
+    public DownloadsListAdapter(ArrayList<NormalItem> normalItems) {
         mNormalItems = normalItems;
         this.type = ACTIVITY_NORMAL;
     }

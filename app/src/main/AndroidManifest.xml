@@ -21,17 +21,17 @@
         </activity>
         <activity android:name=".main.MainActivity">
         </activity>
-        <activity android:name=".me.MeActivity">
+        <activity android:name=".drawer_menu_activity.me.MeActivity">
         </activity>
-        <activity android:name=".history.HistoryActivity">
+        <activity android:name=".drawer_menu_activity.history.HistoryActivity">
         </activity>
-        <activity android:name=".downloads.DownloadsActivity">
+        <activity android:name=".drawer_menu_activity.downloads.DownloadsActivity">
         </activity>
-        <activity android:name=".favorite.FavoriteActivity">
+        <activity android:name=".drawer_menu_activity.favorite.FavoriteActivity">
         </activity>
-        <activity android:name=".invite.InviteActivity">
+        <activity android:name=".drawer_menu_activity.invite.InviteActivity">
         </activity>
-        <activity android:name=".setting.SettingActivity">
+        <activity android:name=".drawer_menu_activity.setting.SettingActivity">
         </activity>
     </application>
 

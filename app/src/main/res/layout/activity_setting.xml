@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.shutup.ohaus_app.setting.SettingActivity">
+    tools:context=".drawer_menu_activity.setting.SettingActivity">
 
     <include layout="@layout/toolbar"/>
 </LinearLayout>

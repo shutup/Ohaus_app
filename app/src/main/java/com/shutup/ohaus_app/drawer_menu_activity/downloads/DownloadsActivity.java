@@ -1,4 +1,4 @@
-package com.shutup.ohaus_app.downloads;
+package com.shutup.ohaus_app.drawer_menu_activity.downloads;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -24,7 +24,6 @@ import com.shutup.ohaus_app.common.BaseActivity;
 import com.shutup.ohaus_app.common.Constants;
 import com.shutup.ohaus_app.common.DividerItemDecoration;
 import com.shutup.ohaus_app.common.NormalItem;
-import com.shutup.ohaus_app.favorite.FavoriteListAdapter;
 
 import java.util.ArrayList;
 

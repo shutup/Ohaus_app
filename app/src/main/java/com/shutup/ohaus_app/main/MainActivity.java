@@ -1,7 +1,6 @@
 package com.shutup.ohaus_app.main;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,12 +17,12 @@ import android.widget.TextView;
 import com.shutup.ohaus_app.BuildConfig;
 import com.shutup.ohaus_app.R;
 import com.shutup.ohaus_app.common.BaseActivity;
-import com.shutup.ohaus_app.downloads.DownloadsActivity;
-import com.shutup.ohaus_app.favorite.FavoriteActivity;
-import com.shutup.ohaus_app.history.HistoryActivity;
-import com.shutup.ohaus_app.invite.InviteActivity;
-import com.shutup.ohaus_app.me.MeActivity;
-import com.shutup.ohaus_app.setting.SettingActivity;
+import com.shutup.ohaus_app.drawer_menu_activity.downloads.DownloadsActivity;
+import com.shutup.ohaus_app.drawer_menu_activity.favorite.FavoriteActivity;
+import com.shutup.ohaus_app.drawer_menu_activity.history.HistoryActivity;
+import com.shutup.ohaus_app.drawer_menu_activity.invite.InviteActivity;
+import com.shutup.ohaus_app.drawer_menu_activity.me.MeActivity;
+import com.shutup.ohaus_app.drawer_menu_activity.setting.SettingActivity;
 import com.shutup.ohaus_app.utils.CircleTransform;
 import com.squareup.picasso.Picasso;
 

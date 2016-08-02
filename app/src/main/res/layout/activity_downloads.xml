@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.shutup.ohaus_app.downloads.DownloadsActivity">
+    tools:context=".drawer_menu_activity.downloads.DownloadsActivity">
 
     <include layout="@layout/toolbar"/>
 

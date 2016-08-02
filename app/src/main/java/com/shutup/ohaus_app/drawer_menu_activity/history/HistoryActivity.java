@@ -1,4 +1,4 @@
-package com.shutup.ohaus_app.favorite;
+package com.shutup.ohaus_app.drawer_menu_activity.history;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -31,7 +31,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
-public class FavoriteActivity extends BaseActivity implements Constants {
+public class HistoryActivity extends BaseActivity implements Constants {
 
     @InjectView(R.id.toolbar_title)
     TextView mToolbarTitle;
@@ -47,13 +47,13 @@ public class FavoriteActivity extends BaseActivity implements Constants {
     LinearLayout mBottomBar;
 
     private ArrayList<NormalItem> mNormalItems;
-    private FavoriteListAdapter mListAdapter;
+    private HistoryListAdapter mListAdapter;
     private static int currentType = ACTIVITY_NORMAL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_favorite);
+        setContentView(R.layout.activity_history);
         ButterKnife.inject(this);
         initToolBar();
         initList();
@@ -69,7 +69,7 @@ public class FavoriteActivity extends BaseActivity implements Constants {
 
     private void initList() {
         mNormalItems = new ArrayList<>();
-        mListAdapter = new FavoriteListAdapter(mNormalItems);
+        mListAdapter = new HistoryListAdapter(mNormalItems);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -78,7 +78,7 @@ public class FavoriteActivity extends BaseActivity implements Constants {
             @Override
             public void onClick(View view, int position) {
                 if (currentType == ACTIVITY_NORMAL) {
-                    Toast.makeText(FavoriteActivity.this, "clicked", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(HistoryActivity.this, "clicked", Toast.LENGTH_SHORT).show();
                 } else if (currentType == ACTIVITY_EDIT) {
 
                 }
@@ -99,7 +99,7 @@ public class FavoriteActivity extends BaseActivity implements Constants {
         }
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("");
-            mToolbarTitle.setText(R.string.menu_favorite_title);
+            mToolbarTitle.setText(R.string.menu_history_title);
         }
     }
 
@@ -144,12 +144,12 @@ public class FavoriteActivity extends BaseActivity implements Constants {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.select_all_btn:
-                if (BuildConfig.DEBUG) Log.d("FavoriteActivity", "all");
+                if (BuildConfig.DEBUG) Log.d("HistoryActivity", "all");
                 selectAll((Button) view);
                 break;
             case R.id.delete_selected_btn:
                 deleteSelected();
-                if (BuildConfig.DEBUG) Log.d("FavoriteActivity", "delete");
+                if (BuildConfig.DEBUG) Log.d("HistoryActivity", "delete");
                 break;
         }
     }
@@ -166,12 +166,12 @@ public class FavoriteActivity extends BaseActivity implements Constants {
     }
 
     private void selectAll(Button btn) {
-        if (btn.getText().toString().contentEquals(getString(R.string.btn_select_all_title))) {
+        if (btn.getText().toString().contentEquals(getString(R.string.btn_select_all_title))){
             btn.setText(R.string.btn_reverse_select_title);
             for (NormalItem n : mListAdapter.getNormalItems()) {
                 n.setChecked(true);
             }
-        } else if (btn.getText().toString().contentEquals(getString(R.string.btn_reverse_select_title))) {
+        }else if(btn.getText().toString().contentEquals(getString(R.string.btn_reverse_select_title))){
             for (NormalItem n : mListAdapter.getNormalItems()) {
                 n.setChecked(false);
             }

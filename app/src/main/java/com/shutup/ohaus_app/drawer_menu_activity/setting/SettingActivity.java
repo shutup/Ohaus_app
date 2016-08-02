@@ -1,4 +1,4 @@
-package com.shutup.ohaus_app.setting;
+package com.shutup.ohaus_app.drawer_menu_activity.setting;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;

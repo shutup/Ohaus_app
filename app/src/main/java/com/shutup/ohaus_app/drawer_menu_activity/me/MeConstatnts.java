@@ -1,4 +1,4 @@
-package com.shutup.ohaus_app.me;
+package com.shutup.ohaus_app.drawer_menu_activity.me;
 
 /**
  * Created by shutup on 16/7/29.
