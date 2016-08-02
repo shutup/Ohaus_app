@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--Common-->
+    <color name="common_divider_background_color">#ffe2e2e2</color>
     <!--<color name="colorPrimary">#ffffff</color>-->
     <color name="colorPrimary">#2d3035</color>
     <!--<color name="colorPrimary">#3F51B5</color>-->
@@ -15,4 +16,9 @@
     <!--Me Info-->
     <color name="me_info_list_divider_color">#e2e2e2</color>
     <color name="me_info_list_text_color">#6f6e6e</color>
+    <color name="me_info_background_color">#fff6f7fb</color>
+    <color name="me_info_item_color">#ffffffff</color>
+    <!--Setting Info-->
+    <color name="setting_info_background_color">#fff6f7fb</color>
+    <color name="setting_info_item_color">#ffffffff</color>
 </resources>

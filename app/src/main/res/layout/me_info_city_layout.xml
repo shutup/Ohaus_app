@@ -48,5 +48,5 @@
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="@dimen/me_left_margin"
         android:layout_marginStart="@dimen/me_left_margin"
-        android:background="#e2e2e2"/>
+        android:background="@color/common_divider_background_color"/>
 </RelativeLayout>

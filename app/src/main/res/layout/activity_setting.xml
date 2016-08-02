@@ -4,7 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".drawer_menu_activity.setting.SettingActivity">
 
     <include layout="@layout/toolbar"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/common_divider_background_color"/>
+
+    <include layout="@layout/setting_info_notification_layout"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/common_divider_background_color"/>
+
+    <include layout="@layout/setting_info_clear_cache_layout"/>
+
+    <include layout="@layout/setting_info_feedback_layout"/>
+
+    <include layout="@layout/setting_info_contract_us_layout"/>
+
+    <include layout="@layout/setting_info_modify_pwd_layout"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/common_divider_background_color"/>
+    <include layout="@layout/setting_info_logout_layout"/>
+    <View
+        android:background="@color/common_divider_background_color"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </LinearLayout>

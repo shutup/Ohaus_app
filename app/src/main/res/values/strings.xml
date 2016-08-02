@@ -26,4 +26,10 @@
     <string name="btn_reverse_select_title">反选</string>
     <string name="login_input_phone_title">手机号</string>
     <string name="login_input_pwd_title">登录密码</string>
+    <string name="setting_info_clear_cache_title">清理缓存</string>
+    <string name="setting_info_contract_us_title">联系我们</string>
+    <string name="setting_info_feedback_title">意见反馈</string>
+    <string name="setting_info_modify_pwd_title">修改密码</string>
+    <string name="setting_info_notification_title">消息通知</string>
+    <string name="setting_info_logout_title">退出登录</string>
 </resources>

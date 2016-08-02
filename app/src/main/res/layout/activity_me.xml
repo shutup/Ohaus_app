@@ -9,7 +9,7 @@
 
     <include layout="@layout/toolbar"/>
 
-    <include layout="@layout/me_info_photo_layout"/>
+    <include layout="@layout/me_info_photo_layout" />
 
     <include layout="@layout/me_info_name_layout"/>
 
@@ -24,9 +24,13 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="10dp"
-        android:background="#e2e2e2"/>
+        android:background="@color/common_divider_background_color"/>
 
     <include layout="@layout/me_info_province_layout"/>
 
     <include layout="@layout/me_info_city_layout"/>
+    <View
+        android:background="@color/common_divider_background_color"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </LinearLayout>

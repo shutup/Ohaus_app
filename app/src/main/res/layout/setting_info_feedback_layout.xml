@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    android:id="@+id/me_info_job_layout"
+    android:id="@+id/setting_info_feedback_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:background="?attr/selectableItemBackground"
@@ -15,7 +14,7 @@
         android:layout_marginLeft="@dimen/me_left_margin"
         android:layout_marginStart="@dimen/me_left_margin"
         android:gravity="center|start"
-        android:text="@string/me_job_title"/>
+        android:text="@string/setting_info_feedback_title"/>
 
     <ImageView
         android:id="@+id/user_image_back_arrow"
@@ -28,18 +27,6 @@
         android:layout_marginRight="@dimen/me_right_margin"
         android:src="@drawable/forward_arrow_gray"/>
 
-    <TextView
-        android:id="@+id/me_info_job"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="9dp"
-        android:layout_marginRight="9dp"
-        android:layout_toLeftOf="@id/user_image_back_arrow"
-        android:layout_toStartOf="@id/user_image_back_arrow"
-        android:gravity="center|end"
-        tools:text="Tom"
-        />
 
     <View
         android:layout_width="match_parent"
