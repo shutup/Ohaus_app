@@ -42,7 +42,7 @@ public class InviteActivity extends BaseActivity {
     TextView inviteCompanyTitle;
     @InjectView(R.id.invite_company_value)
     EditText inviteCompanyValue;
-
+//测试
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
