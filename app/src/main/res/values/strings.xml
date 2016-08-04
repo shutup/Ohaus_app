@@ -32,4 +32,11 @@
     <string name="setting_info_modify_pwd_title">修改密码</string>
     <string name="setting_info_notification_title">消息通知</string>
     <string name="setting_info_logout_title">退出登录</string>
+    <string name="invite_info_name_title"><![CDATA[<font color=red>*</font>姓名]]></string>
+    <string name="invite_info_phone_title"><![CDATA[<font color=red>*</font>手机号码]]></string>
+    <string name="invite_province_title"><![CDATA[<font color=red>*</font>省份]]></string>
+    <string name="invite_city_title"><![CDATA[<font color=red>*</font>城市]]></string>
+    <string name="invite_company_title"><![CDATA[<font color=red>*</font>公司名称]]></string>
+    <string name="invite_job_title">职位</string>
+    <string name="invite_mail_title">邮箱</string>
 </resources>

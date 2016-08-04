@@ -11,4 +11,6 @@
     <dimen name="me_left_margin">18dp</dimen>
     <dimen name="me_right_margin">16dp</dimen>
     <dimen name="me_info_list_text_size">15sp</dimen>
+    <dimen name="invite_left_margin">9dp</dimen>
+    <dimen name="invite_right_margin">9dp</dimen>
 </resources>

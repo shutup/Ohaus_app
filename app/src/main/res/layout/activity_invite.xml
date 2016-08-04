@@ -4,6 +4,51 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".drawer_menu_activity.invite.InviteActivity">
-<include layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/common_divider_background_color"/>
+
+    <include layout="@layout/invite_info_name_layout"/>
+
+    <include layout="@layout/invite_info_phone_layout"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/common_divider_background_color"/>
+
+    <include layout="@layout/invite_info_province_layout"/>
+
+    <include layout="@layout/invite_info_city_layout"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/common_divider_background_color"/>
+
+    <include layout="@layout/invite_info_company_layout"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/common_divider_background_color"/>
+
+    <include layout="@layout/invite_info_job_layout"/>
+
+    <include layout="@layout/invite_info_mail_layout"/>
+
+    <View
+        android:background="@color/common_divider_background_color"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+
+
+
 </LinearLayout>

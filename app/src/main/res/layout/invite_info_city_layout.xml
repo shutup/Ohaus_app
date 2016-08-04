@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    >
+
+    <TextView
+        android:id="@+id/invite_info_city_title"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/me_left_margin"
+        android:layout_marginStart="@dimen/me_left_margin"
+        android:gravity="center|start"
+        android:text="@string/invite_city_title"/>
+
+    <ImageView
+        android:id="@+id/user_image_back_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/me_right_margin"
+        android:layout_marginRight="@dimen/me_right_margin"
+        android:src="@drawable/down_arrow_orange"/>
+
+    <TextView
+        android:id="@+id/invite_info_city"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="9dp"
+        android:layout_marginRight="9dp"
+        android:layout_toLeftOf="@id/user_image_back_arrow"
+        android:layout_toStartOf="@id/user_image_back_arrow"
+        android:gravity="center|end"
+        tools:text="上海"
+        />
+
+    <View
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/me_left_margin"
+        android:layout_marginStart="@dimen/me_left_margin"
+        android:background="@color/common_divider_background_color"/>
+</RelativeLayout>
