@@ -7,13 +7,14 @@
         android:layout_below="@+id/toolbar">
 
         <!-- Content -->
-        <RelativeLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
         <include layout="@layout/toolbar"/>
-
-        </RelativeLayout>
+        <include layout="@layout/top_banner_layout"/>
+        </LinearLayout>
 
         <!-- Side Drawer -->
         <LinearLayout

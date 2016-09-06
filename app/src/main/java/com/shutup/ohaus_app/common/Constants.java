@@ -6,4 +6,5 @@ package com.shutup.ohaus_app.common;
 public interface Constants {
     int ACTIVITY_NORMAL = 1;
     int ACTIVITY_EDIT = 2;
+    int BANNER_CHANGE_DELAY = 3000;
 }
