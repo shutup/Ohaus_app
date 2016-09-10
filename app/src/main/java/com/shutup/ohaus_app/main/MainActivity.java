@@ -221,16 +221,29 @@ public class MainActivity extends BaseActivity implements Constants {
         }
     }
 
+    /**
+     * 点击主菜单的跳转
+     * @param view
+     */
     @OnClick({R.id.production_category_linear_layout, R.id.industry_information_linear_layout, R.id.production_knowledge_linear_layout, R.id.solve_plan_linear_layout})
     public void onClick(View view) {
+        Intent intent = null;
         switch (view.getId()) {
             case R.id.production_category_linear_layout:
+                intent = new Intent(this, ProductionCategoryActivity.class);
+                startActivity(intent);
                 break;
             case R.id.industry_information_linear_layout:
+                intent = new Intent(this, IndustryInformationActivity.class);
+                startActivity(intent);
                 break;
             case R.id.production_knowledge_linear_layout:
+                intent = new Intent(this, ProductionKnowledgeActivity.class);
+                startActivity(intent);
                 break;
             case R.id.solve_plan_linear_layout:
+                intent = new Intent(this, SolvePlanActivity.class);
+                startActivity(intent);
                 break;
         }
     }

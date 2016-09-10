@@ -33,6 +33,14 @@
         </activity>
         <activity android:name=".drawer_menu_activity.setting.SettingActivity">
         </activity>
+        <activity android:name=".main.ProductionCategoryActivity">
+        </activity>
+        <activity android:name=".main.IndustryInformationActivity">
+        </activity>
+        <activity android:name=".main.SolvePlanActivity">
+        </activity>
+        <activity android:name=".main.ProductionKnowledgeActivity">
+        </activity>
     </application>
 
 </manifest>
