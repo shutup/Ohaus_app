@@ -8,6 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -123,6 +124,7 @@ public class MainActivity extends BaseActivity implements Constants {
         mGoodsRecommendAdapter = new GoodsRecommendAdapter(this, mGoodsRecommendItems);
         mGoodsRecommendRecycleView.setFocusable(false);
         mGoodsRecommendRecycleView.setLayoutManager(new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
+//        mGoodsRecommendRecycleView.setLayoutManager(new GridLayoutManager(getApplicationContext(),3));
         mGoodsRecommendRecycleView.setItemAnimator(new DefaultItemAnimator());
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.goods_recommend_item_padding);
         mGoodsRecommendRecycleView.addItemDecoration(new SpacesItemDecoration(spacingInPixels));
