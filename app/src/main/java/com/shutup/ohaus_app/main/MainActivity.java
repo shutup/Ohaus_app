@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,7 +13,6 @@ import android.view.Display;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,8 +36,9 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity implements Constants{
+public class MainActivity extends BaseActivity implements Constants {
 
     @InjectView(R.id.toolbar_title)
     TextView mToolbarTitle;
@@ -59,6 +58,14 @@ public class MainActivity extends BaseActivity implements Constants{
     ViewPager mBannerViewPager;
     @InjectView(R.id.banner_indicator)
     LinearLayout mBannerIndicator;
+    @InjectView(R.id.production_category_linear_layout)
+    LinearLayout mProductionCategoryLinearLayout;
+    @InjectView(R.id.industry_information_linear_layout)
+    LinearLayout mIndustryInformationLinearLayout;
+    @InjectView(R.id.production_knowledge_linear_layout)
+    LinearLayout mProductionKnowledgeLinearLayout;
+    @InjectView(R.id.solve_plan_linear_layout)
+    LinearLayout mSolvePlanLinearLayout;
 
     private ActionBarDrawerToggle mDrawerToggle;
     private ArrayList<MenuItem> mMenuItems;
@@ -165,9 +172,9 @@ public class MainActivity extends BaseActivity implements Constants{
             public void onPageScrollStateChanged(int state) {
                 if (state == ViewPager.SCROLL_STATE_DRAGGING) {
                     isAutoChange = false;
-                }else if (state == ViewPager.SCROLL_STATE_IDLE){
+                } else if (state == ViewPager.SCROLL_STATE_IDLE) {
                     isAutoChange = true;
-                }else if (state == ViewPager.SCROLL_STATE_SETTLING){
+                } else if (state == ViewPager.SCROLL_STATE_SETTLING) {
                     isAutoChange = false;
                 }
             }
@@ -179,17 +186,17 @@ public class MainActivity extends BaseActivity implements Constants{
                 if (isAutoChange) {
                     if (currentIndex < mBannerViewPager.getChildCount()) {
                         currentIndex++;
-                        mBannerViewPager.setCurrentItem(currentIndex,true);
-                    }else {
+                        mBannerViewPager.setCurrentItem(currentIndex, true);
+                    } else {
                         mBannerViewPager.setCurrentItem(0);
                     }
-                    mHandler.postDelayed(runnable,BANNER_CHANGE_DELAY);
-                }else {
-                    mHandler.postDelayed(runnable,BANNER_CHANGE_DELAY);
+                    mHandler.postDelayed(runnable, BANNER_CHANGE_DELAY);
+                } else {
+                    mHandler.postDelayed(runnable, BANNER_CHANGE_DELAY);
                 }
             }
         };
-        mHandler.postDelayed(runnable,BANNER_CHANGE_DELAY);
+        mHandler.postDelayed(runnable, BANNER_CHANGE_DELAY);
 
         mDotsImageViews = new ArrayList<>();
         for (int i = 0; i < mBannerItems.size(); i++) {
@@ -214,7 +221,21 @@ public class MainActivity extends BaseActivity implements Constants{
         }
     }
 
-    class TapGestureListener extends GestureDetector.SimpleOnGestureListener{
+    @OnClick({R.id.production_category_linear_layout, R.id.industry_information_linear_layout, R.id.production_knowledge_linear_layout, R.id.solve_plan_linear_layout})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.production_category_linear_layout:
+                break;
+            case R.id.industry_information_linear_layout:
+                break;
+            case R.id.production_knowledge_linear_layout:
+                break;
+            case R.id.solve_plan_linear_layout:
+                break;
+        }
+    }
+
+    class TapGestureListener extends GestureDetector.SimpleOnGestureListener {
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
             int currentIndex = mBannerViewPager.getCurrentItem();

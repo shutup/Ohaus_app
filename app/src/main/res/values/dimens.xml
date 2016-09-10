@@ -13,4 +13,10 @@
     <dimen name="me_info_list_text_size">15sp</dimen>
     <dimen name="invite_left_margin">9dp</dimen>
     <dimen name="invite_right_margin">9dp</dimen>
+
+    <dimen name="activity_main_center_menu_height">100dp</dimen>
+    <dimen name="activity_main_center_menu_textSize">14sp</dimen>
+    <dimen name="activity_main_center_menu_image_top_margin">19dp</dimen>
+    <dimen name="activity_main_center_menu_image_bottom_margin">7dp</dimen>
+    <dimen name="activity_main_center_menu_image_size">45dp</dimen>
 </resources>

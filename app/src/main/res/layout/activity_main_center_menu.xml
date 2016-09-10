@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/activity_main_center_menu_height"
+              android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/production_category_linear_layout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="@dimen/activity_main_center_menu_image_size"
+            android:layout_height="@dimen/activity_main_center_menu_image_size"
+            android:layout_marginBottom="@dimen/activity_main_center_menu_image_bottom_margin"
+            android:layout_marginTop="@dimen/activity_main_center_menu_image_top_margin"
+            android:src="@drawable/production_category"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/production_category_str"
+            android:textSize="@dimen/activity_main_center_menu_textSize"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/industry_information_linear_layout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="@dimen/activity_main_center_menu_image_size"
+            android:layout_height="@dimen/activity_main_center_menu_image_size"
+            android:layout_marginBottom="@dimen/activity_main_center_menu_image_bottom_margin"
+            android:layout_marginTop="@dimen/activity_main_center_menu_image_top_margin"
+            android:src="@drawable/industry_information"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/industry_information_str"
+
+            android:textSize="@dimen/activity_main_center_menu_textSize"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/production_knowledge_linear_layout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="@dimen/activity_main_center_menu_image_size"
+            android:layout_height="@dimen/activity_main_center_menu_image_size"
+            android:layout_marginBottom="@dimen/activity_main_center_menu_image_bottom_margin"
+            android:layout_marginTop="@dimen/activity_main_center_menu_image_top_margin"
+            android:src="@drawable/production_knowledge"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/production_knowledge_str"
+
+            android:textSize="@dimen/activity_main_center_menu_textSize"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/solve_plan_linear_layout"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="@dimen/activity_main_center_menu_image_size"
+            android:layout_height="@dimen/activity_main_center_menu_image_size"
+            android:layout_marginBottom="@dimen/activity_main_center_menu_image_bottom_margin"
+            android:layout_marginTop="@dimen/activity_main_center_menu_image_top_margin"
+            android:src="@drawable/solve_plan"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/solve_plan_str"
+
+            android:textSize="@dimen/activity_main_center_menu_textSize"/>
+    </LinearLayout>
+</LinearLayout>
