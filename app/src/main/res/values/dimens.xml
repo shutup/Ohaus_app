@@ -21,4 +21,10 @@
     <dimen name="activity_main_center_menu_image_size">45dp</dimen>
     <dimen name="activity_main_quick_news_top_margin">8dp</dimen>
     <dimen name="activity_main_quick_news_textSize">17sp</dimen>
+    <dimen name="quick_news_item_image_width">101dp</dimen>
+    <dimen name="quick_news_item_image_height">76dp</dimen>
+    <dimen name="quick_time_item_padding">10dp</dimen>
+    <dimen name="quick_news_item_textSize">16sp</dimen>
+    <dimen name="goods_recommend_item_padding">10dp</dimen>
+    <dimen name="goods_recommend_item_textSize">12sp</dimen>
 </resources>

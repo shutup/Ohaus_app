@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="96dp"
+              android:baselineAligned="false"
+              android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:padding="@dimen/quick_time_item_padding">
+
+        <ImageView
+            android:id="@+id/quick_news_image_view"
+            android:layout_width="@dimen/quick_news_item_image_width"
+            android:layout_height="@dimen/quick_news_item_image_height"
+            android:src="@mipmap/ic_launcher"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:padding="@dimen/quick_time_item_padding">
+
+        <TextView
+            android:id="@+id/quick_news_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:maxLines="2"
+            android:ellipsize="marquee"
+            android:textColor="@color/quick_news_item_textColor"
+            android:textSize="@dimen/quick_news_item_textSize"
+            tools:text="买MB90、MB120,赠Polo衫一件"/>
+    </LinearLayout>
+</LinearLayout>

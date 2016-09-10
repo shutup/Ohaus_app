@@ -7,6 +7,9 @@ import android.os.Looper;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Display;
@@ -17,18 +20,25 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.shutup.ohaus_app.BuildConfig;
 import com.shutup.ohaus_app.R;
 import com.shutup.ohaus_app.common.BaseActivity;
 import com.shutup.ohaus_app.common.Constants;
+import com.shutup.ohaus_app.common.DividerItemDecoration;
+import com.shutup.ohaus_app.common.SpacesItemDecoration;
 import com.shutup.ohaus_app.drawer_menu_activity.downloads.DownloadsActivity;
 import com.shutup.ohaus_app.drawer_menu_activity.favorite.FavoriteActivity;
 import com.shutup.ohaus_app.drawer_menu_activity.history.HistoryActivity;
 import com.shutup.ohaus_app.drawer_menu_activity.invite.InviteActivity;
 import com.shutup.ohaus_app.drawer_menu_activity.me.MeActivity;
 import com.shutup.ohaus_app.drawer_menu_activity.setting.SettingActivity;
+import com.shutup.ohaus_app.main.goods_recommend.GoodsRecommendAdapter;
+import com.shutup.ohaus_app.main.quick_news.QuickNewsAdapter;
+import com.shutup.ohaus_app.model.GoodsRecommendItem;
+import com.shutup.ohaus_app.model.QuickNewsItem;
 import com.shutup.ohaus_app.utils.CircleTransform;
 import com.squareup.picasso.Picasso;
 
@@ -66,11 +76,21 @@ public class MainActivity extends BaseActivity implements Constants {
     LinearLayout mProductionKnowledgeLinearLayout;
     @InjectView(R.id.solve_plan_linear_layout)
     LinearLayout mSolvePlanLinearLayout;
+    @InjectView(R.id.quick_news_recycle_view)
+    RecyclerView mQuickNewsRecycleView;
+    @InjectView(R.id.goods_recommend_recycle_view)
+    RecyclerView mGoodsRecommendRecycleView;
+    @InjectView(R.id.activity_main_scroll_view)
+    ScrollView mActivityMainScrollView;
 
     private ActionBarDrawerToggle mDrawerToggle;
     private ArrayList<MenuItem> mMenuItems;
     private ArrayList<BannerItem> mBannerItems;
     private ArrayList<ImageView> mDotsImageViews;
+    private ArrayList<QuickNewsItem> mQuickNewsItems;
+    private QuickNewsAdapter mQuickNewsAdapter;
+    private ArrayList<GoodsRecommendItem> mGoodsRecommendItems;
+    private GoodsRecommendAdapter mGoodsRecommendAdapter;
     private Handler mHandler = null;
     private Runnable runnable;
     private boolean isAutoChange = true;
@@ -85,6 +105,41 @@ public class MainActivity extends BaseActivity implements Constants {
         initToolBar();
         initMenus();
         initBanner();
+        initQuickNews();
+        initGoodsRecommend();
+    }
+
+    private void initGoodsRecommend() {
+        mGoodsRecommendItems = new ArrayList<>();
+        mGoodsRecommendItems.add(new GoodsRecommendItem("http://v1.qzone.cc/avatar/201406/18/20/03/53a180238e68a151.JPG!200x200.jpg", "1"));
+        mGoodsRecommendItems.add(new GoodsRecommendItem("http://v1.qzone.cc/avatar/201406/18/20/03/53a180238e68a151.JPG!200x200.jpg", "2"));
+        mGoodsRecommendItems.add(new GoodsRecommendItem("http://v1.qzone.cc/avatar/201406/18/20/03/53a180238e68a151.JPG!200x200.jpg", "3"));
+        mGoodsRecommendItems.add(new GoodsRecommendItem("http://v1.qzone.cc/avatar/201406/18/20/03/53a180238e68a151.JPG!200x200.jpg", "3"));
+        mGoodsRecommendItems.add(new GoodsRecommendItem("http://v1.qzone.cc/avatar/201406/18/20/03/53a180238e68a151.JPG!200x200.jpg", "3"));
+        mGoodsRecommendItems.add(new GoodsRecommendItem("http://v1.qzone.cc/avatar/201406/18/20/03/53a180238e68a151.JPG!200x200.jpg", "3"));
+        mGoodsRecommendItems.add(new GoodsRecommendItem("http://v1.qzone.cc/avatar/201406/18/20/03/53a180238e68a151.JPG!200x200.jpg", "3"));
+        mGoodsRecommendItems.add(new GoodsRecommendItem("http://v1.qzone.cc/avatar/201406/18/20/03/53a180238e68a151.JPG!200x200.jpg", "3"));
+        mGoodsRecommendItems.add(new GoodsRecommendItem("http://v1.qzone.cc/avatar/201406/18/20/03/53a180238e68a151.JPG!200x200.jpg", "3"));
+        mGoodsRecommendAdapter = new GoodsRecommendAdapter(this, mGoodsRecommendItems);
+        mGoodsRecommendRecycleView.setFocusable(false);
+        mGoodsRecommendRecycleView.setLayoutManager(new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL,false));
+        mGoodsRecommendRecycleView.setItemAnimator(new DefaultItemAnimator());
+        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.goods_recommend_item_padding);
+        mGoodsRecommendRecycleView.addItemDecoration(new SpacesItemDecoration(spacingInPixels));
+        mGoodsRecommendRecycleView.setAdapter(mGoodsRecommendAdapter);
+    }
+
+    private void initQuickNews() {
+        mQuickNewsItems = new ArrayList<>();
+        mQuickNewsItems.add(new QuickNewsItem("http://v1.qzone.cc/avatar/201406/18/20/03/53a180238e68a151.JPG!200x200.jpg", "1"));
+        mQuickNewsItems.add(new QuickNewsItem("http://v1.qzone.cc/avatar/201406/18/20/03/53a180238e68a151.JPG!200x200.jpg", "2"));
+        mQuickNewsItems.add(new QuickNewsItem("http://v1.qzone.cc/avatar/201406/18/20/03/53a180238e68a151.JPG!200x200.jpg", "3"));
+        mQuickNewsAdapter = new QuickNewsAdapter(this, mQuickNewsItems);
+        mQuickNewsRecycleView.setFocusable(false);
+        mQuickNewsRecycleView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        mQuickNewsRecycleView.setItemAnimator(new DefaultItemAnimator());
+        mQuickNewsRecycleView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        mQuickNewsRecycleView.setAdapter(mQuickNewsAdapter);
     }
 
     private void initMenus() {
@@ -223,6 +278,7 @@ public class MainActivity extends BaseActivity implements Constants {
 
     /**
      * 点击主菜单的跳转
+     *
      * @param view
      */
     @OnClick({R.id.production_category_linear_layout, R.id.industry_information_linear_layout, R.id.production_knowledge_linear_layout, R.id.solve_plan_linear_layout})

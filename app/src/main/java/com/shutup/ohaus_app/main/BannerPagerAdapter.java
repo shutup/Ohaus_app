@@ -37,6 +37,12 @@ public class BannerPagerAdapter extends PagerAdapter {
         mViews.add(view);
         container.addView(mViews.get(position));
         return mViews.get(position);
+//        if (mViews.size() < position) {
+//            container.addView(mViews.get(position));
+//            return mViews.get(position);
+//        }else {
+//            return mViews.get(mViews.size() - 1);
+//        }
     }
 
     @Override
