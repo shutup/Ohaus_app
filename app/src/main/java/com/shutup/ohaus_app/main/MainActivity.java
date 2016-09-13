@@ -131,7 +131,9 @@ public class MainActivity extends BaseActivity implements Constants {
 //        mGoodsRecommendRecycleView.setLayoutManager(new GridLayoutManager(getApplicationContext(),3));
         mGoodsRecommendRecycleView.setItemAnimator(new DefaultItemAnimator());
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.goods_recommend_item_padding);
-        mGoodsRecommendRecycleView.addItemDecoration(new ItemOffsetDecoration(spacingInPixels));
+//        mGoodsRecommendRecycleView.addItemDecoration(new ItemOffsetDecoration(spacingInPixels));
+        mGoodsRecommendRecycleView.addItemDecoration(new GridSpacingItemDecoration(mGoodsRecommendItems.size(), spacingInPixels, true));
+
         mGoodsRecommendRecycleView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), mGoodsRecommendRecycleView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {

@@ -14,6 +14,7 @@ import com.shutup.ohaus_app.R;
 import com.shutup.ohaus_app.common.BaseActivity;
 import com.shutup.ohaus_app.common.DividerItemDecoration;
 import com.shutup.ohaus_app.common.GridSpacingItemDecoration;
+import com.shutup.ohaus_app.common.ItemOffsetDecoration;
 import com.shutup.ohaus_app.common.RecyclerTouchListener;
 import com.shutup.ohaus_app.main.goods_recommend.GoodsRecommendDetailActivity;
 
@@ -60,6 +61,7 @@ public class ProductionCategoryActivity extends BaseActivity {
         mRecyclerViewItems.setItemAnimator(new DefaultItemAnimator());
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.goods_recommend_item_padding);
         mRecyclerViewItems.addItemDecoration(new GridSpacingItemDecoration(2,spacingInPixels,true));
+//        mRecyclerViewItems.addItemDecoration(new ItemOffsetDecoration(spacingInPixels));
         mRecyclerViewItems.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), mRecyclerViewItems, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
