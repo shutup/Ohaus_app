@@ -29,6 +29,7 @@ import com.shutup.ohaus_app.R;
 import com.shutup.ohaus_app.common.BaseActivity;
 import com.shutup.ohaus_app.common.Constants;
 import com.shutup.ohaus_app.common.DividerItemDecoration;
+import com.shutup.ohaus_app.common.RecyclerTouchListener;
 import com.shutup.ohaus_app.common.SpacesItemDecoration;
 import com.shutup.ohaus_app.drawer_menu_activity.downloads.DownloadsActivity;
 import com.shutup.ohaus_app.drawer_menu_activity.favorite.FavoriteActivity;
@@ -37,7 +38,9 @@ import com.shutup.ohaus_app.drawer_menu_activity.invite.InviteActivity;
 import com.shutup.ohaus_app.drawer_menu_activity.me.MeActivity;
 import com.shutup.ohaus_app.drawer_menu_activity.setting.SettingActivity;
 import com.shutup.ohaus_app.main.goods_recommend.GoodsRecommendAdapter;
+import com.shutup.ohaus_app.main.goods_recommend.GoodsRecommendDetailActivity;
 import com.shutup.ohaus_app.main.quick_news.QuickNewsAdapter;
+import com.shutup.ohaus_app.main.quick_news.QuickNewsDetailActivity;
 import com.shutup.ohaus_app.model.GoodsRecommendItem;
 import com.shutup.ohaus_app.model.QuickNewsItem;
 import com.shutup.ohaus_app.utils.CircleTransform;
@@ -128,6 +131,18 @@ public class MainActivity extends BaseActivity implements Constants {
         mGoodsRecommendRecycleView.setItemAnimator(new DefaultItemAnimator());
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.goods_recommend_item_padding);
         mGoodsRecommendRecycleView.addItemDecoration(new SpacesItemDecoration(spacingInPixels));
+        mGoodsRecommendRecycleView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), mGoodsRecommendRecycleView, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Intent intent = new Intent(getApplicationContext(), GoodsRecommendDetailActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
         mGoodsRecommendRecycleView.setAdapter(mGoodsRecommendAdapter);
     }
 
@@ -141,6 +156,18 @@ public class MainActivity extends BaseActivity implements Constants {
         mQuickNewsRecycleView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         mQuickNewsRecycleView.setItemAnimator(new DefaultItemAnimator());
         mQuickNewsRecycleView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        mQuickNewsRecycleView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), mQuickNewsRecycleView, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Intent intent = new Intent(getApplicationContext(), QuickNewsDetailActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
         mQuickNewsRecycleView.setAdapter(mQuickNewsAdapter);
     }
 
