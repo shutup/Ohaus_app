@@ -26,4 +26,9 @@
 
     <color name="quick_news_item_textColor">#ff505050</color>
     <color name="goods_recommend_item_textColor">#ff4a4a4a</color>
+
+    <color name="recyclerView_menu_identify_view_select_Color">#ed3058</color>
+    <color name="recyclerView_menu_identify_view_normal_Color">#f4f4f4</color>
+    <color name="recyclerView_menu_text_view_select_Color">#ffffff</color>
+    <color name="recyclerView_menu_text_view_normal_Color">#f4f4f4</color>
 </resources>

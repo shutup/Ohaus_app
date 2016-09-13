@@ -8,7 +8,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -29,8 +28,9 @@ import com.shutup.ohaus_app.R;
 import com.shutup.ohaus_app.common.BaseActivity;
 import com.shutup.ohaus_app.common.Constants;
 import com.shutup.ohaus_app.common.DividerItemDecoration;
+import com.shutup.ohaus_app.common.GridSpacingItemDecoration;
+import com.shutup.ohaus_app.common.ItemOffsetDecoration;
 import com.shutup.ohaus_app.common.RecyclerTouchListener;
-import com.shutup.ohaus_app.common.SpacesItemDecoration;
 import com.shutup.ohaus_app.drawer_menu_activity.downloads.DownloadsActivity;
 import com.shutup.ohaus_app.drawer_menu_activity.favorite.FavoriteActivity;
 import com.shutup.ohaus_app.drawer_menu_activity.history.HistoryActivity;
@@ -39,6 +39,7 @@ import com.shutup.ohaus_app.drawer_menu_activity.me.MeActivity;
 import com.shutup.ohaus_app.drawer_menu_activity.setting.SettingActivity;
 import com.shutup.ohaus_app.main.goods_recommend.GoodsRecommendAdapter;
 import com.shutup.ohaus_app.main.goods_recommend.GoodsRecommendDetailActivity;
+import com.shutup.ohaus_app.main.production_category.ProductionCategoryActivity;
 import com.shutup.ohaus_app.main.quick_news.QuickNewsAdapter;
 import com.shutup.ohaus_app.main.quick_news.QuickNewsDetailActivity;
 import com.shutup.ohaus_app.model.GoodsRecommendItem;
@@ -130,7 +131,7 @@ public class MainActivity extends BaseActivity implements Constants {
 //        mGoodsRecommendRecycleView.setLayoutManager(new GridLayoutManager(getApplicationContext(),3));
         mGoodsRecommendRecycleView.setItemAnimator(new DefaultItemAnimator());
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.goods_recommend_item_padding);
-        mGoodsRecommendRecycleView.addItemDecoration(new SpacesItemDecoration(spacingInPixels));
+        mGoodsRecommendRecycleView.addItemDecoration(new ItemOffsetDecoration(spacingInPixels));
         mGoodsRecommendRecycleView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), mGoodsRecommendRecycleView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
@@ -307,12 +308,10 @@ public class MainActivity extends BaseActivity implements Constants {
 
     /**
      * 点击主菜单的跳转
-     *
-     * @param view
      */
     @OnClick({R.id.production_category_linear_layout, R.id.industry_information_linear_layout, R.id.production_knowledge_linear_layout, R.id.solve_plan_linear_layout})
     public void onClick(View view) {
-        Intent intent = null;
+        Intent intent ;
         switch (view.getId()) {
             case R.id.production_category_linear_layout:
                 intent = new Intent(this, ProductionCategoryActivity.class);
