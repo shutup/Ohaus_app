@@ -1,4 +1,4 @@
-package com.shutup.ohaus_app.main;
+package com.shutup.ohaus_app.main.production_knowledge;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -10,7 +10,7 @@ import com.shutup.ohaus_app.common.BaseActivity;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class IndustryInformationActivity extends BaseActivity {
+public class ProductionKnowledgeActivity extends BaseActivity {
 
     @InjectView(R.id.toolbar_title)
     TextView mToolbarTitle;
@@ -20,7 +20,7 @@ public class IndustryInformationActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_industry_information);
+        setContentView(R.layout.activity_production_knowledge);
         ButterKnife.inject(this);
 
         initToolbar();
@@ -34,7 +34,7 @@ public class IndustryInformationActivity extends BaseActivity {
         // Title
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("");
-            mToolbarTitle.setText(R.string.industry_information_str);
+            mToolbarTitle.setText(R.string.production_knowledge_str);
         }
     }
 

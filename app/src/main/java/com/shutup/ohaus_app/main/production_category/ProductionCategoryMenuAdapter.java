@@ -1,7 +1,6 @@
 package com.shutup.ohaus_app.main.production_category;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +10,7 @@ import android.widget.TextView;
 
 import com.shutup.ohaus_app.BuildConfig;
 import com.shutup.ohaus_app.R;
+import com.shutup.ohaus_app.model.ProductionCategoryMenuItem;
 
 import java.util.ArrayList;
 

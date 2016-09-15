@@ -1,4 +1,4 @@
-package com.shutup.ohaus_app.main.production_category;
+package com.shutup.ohaus_app.model;
 
 /**
  * Created by shutup on 16/9/13.

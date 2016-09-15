@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.shutup.ohaus_app.R;
+import com.shutup.ohaus_app.model.MenuItem;
 
 import java.util.ArrayList;
 

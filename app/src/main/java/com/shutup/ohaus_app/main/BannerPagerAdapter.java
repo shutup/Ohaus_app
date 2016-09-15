@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.shutup.ohaus_app.R;
+import com.shutup.ohaus_app.model.BannerItem;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

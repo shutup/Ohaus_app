@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.shutup.ohaus_app.main.ProductionKnowledgeActivity">
+    tools:context=".main.production_knowledge.ProductionKnowledgeActivity">
     <include layout="@layout/toolbar"/>
 </LinearLayout>

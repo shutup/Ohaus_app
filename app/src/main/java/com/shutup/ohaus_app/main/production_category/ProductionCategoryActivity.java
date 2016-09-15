@@ -14,9 +14,10 @@ import com.shutup.ohaus_app.R;
 import com.shutup.ohaus_app.common.BaseActivity;
 import com.shutup.ohaus_app.common.DividerItemDecoration;
 import com.shutup.ohaus_app.common.GridSpacingItemDecoration;
-import com.shutup.ohaus_app.common.ItemOffsetDecoration;
 import com.shutup.ohaus_app.common.RecyclerTouchListener;
 import com.shutup.ohaus_app.main.goods_recommend.GoodsRecommendDetailActivity;
+import com.shutup.ohaus_app.model.ProductionCategoryMenuItem;
+import com.shutup.ohaus_app.model.ProductionCategoryMenuItem2;
 
 import java.util.ArrayList;
 

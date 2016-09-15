@@ -1,8 +1,7 @@
-package com.shutup.ohaus_app.main;
+package com.shutup.ohaus_app.main.industry_information;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.*;
 import android.widget.TextView;
 
 import com.shutup.ohaus_app.R;
@@ -11,7 +10,7 @@ import com.shutup.ohaus_app.common.BaseActivity;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class SolvePlanActivity extends BaseActivity {
+public class IndustryInformationActivity extends BaseActivity {
 
     @InjectView(R.id.toolbar_title)
     TextView mToolbarTitle;
@@ -21,11 +20,11 @@ public class SolvePlanActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reslve_plan);
+        setContentView(R.layout.activity_industry_information);
         ButterKnife.inject(this);
+
         initToolbar();
     }
-
 
     private void initToolbar() {
         if (mToolbar != null) {
@@ -35,7 +34,7 @@ public class SolvePlanActivity extends BaseActivity {
         // Title
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("");
-            mToolbarTitle.setText(R.string.solve_plan_str);
+            mToolbarTitle.setText(R.string.industry_information_str);
         }
     }
 
