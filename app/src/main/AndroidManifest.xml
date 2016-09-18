@@ -45,6 +45,8 @@
         </activity>
         <activity android:name=".main.quick_news.QuickNewsDetailActivity">
         </activity>
+        <activity android:name=".main.production_category.ProductionCategoryItemsListActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -7,4 +7,6 @@ public interface Constants {
     int ACTIVITY_NORMAL = 1;
     int ACTIVITY_EDIT = 2;
     int BANNER_CHANGE_DELAY = 3000;
+
+    String INTENT_MENU_TITLE = "INTENT_MENU_TITLE";
 }

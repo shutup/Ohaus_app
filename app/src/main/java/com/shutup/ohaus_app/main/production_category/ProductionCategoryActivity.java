@@ -1,5 +1,6 @@
 package com.shutup.ohaus_app.main.production_category;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.shutup.ohaus_app.R;
 import com.shutup.ohaus_app.common.BaseActivity;
+import com.shutup.ohaus_app.common.Constants;
 import com.shutup.ohaus_app.common.DividerItemDecoration;
 import com.shutup.ohaus_app.common.GridSpacingItemDecoration;
 import com.shutup.ohaus_app.common.RecyclerTouchListener;
@@ -22,7 +24,7 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class ProductionCategoryActivity extends BaseActivity {
+public class ProductionCategoryActivity extends BaseActivity implements Constants{
 
     @InjectView(R.id.toolbar_title)
     TextView mToolbarTitle;
@@ -82,8 +84,10 @@ public class ProductionCategoryActivity extends BaseActivity {
         mRecyclerViewItems.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), mRecyclerViewItems, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-//                Intent intent = new Intent(getApplicationContext(), GoodsRecommendDetailActivity.class);
-//                startActivity(intent);
+                ProductionCategoryMenuItem2 productionCategoryMenuItem2 = mProductionCategoryMenu2Adapter.getProductionCategoryMenuItem2s().get(position);
+                Intent intent = new Intent(getApplicationContext(), ProductionCategoryItemsListActivity.class);
+                intent.putExtra(INTENT_MENU_TITLE,productionCategoryMenuItem2.getMenuTitle());
+                startActivity(intent);
             }
 
             @Override
@@ -104,12 +108,8 @@ public class ProductionCategoryActivity extends BaseActivity {
             @Override
             public void onClick(View view, int position) {
                 updateSelected(position);
-
                 mProductionCategoryMenu2Adapter = new ProductionCategoryMenu2Adapter(ProductionCategoryActivity.this,mArrayLists.get(position));
                 mRecyclerViewItems.setAdapter(mProductionCategoryMenu2Adapter);
-
-//                Intent intent = new Intent(getApplicationContext(), QuickNewsDetailActivity.class);
-//                startActivity(intent);
             }
 
             @Override

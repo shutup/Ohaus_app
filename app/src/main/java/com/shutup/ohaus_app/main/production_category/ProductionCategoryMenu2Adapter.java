@@ -22,10 +22,14 @@ import butterknife.InjectView;
  */
 public class ProductionCategoryMenu2Adapter extends RecyclerView.Adapter<ProductionCategoryMenu2Adapter.ViewHolder> {
 
+    public ArrayList<ProductionCategoryMenuItem2> getProductionCategoryMenuItem2s() {
+        return mProductionCategoryMenuItem2s;
+    }
+
     private ArrayList<ProductionCategoryMenuItem2> mProductionCategoryMenuItem2s;
     private Context mContext;
 
-    public ProductionCategoryMenu2Adapter(Context context,ArrayList<ProductionCategoryMenuItem2> productionCategoryMenuItem2s) {
+    public ProductionCategoryMenu2Adapter(Context context, ArrayList<ProductionCategoryMenuItem2> productionCategoryMenuItem2s) {
         mProductionCategoryMenuItem2s = productionCategoryMenuItem2s;
         mContext = context;
     }
@@ -48,7 +52,7 @@ public class ProductionCategoryMenu2Adapter extends RecyclerView.Adapter<Product
         return mProductionCategoryMenuItem2s.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder{
+    static class ViewHolder extends RecyclerView.ViewHolder {
         @InjectView(R.id.recyclerView_menu_image_view)
         ImageView mRecyclerViewMenuImageView;
         @InjectView(R.id.recyclerView_menu_text_view)
