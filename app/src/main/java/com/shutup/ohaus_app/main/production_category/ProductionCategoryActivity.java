@@ -1,6 +1,5 @@
 package com.shutup.ohaus_app.main.production_category;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,7 +14,6 @@ import com.shutup.ohaus_app.common.BaseActivity;
 import com.shutup.ohaus_app.common.DividerItemDecoration;
 import com.shutup.ohaus_app.common.GridSpacingItemDecoration;
 import com.shutup.ohaus_app.common.RecyclerTouchListener;
-import com.shutup.ohaus_app.main.goods_recommend.GoodsRecommendDetailActivity;
 import com.shutup.ohaus_app.model.ProductionCategoryMenuItem;
 import com.shutup.ohaus_app.model.ProductionCategoryMenuItem2;
 
@@ -41,23 +39,41 @@ public class ProductionCategoryActivity extends BaseActivity {
     private ArrayList<ProductionCategoryMenuItem2> mProductionCategoryMenuItem2s;
     private ProductionCategoryMenu2Adapter mProductionCategoryMenu2Adapter;
 
+    private ArrayList<ArrayList<ProductionCategoryMenuItem2>> mArrayLists;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_production_category);
         ButterKnife.inject(this);
         initToolbar();
+        initData();
         initRecyclerViewMenu();
         initRecyclerViewMenu2();
     }
 
-    private void initRecyclerViewMenu2() {
+    private void initData() {
+        mArrayLists = new ArrayList<>();
         mProductionCategoryMenuItem2s = new ArrayList<>();
-        mProductionCategoryMenuItem2s.add(new ProductionCategoryMenuItem2("http://v1.qzone.cc/avatar/201406/18/20/03/53a180238e68a151.JPG!200x200.jpg","title1"));
-        mProductionCategoryMenuItem2s.add(new ProductionCategoryMenuItem2("http://v1.cc/avatar/201406/18/20/03/53a180238e68a151.JPG!200x200.jpg","title2"));
-        mProductionCategoryMenuItem2s.add(new ProductionCategoryMenuItem2("http://v1.qzone.ccm/avatar/201406/18/20/03/53a180238e68a151.JPG!200x200.jpg","title3"));
-        mProductionCategoryMenuItem2s.add(new ProductionCategoryMenuItem2("http://v1.qzone.cc/avatar/201406/18/20/03/53a180238e68a151.JPG!200x200.jpg","title4"));
-        mProductionCategoryMenu2Adapter = new ProductionCategoryMenu2Adapter(this, mProductionCategoryMenuItem2s);
+        mProductionCategoryMenuItems = new ArrayList<>();
+        ProductionCategoryMenuItem productionCategoryMenuItem ;
+
+        for (int j = 0; j < 5; j++) {
+            if (j==0) {
+                productionCategoryMenuItem = new ProductionCategoryMenuItem(""+j,true);
+            }else {
+                productionCategoryMenuItem = new ProductionCategoryMenuItem(""+j);
+            }
+            for (int i = 0; i < 4; i++) {
+                mProductionCategoryMenuItem2s.add(new ProductionCategoryMenuItem2("http://v1.qzone.cc/avatar/201406/18/20/03/53a180238e68a151.JPG!200x200.jpg","title"+i));
+            }
+            mArrayLists.add(mProductionCategoryMenuItem2s);
+            mProductionCategoryMenuItems.add(productionCategoryMenuItem);
+        }
+    }
+
+    private void initRecyclerViewMenu2() {
+        mProductionCategoryMenu2Adapter = new ProductionCategoryMenu2Adapter(this, mArrayLists.get(0));
         mRecyclerViewItems.setLayoutManager(new GridLayoutManager(getApplicationContext(),2));
         mRecyclerViewItems.setItemAnimator(new DefaultItemAnimator());
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.goods_recommend_item_padding);
@@ -66,8 +82,8 @@ public class ProductionCategoryActivity extends BaseActivity {
         mRecyclerViewItems.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), mRecyclerViewItems, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Intent intent = new Intent(getApplicationContext(), GoodsRecommendDetailActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getApplicationContext(), GoodsRecommendDetailActivity.class);
+//                startActivity(intent);
             }
 
             @Override
@@ -79,10 +95,6 @@ public class ProductionCategoryActivity extends BaseActivity {
     }
 
     private void initRecyclerViewMenu() {
-        mProductionCategoryMenuItems = new ArrayList<>();
-        mProductionCategoryMenuItems.add(new ProductionCategoryMenuItem("1",true));
-        mProductionCategoryMenuItems.add(new ProductionCategoryMenuItem("2"));
-        mProductionCategoryMenuItems.add(new ProductionCategoryMenuItem("3"));
 
         mProductionCategoryMenuAdapter = new ProductionCategoryMenuAdapter(this,mProductionCategoryMenuItems);
         mRecyclerViewMenu.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -92,6 +104,9 @@ public class ProductionCategoryActivity extends BaseActivity {
             @Override
             public void onClick(View view, int position) {
                 updateSelected(position);
+
+                mProductionCategoryMenu2Adapter = new ProductionCategoryMenu2Adapter(ProductionCategoryActivity.this,mArrayLists.get(position));
+                mRecyclerViewItems.setAdapter(mProductionCategoryMenu2Adapter);
 
 //                Intent intent = new Intent(getApplicationContext(), QuickNewsDetailActivity.class);
 //                startActivity(intent);
