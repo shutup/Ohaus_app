@@ -50,7 +50,7 @@ public class MenuListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder = null;
         if (convertView == null) {
-            convertView = mLayoutInflater.inflate(R.layout.menu_item_layout, null);
+            convertView = mLayoutInflater.inflate(R.layout.menu_item_layout, parent, false);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         }else{

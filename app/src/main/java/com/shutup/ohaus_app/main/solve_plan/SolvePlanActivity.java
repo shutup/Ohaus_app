@@ -2,7 +2,6 @@ package com.shutup.ohaus_app.main.solve_plan;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.*;
 import android.widget.TextView;
 
 import com.shutup.ohaus_app.R;
