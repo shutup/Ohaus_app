@@ -35,7 +35,7 @@
         </activity>
         <activity android:name=".main.production_category.ProductionCategoryActivity">
         </activity>
-        <activity android:name=".main.industry_information.IndustryInformationActivity">
+        <activity android:name=".main.industry_application.IndustryApplicationActivity">
         </activity>
         <activity android:name=".main.solve_plan.SolvePlanActivity">
         </activity>

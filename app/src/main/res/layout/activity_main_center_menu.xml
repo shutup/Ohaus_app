@@ -3,6 +3,7 @@
               android:layout_width="match_parent"
               android:layout_height="@dimen/activity_main_center_menu_height"
               android:background="@android:color/white"
+              android:baselineAligned="false"
               android:orientation="horizontal">
 
     <LinearLayout
@@ -45,7 +46,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/industry_information_str"
+            android:text="@string/industry_application_str"
 
             android:textSize="@dimen/activity_main_center_menu_textSize"/>
     </LinearLayout>

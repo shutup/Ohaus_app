@@ -120,10 +120,8 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
             }
         });
         isAsc = !isAsc;
-        if (BuildConfig.DEBUG) Log.d("ProductionCategoryItems", "sort");
         for (int i =0 ;i< mProductionNormalItems.size();i++){
             ProductionNormalItem p = mProductionNormalItems.get(i);
-            if (BuildConfig.DEBUG) Log.d("ProductionCategoryItems", "p.getPrice():" + p.getPrice());
         }
         mProductionCategoryItemsListAdapter.notifyDataSetChanged();
     }

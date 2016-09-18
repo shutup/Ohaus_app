@@ -38,7 +38,7 @@ import com.shutup.ohaus_app.drawer_menu_activity.me.MeActivity;
 import com.shutup.ohaus_app.drawer_menu_activity.setting.SettingActivity;
 import com.shutup.ohaus_app.main.goods_recommend.GoodsRecommendAdapter;
 import com.shutup.ohaus_app.main.goods_recommend.GoodsRecommendDetailActivity;
-import com.shutup.ohaus_app.main.industry_information.IndustryInformationActivity;
+import com.shutup.ohaus_app.main.industry_application.IndustryApplicationActivity;
 import com.shutup.ohaus_app.main.production_category.ProductionCategoryActivity;
 import com.shutup.ohaus_app.main.production_knowledge.ProductionKnowledgeActivity;
 import com.shutup.ohaus_app.main.quick_news.QuickNewsAdapter;
@@ -324,7 +324,7 @@ public class MainActivity extends BaseActivity implements Constants {
                 startActivity(intent);
                 break;
             case R.id.industry_information_linear_layout:
-                intent = new Intent(this, IndustryInformationActivity.class);
+                intent = new Intent(this, IndustryApplicationActivity.class);
                 startActivity(intent);
                 break;
             case R.id.production_knowledge_linear_layout:
