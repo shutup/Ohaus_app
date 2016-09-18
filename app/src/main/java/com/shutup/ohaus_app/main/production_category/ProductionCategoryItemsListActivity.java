@@ -17,6 +17,7 @@ import com.shutup.ohaus_app.common.BaseActivity;
 import com.shutup.ohaus_app.common.Constants;
 import com.shutup.ohaus_app.common.DividerItemDecoration;
 import com.shutup.ohaus_app.common.RecyclerTouchListener;
+import com.shutup.ohaus_app.model.ProductionNormalItem;
 
 import java.util.ArrayList;
 import java.util.Collections;
