@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:id="@+id/activity_industry_application_second"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".main.industry_application.IndustryApplicationActivity">
+    tools:context="com.shutup.ohaus_app.main.industry_application.IndustryApplicationSecondActivity">
 
     <include layout="@layout/toolbar"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView_industry_application_menu"
+        android:id="@+id/industry_application_second_menu_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

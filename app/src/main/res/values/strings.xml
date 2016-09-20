@@ -47,4 +47,6 @@
     <string name="activity_main_goods_recommend_str">精品推荐</string>
     <string name="production_category_price_str">价格</string>
     <string name="production_category_filter_str">筛选</string>
+    <string name="new_user_str">新用户</string>
+    <string name="forget_pwd_str">忘记密码?</string>
 </resources>
