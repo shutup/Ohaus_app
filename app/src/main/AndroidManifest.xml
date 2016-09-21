@@ -47,6 +47,8 @@
         </activity>
         <activity android:name=".main.production_category.ProductionCategoryItemsListActivity">
         </activity>
+        <activity android:name=".main.industry_application.IndustryApplicationSecondActivity">
+        </activity>
     </application>
 
 </manifest>
