@@ -1,52 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.shutup.ohaus_app.main.production_category.ProductionCategoryItemsListActivity">
+    android:layout_height="match_parent">
 
-    <include layout="@layout/toolbar"/>
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@drawable/border_edge">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/production_category_price_option"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:drawableEnd="@drawable/production_category_price_image"
-            android:drawablePadding="10dp"
-            android:drawableRight="@drawable/production_category_price_image"
-            android:gravity="center"
-            android:text="@string/production_category_price_str"
-            tools:text="价格"/>
+        <include layout="@layout/toolbar" />
 
-        <TextView
-            android:id="@+id/production_category_filter_option"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginEnd="25dp"
-            android:layout_marginRight="25dp"
-            android:drawableEnd="@drawable/production_category_filter_image"
-            android:drawablePadding="10dp"
-            android:drawableRight="@drawable/production_category_filter_image"
-            android:gravity="center"
-            android:text="@string/production_category_filter_str"
-            tools:text="筛选"/>
-    </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@drawable/border_edge">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView_items_list"
+            <TextView
+                android:id="@+id/production_category_price_option"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:drawableEnd="@drawable/production_category_price_image"
+                android:drawablePadding="10dp"
+                android:drawableRight="@drawable/production_category_price_image"
+                android:gravity="center"
+                android:text="@string/production_category_price_str"
+                tools:text="价格" />
+
+            <TextView
+                android:id="@+id/production_category_filter_option"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="25dp"
+                android:layout_marginRight="25dp"
+                android:drawableEnd="@drawable/production_category_filter_image"
+                android:drawablePadding="10dp"
+                android:drawableRight="@drawable/production_category_filter_image"
+                android:gravity="center"
+                android:text="@string/production_category_filter_str"
+                tools:text="筛选" />
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView_items_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/production_category_filter_option_bg_view"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent"
+        android:background="#bf000000">
 
-    </android.support.v7.widget.RecyclerView>
-</LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/production_category_filter_option_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="40dp"
+            android:layout_marginStart="40dp"
+            android:background="@android:color/white">
+
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>
+
