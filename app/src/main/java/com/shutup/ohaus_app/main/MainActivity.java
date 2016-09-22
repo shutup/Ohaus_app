@@ -25,6 +25,8 @@ import android.widget.TextView;
 
 import com.shutup.ohaus_app.BuildConfig;
 import com.shutup.ohaus_app.R;
+import com.shutup.ohaus_app.api.CategoryEntity;
+import com.shutup.ohaus_app.api.OhaosiService;
 import com.shutup.ohaus_app.common.BaseActivity;
 import com.shutup.ohaus_app.common.Constants;
 import com.shutup.ohaus_app.common.DividerItemDecoration;
@@ -52,10 +54,16 @@ import com.shutup.ohaus_app.utils.CircleTransform;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends BaseActivity implements Constants {
 
@@ -116,6 +124,31 @@ public class MainActivity extends BaseActivity implements Constants {
         initBanner();
         initQuickNews();
         initGoodsRecommend();
+
+        tryLoadData();
+    }
+
+    private void tryLoadData() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://ohaus.greenicetech.cn/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        OhaosiService ohaosiService = retrofit.create(OhaosiService.class);
+        Call<List<CategoryEntity>> category = ohaosiService.getAllCategory();
+        category.enqueue(new Callback<List<CategoryEntity>>() {
+            @Override
+            public void onResponse(Call<List<CategoryEntity>> call, Response<List<CategoryEntity>> response) {
+                for (CategoryEntity c: response.body()
+                     ) {
+                    if (BuildConfig.DEBUG) Log.d("MainActivity", "c:" + c);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CategoryEntity>> call, Throwable t) {
+
+            }
+        });
     }
 
     private void initGoodsRecommend() {
