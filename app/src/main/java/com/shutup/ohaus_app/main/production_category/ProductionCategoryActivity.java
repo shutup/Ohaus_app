@@ -12,19 +12,20 @@ import android.widget.TextView;
 
 import com.shutup.ohaus_app.R;
 import com.shutup.ohaus_app.common.BaseActivity;
-import com.shutup.ohaus_app.common.Constants;
 import com.shutup.ohaus_app.common.DividerItemDecoration;
 import com.shutup.ohaus_app.common.GridSpacingItemDecoration;
 import com.shutup.ohaus_app.common.RecyclerTouchListener;
 import com.shutup.ohaus_app.model.ProductionCategoryMenuItem;
 import com.shutup.ohaus_app.model.ProductionCategoryMenuItem2;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class ProductionCategoryActivity extends BaseActivity implements Constants{
+public class ProductionCategoryActivity extends BaseActivity {
 
     @InjectView(R.id.toolbar_title)
     TextView mToolbarTitle;
@@ -58,16 +59,16 @@ public class ProductionCategoryActivity extends BaseActivity implements Constant
         mArrayLists = new ArrayList<>();
         mProductionCategoryMenuItem2s = new ArrayList<>();
         mProductionCategoryMenuItems = new ArrayList<>();
-        ProductionCategoryMenuItem productionCategoryMenuItem ;
+        ProductionCategoryMenuItem productionCategoryMenuItem;
 
         for (int j = 0; j < 5; j++) {
-            if (j==0) {
-                productionCategoryMenuItem = new ProductionCategoryMenuItem(""+j,true);
-            }else {
-                productionCategoryMenuItem = new ProductionCategoryMenuItem(""+j);
+            if (j == 0) {
+                productionCategoryMenuItem = new ProductionCategoryMenuItem("" + j, true);
+            } else {
+                productionCategoryMenuItem = new ProductionCategoryMenuItem("" + j);
             }
             for (int i = 0; i < 4; i++) {
-                mProductionCategoryMenuItem2s.add(new ProductionCategoryMenuItem2("http://v1.qzone.cc/avatar/201406/18/20/03/53a180238e68a151.JPG!200x200.jpg","title"+i));
+                mProductionCategoryMenuItem2s.add(new ProductionCategoryMenuItem2("http://v1.qzone.cc/avatar/201406/18/20/03/53a180238e68a151.JPG!200x200.jpg", "title" + i));
             }
             mArrayLists.add(mProductionCategoryMenuItem2s);
             mProductionCategoryMenuItems.add(productionCategoryMenuItem);
@@ -76,18 +77,18 @@ public class ProductionCategoryActivity extends BaseActivity implements Constant
 
     private void initRecyclerViewMenu2() {
         mProductionCategoryMenu2Adapter = new ProductionCategoryMenu2Adapter(this, mArrayLists.get(0));
-        mRecyclerViewItems.setLayoutManager(new GridLayoutManager(getApplicationContext(),2));
+        mRecyclerViewItems.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
         mRecyclerViewItems.setItemAnimator(new DefaultItemAnimator());
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.goods_recommend_item_padding);
-        mRecyclerViewItems.addItemDecoration(new GridSpacingItemDecoration(2,spacingInPixels,true));
+        mRecyclerViewItems.addItemDecoration(new GridSpacingItemDecoration(2, spacingInPixels, true));
 //        mRecyclerViewItems.addItemDecoration(new ItemOffsetDecoration(spacingInPixels));
         mRecyclerViewItems.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), mRecyclerViewItems, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 ProductionCategoryMenuItem2 productionCategoryMenuItem2 = mProductionCategoryMenu2Adapter.getProductionCategoryMenuItem2s().get(position);
                 Intent intent = new Intent(getApplicationContext(), ProductionCategoryItemsListActivity.class);
-                intent.putExtra(INTENT_MENU_TITLE,productionCategoryMenuItem2.getMenuTitle());
                 startActivity(intent);
+                EventBus.getDefault().postSticky(productionCategoryMenuItem2);
             }
 
             @Override
@@ -100,7 +101,7 @@ public class ProductionCategoryActivity extends BaseActivity implements Constant
 
     private void initRecyclerViewMenu() {
 
-        mProductionCategoryMenuAdapter = new ProductionCategoryMenuAdapter(this,mProductionCategoryMenuItems);
+        mProductionCategoryMenuAdapter = new ProductionCategoryMenuAdapter(this, mProductionCategoryMenuItems);
         mRecyclerViewMenu.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         mRecyclerViewMenu.setItemAnimator(new DefaultItemAnimator());
         mRecyclerViewMenu.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
@@ -108,7 +109,7 @@ public class ProductionCategoryActivity extends BaseActivity implements Constant
             @Override
             public void onClick(View view, int position) {
                 updateSelected(position);
-                mProductionCategoryMenu2Adapter = new ProductionCategoryMenu2Adapter(ProductionCategoryActivity.this,mArrayLists.get(position));
+                mProductionCategoryMenu2Adapter = new ProductionCategoryMenu2Adapter(ProductionCategoryActivity.this, mArrayLists.get(position));
                 mRecyclerViewItems.setAdapter(mProductionCategoryMenu2Adapter);
             }
 

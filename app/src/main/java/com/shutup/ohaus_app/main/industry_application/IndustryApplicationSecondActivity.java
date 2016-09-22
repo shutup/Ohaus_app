@@ -17,12 +17,15 @@ import com.shutup.ohaus_app.common.Constants;
 import com.shutup.ohaus_app.common.DividerItemDecoration;
 import com.shutup.ohaus_app.common.RecyclerTouchListener;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class IndustryApplicationSecondActivity extends BaseActivity implements Constants{
+public class IndustryApplicationSecondActivity extends BaseActivity{
 
     @InjectView(R.id.toolbar_title)
     TextView mToolbarTitle;
@@ -41,6 +44,18 @@ public class IndustryApplicationSecondActivity extends BaseActivity implements C
         ButterKnife.inject(this);
         initToolbar();
         initRecyclerView();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 
     private void initRecyclerView() {
@@ -74,8 +89,6 @@ public class IndustryApplicationSecondActivity extends BaseActivity implements C
         // Title
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("");
-            Intent intent = getIntent();
-            mToolbarTitle.setText(intent.getStringExtra(INTENT_MENU_TITLE));
         }
     }
 
@@ -87,4 +100,10 @@ public class IndustryApplicationSecondActivity extends BaseActivity implements C
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Subscribe(sticky = true)
+    public void onIndustryApplicationMenuItemReceive(IndustryApplicationMenuItem industryApplicationMenuItem) {
+        mToolbarTitle.setText(industryApplicationMenuItem.getTitleStr());
+    }
+
 }

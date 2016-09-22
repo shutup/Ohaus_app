@@ -19,7 +19,11 @@ import com.shutup.ohaus_app.common.BaseActivity;
 import com.shutup.ohaus_app.common.Constants;
 import com.shutup.ohaus_app.common.DividerItemDecoration;
 import com.shutup.ohaus_app.common.RecyclerTouchListener;
+import com.shutup.ohaus_app.model.ProductionCategoryMenuItem2;
 import com.shutup.ohaus_app.model.ProductionNormalItem;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,7 +33,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
-public class ProductionCategoryItemsListActivity extends BaseActivity implements Constants {
+public class ProductionCategoryItemsListActivity extends BaseActivity {
 
     @InjectView(R.id.toolbar_title)
     TextView mToolbarTitle;
@@ -58,6 +62,18 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
         ButterKnife.inject(this);
         initToolBar();
         initRecyclerView();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
     }
 
     private void initRecyclerView() {
@@ -90,8 +106,6 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
         }
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("");
-            Intent intent = getIntent();
-            mToolbarTitle.setText(intent.getStringExtra(INTENT_MENU_TITLE));
         }
     }
 
@@ -120,19 +134,14 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
     }
 
     private void updateFilterOptions() {
+        Animation animation = null;
         if (isFilterVisable) {
-//            TranslateAnimation translateAnimation = new TranslateAnimation(Animation.RELATIVE_TO_SELF,0,Animation.RELATIVE_TO_SELF,1,Animation.RELATIVE_TO_SELF,0,Animation.RELATIVE_TO_SELF,0);
-//            translateAnimation.setDuration(1 * 1000);
-//            productionCategoryFilterOptionBgView.setAnimation(translateAnimation);
-            Animation animation = AnimationUtils.loadAnimation(this, R.anim.production_category_right_out);
+            animation = AnimationUtils.loadAnimation(this, R.anim.production_category_right_out);
             productionCategoryFilterOptionBgView.setAnimation(animation);
             productionCategoryFilterOptionView.setBackgroundColor(Color.WHITE);
             productionCategoryFilterOptionBgView.setVisibility(View.INVISIBLE);
         } else {
-//            TranslateAnimation translateAnimation = new TranslateAnimation(Animation.RELATIVE_TO_SELF,1,Animation.RELATIVE_TO_SELF,0,Animation.RELATIVE_TO_SELF,0,Animation.RELATIVE_TO_SELF,0);
-//            translateAnimation.setDuration(1* 1000);
-//            productionCategoryFilterOptionBgView.setAnimation(translateAnimation);
-            Animation animation = AnimationUtils.loadAnimation(this, R.anim.production_category_right_in);
+            animation = AnimationUtils.loadAnimation(this, R.anim.production_category_right_in);
             productionCategoryFilterOptionBgView.setAnimation(animation);
             productionCategoryFilterOptionView.setBackgroundColor(Color.WHITE);
             productionCategoryFilterOptionBgView.setVisibility(View.VISIBLE);
@@ -156,5 +165,10 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
             ProductionNormalItem p = mProductionNormalItems.get(i);
         }
         mProductionCategoryItemsListAdapter.notifyDataSetChanged();
+    }
+
+    @Subscribe(sticky = true)
+    public void onProductionCategoryMenuItem2Receive(ProductionCategoryMenuItem2 productionNormalItem) {
+        mToolbarTitle.setText(productionNormalItem.getMenuTitle());
     }
 }

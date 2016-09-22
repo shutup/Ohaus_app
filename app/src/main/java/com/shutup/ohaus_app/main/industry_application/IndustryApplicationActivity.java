@@ -15,12 +15,14 @@ import com.shutup.ohaus_app.common.BaseActivity;
 import com.shutup.ohaus_app.common.Constants;
 import com.shutup.ohaus_app.common.RecyclerTouchListener;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class IndustryApplicationActivity extends BaseActivity implements Constants{
+public class IndustryApplicationActivity extends BaseActivity {
 
     @InjectView(R.id.toolbar_title)
     TextView mToolbarTitle;
@@ -55,8 +57,8 @@ public class IndustryApplicationActivity extends BaseActivity implements Constan
             public void onClick(View view, int position) {
                 IndustryApplicationMenuItem industryApplicationMenuItem = mIndustryApplicationMenuItems.get(position);
                 Intent intent = new Intent(IndustryApplicationActivity.this, IndustryApplicationSecondActivity.class);
-                intent.putExtra(INTENT_MENU_TITLE, industryApplicationMenuItem.getTitleStr());
                 startActivity(intent);
+                EventBus.getDefault().postSticky(industryApplicationMenuItem);
             }
 
             @Override
