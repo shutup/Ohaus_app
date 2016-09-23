@@ -12,4 +12,6 @@ import retrofit2.http.GET;
 public interface OhaosiService {
     @GET("api/category/all")
     Call<List<CategoryEntity>> getAllCategory();
+
+
 }

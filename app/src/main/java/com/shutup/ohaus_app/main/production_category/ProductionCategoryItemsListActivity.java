@@ -7,6 +7,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -14,6 +15,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.shutup.ohaus_app.BuildConfig;
 import com.shutup.ohaus_app.R;
 import com.shutup.ohaus_app.common.BaseActivity;
 import com.shutup.ohaus_app.common.Constants;
@@ -168,7 +170,11 @@ public class ProductionCategoryItemsListActivity extends BaseActivity {
     }
 
     @Subscribe(sticky = true)
-    public void onProductionCategoryMenuItem2Receive(ProductionCategoryMenuItem2 productionNormalItem) {
-        mToolbarTitle.setText(productionNormalItem.getMenuTitle());
+    public void onProductionCategoryMenuItem2Receive(ProductionCategoryMenuItem2 productionCategoryMenuItem2) {
+        mToolbarTitle.setText(productionCategoryMenuItem2.getMenuTitle());
+        if (BuildConfig.DEBUG)
+            Log.d("ProductionCategoryItems", productionCategoryMenuItem2.getId());
+        if (BuildConfig.DEBUG)
+            Log.d("ProductionCategoryItems", productionCategoryMenuItem2.getPid());
     }
 }

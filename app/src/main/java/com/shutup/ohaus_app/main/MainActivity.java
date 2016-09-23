@@ -27,6 +27,7 @@ import com.shutup.ohaus_app.BuildConfig;
 import com.shutup.ohaus_app.R;
 import com.shutup.ohaus_app.api.CategoryEntity;
 import com.shutup.ohaus_app.api.OhaosiService;
+import com.shutup.ohaus_app.api.RetrofitManager;
 import com.shutup.ohaus_app.common.BaseActivity;
 import com.shutup.ohaus_app.common.Constants;
 import com.shutup.ohaus_app.common.DividerItemDecoration;
@@ -52,6 +53,8 @@ import com.shutup.ohaus_app.model.MenuItem;
 import com.shutup.ohaus_app.model.QuickNewsItem;
 import com.shutup.ohaus_app.utils.CircleTransform;
 import com.squareup.picasso.Picasso;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,15 +132,15 @@ public class MainActivity extends BaseActivity implements Constants {
     }
 
     private void tryLoadData() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://ohaus.greenicetech.cn/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        OhaosiService ohaosiService = retrofit.create(OhaosiService.class);
+
+        OhaosiService ohaosiService = RetrofitManager.getInstance().createReq(OhaosiService.class);
         Call<List<CategoryEntity>> category = ohaosiService.getAllCategory();
         category.enqueue(new Callback<List<CategoryEntity>>() {
             @Override
             public void onResponse(Call<List<CategoryEntity>> call, Response<List<CategoryEntity>> response) {
+                //send out
+                EventBus.getDefault().postSticky(response.body());
+
                 for (CategoryEntity c: response.body()
                      ) {
                     if (BuildConfig.DEBUG) Log.d("MainActivity", "c:" + c);

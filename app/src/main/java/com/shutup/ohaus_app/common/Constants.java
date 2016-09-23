@@ -8,4 +8,5 @@ public interface Constants {
     int ACTIVITY_EDIT = 2;
     int BANNER_CHANGE_DELAY = 3000;
 
+    String BASE_URL = "http://ohaus.greenicetech.cn/";
 }

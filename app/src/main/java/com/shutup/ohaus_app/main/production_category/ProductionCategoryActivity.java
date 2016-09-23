@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.shutup.ohaus_app.R;
+import com.shutup.ohaus_app.api.CategoryEntity;
 import com.shutup.ohaus_app.common.BaseActivity;
 import com.shutup.ohaus_app.common.DividerItemDecoration;
 import com.shutup.ohaus_app.common.GridSpacingItemDecoration;
@@ -19,8 +20,10 @@ import com.shutup.ohaus_app.model.ProductionCategoryMenuItem;
 import com.shutup.ohaus_app.model.ProductionCategoryMenuItem2;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -50,30 +53,39 @@ public class ProductionCategoryActivity extends BaseActivity {
         setContentView(R.layout.activity_production_category);
         ButterKnife.inject(this);
         initToolbar();
-        initData();
-        initRecyclerViewMenu();
-        initRecyclerViewMenu2();
     }
 
-    private void initData() {
-        mArrayLists = new ArrayList<>();
-        mProductionCategoryMenuItem2s = new ArrayList<>();
-        mProductionCategoryMenuItems = new ArrayList<>();
-        ProductionCategoryMenuItem productionCategoryMenuItem;
-
-        for (int j = 0; j < 5; j++) {
-            if (j == 0) {
-                productionCategoryMenuItem = new ProductionCategoryMenuItem("" + j, true);
-            } else {
-                productionCategoryMenuItem = new ProductionCategoryMenuItem("" + j);
-            }
-            for (int i = 0; i < 4; i++) {
-                mProductionCategoryMenuItem2s.add(new ProductionCategoryMenuItem2("http://v1.qzone.cc/avatar/201406/18/20/03/53a180238e68a151.JPG!200x200.jpg", "title" + i));
-            }
-            mArrayLists.add(mProductionCategoryMenuItem2s);
-            mProductionCategoryMenuItems.add(productionCategoryMenuItem);
-        }
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
     }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+//    private void initData() {
+//        mArrayLists = new ArrayList<>();
+//        mProductionCategoryMenuItem2s = new ArrayList<>();
+//        mProductionCategoryMenuItems = new ArrayList<>();
+//        ProductionCategoryMenuItem productionCategoryMenuItem;
+//
+//        for (int j = 0; j < 5; j++) {
+//            if (j == 0) {
+//                productionCategoryMenuItem = new ProductionCategoryMenuItem("" + j, true);
+//            } else {
+//                productionCategoryMenuItem = new ProductionCategoryMenuItem("" + j);
+//            }
+//            for (int i = 0; i < 4; i++) {
+//                mProductionCategoryMenuItem2s.add(new ProductionCategoryMenuItem2("http://v1.qzone.cc/avatar/201406/18/20/03/53a180238e68a151.JPG!200x200.jpg", "title" + i));
+//            }
+//            mArrayLists.add(mProductionCategoryMenuItem2s);
+//            mProductionCategoryMenuItems.add(productionCategoryMenuItem);
+//        }
+//    }
 
     private void initRecyclerViewMenu2() {
         mProductionCategoryMenu2Adapter = new ProductionCategoryMenu2Adapter(this, mArrayLists.get(0));
@@ -149,5 +161,40 @@ public class ProductionCategoryActivity extends BaseActivity {
             finish(); // close this activity and return to preview activity (if there is any)
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Subscribe(sticky = true)
+    public void onMSg(List<CategoryEntity> categoryEntities) {
+        loadDataFromNetWork(categoryEntities);
+        initRecyclerViewMenu();
+        initRecyclerViewMenu2();
+        EventBus.getDefault().removeStickyEvent(categoryEntities);
+    }
+
+    private void loadDataFromNetWork(List<CategoryEntity> categoryEntities) {
+        mArrayLists = new ArrayList<>();
+        mProductionCategoryMenuItem2s = new ArrayList<>();
+        mProductionCategoryMenuItems = new ArrayList<>();
+        CategoryEntity categoryEntity;
+        List<CategoryEntity.SubsEntity> subsEntityList;
+        CategoryEntity.SubsEntity subsEntity;
+        ProductionCategoryMenuItem productionCategoryMenuItem;
+
+        for (int j = 0; j < categoryEntities.size(); j++) {
+            categoryEntity = categoryEntities.get(j);
+            if (j == 0) {
+                productionCategoryMenuItem = new ProductionCategoryMenuItem(categoryEntity.get_id(),categoryEntity.getName(), true);
+            } else {
+                productionCategoryMenuItem = new ProductionCategoryMenuItem(categoryEntity.get_id(),categoryEntity.getName());
+            }
+            subsEntityList = categoryEntity.getSubs();
+            mProductionCategoryMenuItem2s = new ArrayList<>();
+            for (int i = 0; i < subsEntityList.size(); i++) {
+                subsEntity = subsEntityList.get(i);
+                mProductionCategoryMenuItem2s.add(new ProductionCategoryMenuItem2(categoryEntity.get_id(),subsEntity.get_id(),"http://v1.qzone.cc/avatar/201406/18/20/03/53a180238e68a151.JPG!200x200.jpg", subsEntity.getName()));
+            }
+            mArrayLists.add(mProductionCategoryMenuItem2s);
+            mProductionCategoryMenuItems.add(productionCategoryMenuItem);
+        }
     }
 }
