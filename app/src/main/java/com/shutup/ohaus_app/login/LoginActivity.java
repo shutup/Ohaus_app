@@ -5,17 +5,27 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.shutup.ohaus_app.BuildConfig;
 import com.shutup.ohaus_app.R;
+import com.shutup.ohaus_app.api.OhaosiService;
 import com.shutup.ohaus_app.common.BaseActivity;
 import com.shutup.ohaus_app.main.MainActivity;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends BaseActivity {
 
@@ -29,6 +39,10 @@ public class LoginActivity extends BaseActivity {
     EditText mLoginInputPhone;
     @InjectView(R.id.login_input_pwd)
     EditText mLoginInputPwd;
+    @InjectView(R.id.login_btn)
+    Button loginBtn;
+    @InjectView(R.id.newuser)
+    TextView newuser;
 
     private boolean isPhoneOk;
     private boolean isPwdOk;
@@ -92,10 +106,10 @@ public class LoginActivity extends BaseActivity {
     private void setLoginBtnStatus() {
         if (isPhoneOk && isPwdOk) {
             mLoginBtn.setBackgroundColor(getResources().getColor(R.color.loginBtnValid));
-//            mLoginBtn.setEnabled(true);
+            mLoginBtn.setEnabled(true);
         } else {
             mLoginBtn.setBackgroundColor(getResources().getColor(R.color.loginBtnNormal));
-//            mLoginBtn.setEnabled(false);
+            mLoginBtn.setEnabled(false);
         }
     }
 
@@ -108,10 +122,38 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
+    @OnClick({R.id.login_btn, R.id.newuser})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.login_btn:
+                doLogin();
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.newuser:
+                Intent i = new Intent(this, RegisterActivity.class);
+                startActivity(i);
+                break;
+        }
+    }
 
-    @OnClick(R.id.login_btn)
-    public void onClick() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+    private void doLogin() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://ohaus.greenicetech.cn/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        OhaosiService ohaosiService = retrofit.create(OhaosiService.class);
+        Call<ResponseBody> userLogin = ohaosiService.userLogin(mLoginInputPhone.getText().toString(), mLoginInputPwd.getText().toString());
+        userLogin.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (BuildConfig.DEBUG) Log.d("LoginActivity", "response:" + response);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                if (BuildConfig.DEBUG) Log.d("LoginActivity", "t:" + t);
+            }
+        });
     }
 }
