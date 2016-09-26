@@ -123,6 +123,7 @@ public class MainActivity extends BaseActivity implements Constants {
         ButterKnife.inject(this);
         mHandler = new Handler(Looper.getMainLooper());
         initToolBar();
+
         initMenus();
         initBanner();
         initQuickNews();
