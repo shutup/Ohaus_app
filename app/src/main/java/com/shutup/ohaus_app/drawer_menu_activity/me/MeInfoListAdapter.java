@@ -60,7 +60,7 @@ public class MeInfoListAdapter extends BaseAdapter implements MeConstatnts {
 
         ViewHolder viewHolder;
         if (convertView == null) {
-            convertView = mLayoutInflater.inflate(R.layout.me_info_layout, null);
+            convertView = mLayoutInflater.inflate(R.layout.me_info_layout, parent, false);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else {

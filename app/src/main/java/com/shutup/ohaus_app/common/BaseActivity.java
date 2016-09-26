@@ -7,12 +7,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.shutup.ohaus_app.BuildConfig;
 import com.shutup.ohaus_app.R;
 
 import java.lang.reflect.Field;

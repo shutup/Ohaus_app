@@ -33,6 +33,22 @@
         </activity>
         <activity android:name=".drawer_menu_activity.setting.SettingActivity">
         </activity>
+        <activity android:name=".main.production_category.ProductionCategoryActivity">
+        </activity>
+        <activity android:name=".main.industry_application.IndustryApplicationActivity">
+        </activity>
+        <activity android:name=".main.solve_plan.SolvePlanActivity">
+        </activity>
+        <activity android:name=".main.production_knowledge.ProductionKnowledgeActivity">
+        </activity>
+        <activity android:name=".main.goods_recommend.GoodsRecommendDetailActivity">
+        </activity>
+        <activity android:name=".main.quick_news.QuickNewsDetailActivity">
+        </activity>
+        <activity android:name=".main.production_category.ProductionCategoryItemsListActivity">
+        </activity>
+        <activity android:name=".main.industry_application.IndustryApplicationSecondActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/border_edge"
+        >
+
+        <ImageView
+            android:id="@+id/recyclerView_menu_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:src="@mipmap/ic_launcher"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/border_edge"
+        android:paddingBottom="@dimen/recycler_view_item_padding"
+        android:paddingTop="@dimen/recycler_view_item_padding">
+
+        <TextView
+            android:id="@+id/recyclerView_menu_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ellipsize="marquee"
+            android:gravity="center_horizontal"
+            android:maxLines="2"
+            android:textColor="@color/goods_recommend_item_textColor"
+            android:textSize="@dimen/goods_recommend_item_textSize"
+            tools:text="hello world,hhhhhhhhhhdasjdhsajhdjashdjashdjhasjdhja"/>
+    </LinearLayout>
+</LinearLayout>

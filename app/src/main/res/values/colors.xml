@@ -21,4 +21,24 @@
     <!--Setting Info-->
     <color name="setting_info_background_color">#fff6f7fb</color>
     <color name="setting_info_item_color">#ffffffff</color>
+
+    <color name="divider_line_normal_color">#ffe5e5e5</color>
+
+    <color name="quick_news_item_textColor">#ff505050</color>
+    <color name="goods_recommend_item_textColor">#ff4a4a4a</color>
+
+    <color name="recyclerView_menu_identify_view_select_Color">#ed3058</color>
+    <color name="recyclerView_menu_identify_view_normal_Color">#f4f4f4</color>
+    <color name="recyclerView_menu_text_view_select_Color">#ffffff</color>
+    <color name="recyclerView_menu_text_view_normal_Color">#f4f4f4</color>
+
+    <!--MenuItem Normal-->
+    <color name="menu_item_title_textColor">#24282B</color>
+    <color name="menu_item_content_textColor">#4a4a4a</color>
+    <!--Production Category-->
+    <color name="production_category_items_list_title_textColor">#24282B</color>
+    <color name="production_category_items_list_content_textColor">#4a4a4a</color>
+    <!--Industry Application-->
+    <color name="industry_application_menu_item_title_textColor">#24282B</color>
+    <color name="industry_application_menu_item_content_textColor">#9b9b9b</color>
 </resources>

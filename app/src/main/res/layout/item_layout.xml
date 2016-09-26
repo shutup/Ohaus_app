@@ -3,6 +3,7 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="88dp"
+              android:baselineAligned="false"
               android:orientation="horizontal">
 
     <LinearLayout
@@ -16,13 +17,13 @@
             android:layout_height="match_parent">
 
             <CheckBox
-                android:clickable="true"
                 android:id="@+id/checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
+                android:clickable="true"
                 />
         </RelativeLayout>
 
@@ -62,6 +63,8 @@
                 android:layout_marginTop="19dp"
                 android:layout_toEndOf="@id/icon"
                 android:layout_toRightOf="@id/icon"
+                android:textSize="@dimen/menu_item_title_textSize"
+                android:textColor="@color/menu_item_title_textColor"
                 tools:text="Title"/>
 
             <TextView
@@ -71,6 +74,8 @@
                 android:layout_below="@id/title"
                 android:layout_toEndOf="@id/icon"
                 android:layout_toRightOf="@id/icon"
+                android:textSize="@dimen/menu_item_content_textSize"
+                android:textColor="@color/menu_item_content_textColor"
                 tools:text="Content"/>
 
             <ImageView

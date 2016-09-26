@@ -39,4 +39,14 @@
     <string name="invite_company_title"><![CDATA[<font color=red>*</font>公司名称]]></string>
     <string name="invite_job_title">职位</string>
     <string name="invite_mail_title">邮箱</string>
+    <string name="production_category_str">产品分类</string>
+    <string name="industry_application_str">行业应用</string>
+    <string name="production_knowledge_str">产品百科</string>
+    <string name="solve_plan_str">解决方案</string>
+    <string name="activity_main_quick_news_str">奥豪斯快讯</string>
+    <string name="activity_main_goods_recommend_str">精品推荐</string>
+    <string name="production_category_price_str">价格</string>
+    <string name="production_category_filter_str">筛选</string>
+    <string name="new_user_str">新用户</string>
+    <string name="forget_pwd_str">忘记密码?</string>
 </resources>

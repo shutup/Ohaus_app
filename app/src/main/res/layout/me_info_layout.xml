@@ -22,7 +22,7 @@
             android:id="@+id/me_info_title"
             android:layout_marginLeft="@dimen/me_left_margin"
             android:layout_marginStart="@dimen/me_left_margin"
-            android:gravity="center|left"
+            android:gravity="center|start"
             android:textSize="@dimen/me_info_list_text_size"
             android:textColor="@color/me_info_list_text_color"
             android:layout_width="wrap_content"
@@ -41,7 +41,7 @@
         <TextView
             tools:text="dad"
             android:id="@+id/me_info_value"
-            android:gravity="center|right"
+            android:gravity="center|end"
             android:textSize="@dimen/me_info_list_text_size"
             android:textColor="@color/me_info_list_text_color"
             android:layout_marginRight="9dp"

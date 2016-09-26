@@ -13,4 +13,49 @@
     <dimen name="me_info_list_text_size">15sp</dimen>
     <dimen name="invite_left_margin">9dp</dimen>
     <dimen name="invite_right_margin">9dp</dimen>
+
+    <dimen name="activity_main_center_menu_height">100dp</dimen>
+    <dimen name="activity_main_center_menu_textSize">14sp</dimen>
+    <dimen name="activity_main_center_menu_image_top_margin">19dp</dimen>
+    <dimen name="activity_main_center_menu_image_bottom_margin">7dp</dimen>
+    <dimen name="activity_main_center_menu_image_size">45dp</dimen>
+    <dimen name="activity_main_quick_news_top_margin">8dp</dimen>
+    <dimen name="activity_main_quick_news_textSize">17sp</dimen>
+    <dimen name="quick_news_item_image_width">101dp</dimen>
+    <dimen name="quick_news_item_image_height">76dp</dimen>
+    <dimen name="quick_time_item_padding">10dp</dimen>
+    <dimen name="quick_news_item_textSize">16sp</dimen>
+    <dimen name="goods_recommend_item_padding">10dp</dimen>
+    <dimen name="goods_recommend_item_textSize">12sp</dimen>
+    <dimen name="recyclerView_menu_identify_view_width">4dp</dimen>
+    <dimen name="recyclerView_menu_title_textSize">14sp</dimen>
+    <dimen name="recycler_view_item_padding">8dp</dimen>
+
+    <dimen name="menu_item_title_textSize">14sp</dimen>
+    <dimen name="menu_item_content_textSize">12sp</dimen>
+    <!--Production Category-->
+    <dimen name="production_category_items_list_image_size">95dp</dimen>
+    <dimen name="production_category_items_list_image_margin_left_right">16dp</dimen>
+    <dimen name="production_category_items_list_image_margin_bottom">15dp</dimen>
+    <dimen name="production_category_items_list_image_margin_top">13dp</dimen>
+    <dimen name="production_category_items_list_title_textSize">16sp</dimen>
+    <dimen name="production_category_items_list_content_textSize">12sp</dimen>
+    <dimen name="production_category_items_list_item_height">122dp</dimen>
+    <!--Industry Application-->
+    <dimen name="industry_application_menu_item_image_margin_bottom">17dp</dimen>
+    <dimen name="industry_application_menu_item_image_margin_left_right">15dp</dimen>
+    <dimen name="industry_application_menu_item_image_margin_top">18dp</dimen>
+    <dimen name="industry_application_menu_item_image_size">36dp</dimen>
+    <dimen name="industry_application_menu_item_title_margin_bottom">2dp</dimen>
+    <dimen name="industry_application_menu_item_title_margin_top">19dp</dimen>
+    <dimen name="industry_application_menu_item_title_textSize">14sp</dimen>
+    <dimen name="industry_application_menu_item_content_textSize">12sp</dimen>
+    <dimen name="industry_application_second_menu_item_image_margin_bottom">15dp</dimen>
+    <dimen name="industry_application_second_menu_item_image_margin_left_right">15dp</dimen>
+    <dimen name="industry_application_second_menu_item_image_margin_top">12dp</dimen>
+    <dimen name="industry_application_second_menu_item_title_margin_bottom">3dp</dimen>
+    <dimen name="industry_application_second_menu_item_title_margin_top">22dp</dimen>
+    <dimen name="industry_application_second_menu_item_title_textSize">16sp</dimen>
+    <dimen name="industry_application_second_menu_item_content_textSize">14sp</dimen>
+    <dimen name="industry_application_second_menu_item_image_size">61dp</dimen>
 </resources>

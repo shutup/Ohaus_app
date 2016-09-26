@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="113dp"
+              android:layout_height="wrap_content"
+              >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/border_edge"
+            android:paddingBottom="@dimen/goods_recommend_item_padding"
+            android:paddingTop="@dimen/goods_recommend_item_padding">
+
+            <ImageView
+                android:layout_gravity="center"
+                android:id="@+id/goods_recommend_item_image_view"
+                android:layout_width="113dp"
+                android:layout_height="113dp"
+                android:src="@mipmap/ic_launcher"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/border_edge"
+            android:paddingBottom="@dimen/goods_recommend_item_padding"
+            android:paddingTop="@dimen/goods_recommend_item_padding">
+
+            <TextView
+                android:id="@+id/goods_recommend_item_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:ellipsize="marquee"
+                android:maxLines="2"
+                android:textColor="@color/goods_recommend_item_textColor"
+                android:textSize="@dimen/goods_recommend_item_textSize"
+                tools:text="hello world,hhhhhhhhhhdasjdhsajhdjashdjashdjhasjdhja"/>
+        </LinearLayout>
+</LinearLayout>

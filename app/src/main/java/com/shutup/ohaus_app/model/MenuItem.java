@@ -1,4 +1,4 @@
-package com.shutup.ohaus_app.main;
+package com.shutup.ohaus_app.model;
 
 import android.content.Intent;
 import android.support.annotation.DrawableRes;
