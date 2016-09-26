@@ -14,7 +14,10 @@ import android.widget.TextView;
 import com.shutup.ohaus_app.BuildConfig;
 import com.shutup.ohaus_app.R;
 import com.shutup.ohaus_app.api.OhaosiService;
+import com.shutup.ohaus_app.api.RetrofitManager;
 import com.shutup.ohaus_app.common.BaseActivity;
+import com.shutup.ohaus_app.common.Constants;
+import com.shutup.ohaus_app.common.SharedPreferenceUtils;
 import com.shutup.ohaus_app.main.MainActivity;
 
 import butterknife.ButterKnife;
@@ -27,7 +30,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity implements Constants{
 
     @InjectView(R.id.toolbar)
     Toolbar mToolbar;
@@ -127,8 +130,6 @@ public class LoginActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.login_btn:
                 doLogin();
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
                 break;
             case R.id.newuser:
                 Intent i = new Intent(this, RegisterActivity.class);
@@ -138,16 +139,17 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void doLogin() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://ohaus.greenicetech.cn/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        OhaosiService ohaosiService = retrofit.create(OhaosiService.class);
+        OhaosiService ohaosiService = RetrofitManager.getInstance().createReq(OhaosiService.class);
         Call<ResponseBody> userLogin = ohaosiService.userLogin(mLoginInputPhone.getText().toString(), mLoginInputPwd.getText().toString());
         userLogin.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (BuildConfig.DEBUG) Log.d("LoginActivity", "response:" + response);
+                SharedPreferenceUtils.getEditerInstance(LoginActivity.this).putBoolean(IS_LOGIN,true);
+                SharedPreferenceUtils.getEditerInstance(LoginActivity.this).commit();
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
             }
 
             @Override

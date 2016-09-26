@@ -9,4 +9,10 @@ public interface Constants {
     int BANNER_CHANGE_DELAY = 3000;
 
     String BASE_URL = "http://ohaus.greenicetech.cn/";
+
+    String USER_PHONE = "USER_PHONE";
+    String USER_PASSWORD = "USER_PASSWORD";
+    String IS_LOGIN = "IS_LOGIN";
+    int IS_LOGIN_OK = 1;
+    int IS_LOGIN_FAIL = 2;
 }
