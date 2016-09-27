@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import com.shutup.ohaus_app.BuildConfig;
 import com.shutup.ohaus_app.R;
+import com.shutup.ohaus_app.api.OhaosiService;
+import com.shutup.ohaus_app.api.RetrofitManager;
 import com.shutup.ohaus_app.common.BaseActivity;
 import com.shutup.ohaus_app.common.Constants;
 import com.shutup.ohaus_app.common.DividerItemDecoration;
@@ -34,6 +36,10 @@ import java.util.Comparator;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProductionCategoryItemsListActivity extends BaseActivity {
 
@@ -176,5 +182,19 @@ public class ProductionCategoryItemsListActivity extends BaseActivity {
             Log.d("ProductionCategoryItems", productionCategoryMenuItem2.getId());
         if (BuildConfig.DEBUG)
             Log.d("ProductionCategoryItems", productionCategoryMenuItem2.getPid());
+
+        OhaosiService ohaosiService = RetrofitManager.getInstance().createReq(OhaosiService.class);
+        Call<ResponseBody> productionList= ohaosiService.getProductionList(productionCategoryMenuItem2.getPid(),productionCategoryMenuItem2.getId());
+        productionList.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (BuildConfig.DEBUG) Log.d("ProductionCategoryItems", "response:" + response.body());
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
     }
 }

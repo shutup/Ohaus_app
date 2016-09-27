@@ -62,11 +62,11 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends BaseActivity implements Constants {
 
@@ -141,7 +141,8 @@ public class MainActivity extends BaseActivity implements Constants {
             public void onResponse(Call<List<CategoryEntity>> call, Response<List<CategoryEntity>> response) {
                 //send out
                 EventBus.getDefault().postSticky(response.body());
-
+                //SAVE TO LOCAL
+                saveToLocal(response.body());
                 for (CategoryEntity c: response.body()
                      ) {
                     if (BuildConfig.DEBUG) Log.d("MainActivity", "c:" + c);
@@ -151,6 +152,24 @@ public class MainActivity extends BaseActivity implements Constants {
             @Override
             public void onFailure(Call<List<CategoryEntity>> call, Throwable t) {
 
+            }
+        });
+    }
+
+    private void saveToLocal(final List<CategoryEntity> body) {
+        // Create a RealmConfiguration that saves the Realm file in the app's "files" directory.
+        RealmConfiguration realmConfig = new RealmConfiguration.Builder(MainActivity.this).build();
+        Realm.setDefaultConfiguration(realmConfig);
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealmOrUpdate(body);
+            }
+        }, new Realm.Transaction.OnSuccess() {
+            @Override
+            public void onSuccess() {
+                if (BuildConfig.DEBUG) Log.d("MainActivity", "save success");
             }
         });
     }

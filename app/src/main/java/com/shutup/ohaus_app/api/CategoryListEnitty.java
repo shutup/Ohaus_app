@@ -5,4 +5,5 @@ package com.shutup.ohaus_app.api;
  */
 
 public class CategoryListEnitty {
+
 }
