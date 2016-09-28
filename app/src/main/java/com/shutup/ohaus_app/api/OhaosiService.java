@@ -27,4 +27,7 @@ public interface OhaosiService {
 
     @GET("api/products/list")
     Call<ResponseBody> getProductionList(@Query("cid") String cid, @Query("scid") String scid);
+
+    @GET("api/products/list")
+    Call<CategoryListEnitty> getProductionLists(@Query("cid") String cid, @Query("scid") String scid);
 }
