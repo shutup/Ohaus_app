@@ -51,13 +51,17 @@ public class ProductionCategoryActivity extends BaseActivity {
     private ProductionCategoryMenu2Adapter mProductionCategoryMenu2Adapter;
 
     private ArrayList<ArrayList<ProductionCategoryMenuItem2>> mArrayLists;
-
+    private boolean isFirstIn = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_production_category);
         ButterKnife.inject(this);
         initToolbar();
+
+        initRecyclerViewMenu();
+        initRecyclerViewMenu2();
+
         loadDataFromLocal();
     }
 
@@ -73,13 +77,12 @@ public class ProductionCategoryActivity extends BaseActivity {
     }
 
     private void updateView(List<CategoryEntity> categoryEntities) {
-        mArrayLists = new ArrayList<>();
-        mProductionCategoryMenuItem2s = new ArrayList<>();
-        mProductionCategoryMenuItems = new ArrayList<>();
         CategoryEntity categoryEntity;
         List<SubsEntity> subsEntityList;
         SubsEntity subsEntity;
         ProductionCategoryMenuItem productionCategoryMenuItem;
+        mArrayLists.clear();
+        mProductionCategoryMenuItems.clear();
         for (int j = 0; j < categoryEntities.size(); j++) {
             categoryEntity = categoryEntities.get(j);
             if (j == 0) {
@@ -96,8 +99,13 @@ public class ProductionCategoryActivity extends BaseActivity {
             mArrayLists.add(mProductionCategoryMenuItem2s);
             mProductionCategoryMenuItems.add(productionCategoryMenuItem);
         }
-        initRecyclerViewMenu();
-        initRecyclerViewMenu2();
+        if (isFirstIn){
+            mProductionCategoryMenu2Adapter = new ProductionCategoryMenu2Adapter(ProductionCategoryActivity.this, mArrayLists.get(0));
+            mRecyclerViewItems.setAdapter(mProductionCategoryMenu2Adapter);
+            isFirstIn = false;
+        }
+        mProductionCategoryMenuAdapter.notifyDataSetChanged();
+        mProductionCategoryMenu2Adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -113,7 +121,10 @@ public class ProductionCategoryActivity extends BaseActivity {
     }
 
     private void initRecyclerViewMenu2() {
-        mProductionCategoryMenu2Adapter = new ProductionCategoryMenu2Adapter(this, mArrayLists.get(0));
+        mArrayLists = new ArrayList<>();
+        mProductionCategoryMenuItem2s = new ArrayList<>();
+
+        mProductionCategoryMenu2Adapter = new ProductionCategoryMenu2Adapter(this, mArrayLists.size()>0?mArrayLists.get(0):new ArrayList<ProductionCategoryMenuItem2>());
         mRecyclerViewItems.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
         mRecyclerViewItems.setItemAnimator(new DefaultItemAnimator());
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.goods_recommend_item_padding);
@@ -137,7 +148,7 @@ public class ProductionCategoryActivity extends BaseActivity {
     }
 
     private void initRecyclerViewMenu() {
-
+        mProductionCategoryMenuItems = new ArrayList<>();
         mProductionCategoryMenuAdapter = new ProductionCategoryMenuAdapter(this, mProductionCategoryMenuItems);
         mRecyclerViewMenu.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         mRecyclerViewMenu.setItemAnimator(new DefaultItemAnimator());
@@ -191,36 +202,10 @@ public class ProductionCategoryActivity extends BaseActivity {
     @Subscribe(sticky = true)
     public void onMSg(List<CategoryEntity> categoryEntities) {
         loadDataFromNetWork(categoryEntities);
-        initRecyclerViewMenu();
-        initRecyclerViewMenu2();
         EventBus.getDefault().removeStickyEvent(categoryEntities);
     }
 
     private void loadDataFromNetWork(List<CategoryEntity> categoryEntities) {
         updateView(categoryEntities);
-//        mArrayLists = new ArrayList<>();
-//        mProductionCategoryMenuItem2s = new ArrayList<>();
-//        mProductionCategoryMenuItems = new ArrayList<>();
-//        CategoryEntity categoryEntity;
-//        List<SubsEntity> subsEntityList;
-//        SubsEntity subsEntity;
-//        ProductionCategoryMenuItem productionCategoryMenuItem;
-//
-//        for (int j = 0; j < categoryEntities.size(); j++) {
-//            categoryEntity = categoryEntities.get(j);
-//            if (j == 0) {
-//                productionCategoryMenuItem = new ProductionCategoryMenuItem(categoryEntity.get_id(),categoryEntity.getName(), true);
-//            } else {
-//                productionCategoryMenuItem = new ProductionCategoryMenuItem(categoryEntity.get_id(),categoryEntity.getName());
-//            }
-//            subsEntityList = categoryEntity.getSubs();
-//            mProductionCategoryMenuItem2s = new ArrayList<>();
-//            for (int i = 0; i < subsEntityList.size(); i++) {
-//                subsEntity = subsEntityList.get(i);
-//                mProductionCategoryMenuItem2s.add(new ProductionCategoryMenuItem2(categoryEntity.get_id(),subsEntity.get_id(),"http://v1.qzone.cc/avatar/201406/18/20/03/53a180238e68a151.JPG!200x200.jpg", subsEntity.getName()));
-//            }
-//            mArrayLists.add(mProductionCategoryMenuItem2s);
-//            mProductionCategoryMenuItems.add(productionCategoryMenuItem);
-//        }
     }
 }

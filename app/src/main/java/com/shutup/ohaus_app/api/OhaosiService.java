@@ -24,8 +24,6 @@ public interface OhaosiService {
     @POST("api/users/login")
     Call<ResponseBody> userLogin(@Field("phone") String phone, @Field("password") String password);
 
-    @GET("api/products/list")
-    Call<ResponseBody> getProductionList(@Query("cid") String cid, @Query("scid") String scid);
 
     @GET("api/products/list")
     Call<CategoryListEnitty> getProductionLists(@Query("cid") String cid, @Query("scid") String scid);
