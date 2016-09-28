@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.shutup.ohaus_app.BuildConfig;
 import com.shutup.ohaus_app.R;
+import com.shutup.ohaus_app.api.CategoryListEnitty;
 import com.shutup.ohaus_app.api.OhaosiService;
 import com.shutup.ohaus_app.api.RetrofitManager;
 import com.shutup.ohaus_app.common.BaseActivity;
@@ -28,10 +29,15 @@ import com.shutup.ohaus_app.model.ProductionNormalItem;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -69,7 +75,7 @@ public class ProductionCategoryItemsListActivity extends BaseActivity {
         setContentView(R.layout.activity_production_category_items_list);
         ButterKnife.inject(this);
         initToolBar();
-        initRecyclerView();
+//        initRecyclerView();
     }
 
     @Override
@@ -85,10 +91,6 @@ public class ProductionCategoryItemsListActivity extends BaseActivity {
     }
 
     private void initRecyclerView() {
-        mProductionNormalItems = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            mProductionNormalItems.add(new ProductionNormalItem("http://v1.qzone.cc/avatar/201406/18/20/03/53a180238e68a151.JPG!200x200.jpg", "title" + i, "content" + i, i * 100));
-        }
         mProductionCategoryItemsListAdapter = new ProductionCategoryItemsListAdapter(this, mProductionNormalItems);
         mRecyclerViewItemsList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         mRecyclerViewItemsList.setItemAnimator(new DefaultItemAnimator());
@@ -185,14 +187,44 @@ public class ProductionCategoryItemsListActivity extends BaseActivity {
 
         OhaosiService ohaosiService = RetrofitManager.getInstance().createReq(OhaosiService.class);
         Call<ResponseBody> productionList= ohaosiService.getProductionList(productionCategoryMenuItem2.getPid(),productionCategoryMenuItem2.getId());
-        productionList.enqueue(new Callback<ResponseBody>() {
+//        productionList.enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                if (BuildConfig.DEBUG)
+//                    Log.d("ProductionCategoryItems", "response:" + response.body().toString());
+//                String jsonStr = response.body().toString();
+//                try {
+//                    JSONObject jsonObject = new JSONObject(jsonStr);
+//                    Integer dataSize = jsonObject.getInt("totalDataSize");
+//                    JSONArray jsonArray = jsonObject.getJSONArray("data");
+//                    for (int i = 0; i < dataSize; i++) {
+//
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//                mProductionNormalItems = new ArrayList<>();
+//                for (int i = 0; i < 10; i++) {
+//                    mProductionNormalItems.add(new ProductionNormalItem("http://v1.qzone.cc/avatar/201406/18/20/03/53a180238e68a151.JPG!200x200.jpg", "title" + i, "content" + i, i * 100));
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//
+//            }
+//        });
+
+        Call<CategoryListEnitty> test = ohaosiService.getProductionLists(productionCategoryMenuItem2.getPid(),productionCategoryMenuItem2.getId());
+        test.enqueue(new Callback<CategoryListEnitty>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (BuildConfig.DEBUG) Log.d("ProductionCategoryItems", "response:" + response.body());
+            public void onResponse(Call<CategoryListEnitty> call, Response<CategoryListEnitty> response) {
+                if (BuildConfig.DEBUG)
+                    Log.d("ProductionCategoryItems", "response:" + response.body().toString());
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<CategoryListEnitty> call, Throwable t) {
 
             }
         });
