@@ -186,17 +186,19 @@ public class ProductionCategoryItemsListActivity extends BaseActivity {
         test.enqueue(new Callback<CategoryListEnitty>() {
             @Override
             public void onResponse(Call<CategoryListEnitty> call, Response<CategoryListEnitty> response) {
-                if (BuildConfig.DEBUG)
-                    Log.d("ProductionCategoryItems", "response:" + response.body().toString());
-                CategoryListEnitty categoryListEnitty = response.body();
-                List<CategoryListEnitty.DataBean> dataBeans = categoryListEnitty.getData();
-                CategoryListEnitty.DataBean dataBean;
-                mProductionNormalItems.clear();
-                for (int i = 0; i < dataBeans.size(); i++) {
-                    dataBean = dataBeans.get(i);
-                    mProductionNormalItems.add(new ProductionNormalItem(dataBean.getImages().get(0).getUrl(),dataBean.getName(),dataBean.getMinimumPrice(),Float.parseFloat(StringUtils.cleanPriceStr(dataBean.getMinimumPrice()))));
+                if (response.isSuccessful()) {
+                    if (BuildConfig.DEBUG)
+                        Log.d("ProductionCategoryItems", "response:" + response.body().toString());
+                    CategoryListEnitty categoryListEnitty = response.body();
+                    List<CategoryListEnitty.DataBean> dataBeans = categoryListEnitty.getData();
+                    CategoryListEnitty.DataBean dataBean;
+                    mProductionNormalItems.clear();
+                    for (int i = 0; i < dataBeans.size(); i++) {
+                        dataBean = dataBeans.get(i);
+                        mProductionNormalItems.add(new ProductionNormalItem(dataBean.getImages().get(0).getUrl(),dataBean.getName(),dataBean.getMinimumPrice(),Float.parseFloat(StringUtils.cleanPriceStr(dataBean.getMinimumPrice()))));
+                    }
+                    refreshUI();
                 }
-                refreshUI();
             }
 
             @Override

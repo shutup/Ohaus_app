@@ -128,8 +128,14 @@ public class MainActivity extends BaseActivity implements Constants {
         initBanner();
         initQuickNews();
         initGoodsRecommend();
-
+        initRealm();
         tryLoadData();
+    }
+
+    private void initRealm() {
+        // Create a RealmConfiguration that saves the Realm file in the app's "files" directory.
+        RealmConfiguration realmConfig = new RealmConfiguration.Builder(MainActivity.this).build();
+        Realm.setDefaultConfiguration(realmConfig);
     }
 
     private void tryLoadData() {
@@ -139,13 +145,15 @@ public class MainActivity extends BaseActivity implements Constants {
         category.enqueue(new Callback<List<CategoryEntity>>() {
             @Override
             public void onResponse(Call<List<CategoryEntity>> call, Response<List<CategoryEntity>> response) {
-                //send out
-                EventBus.getDefault().postSticky(response.body());
-                //SAVE TO LOCAL
-                saveToLocal(response.body());
-                for (CategoryEntity c: response.body()
-                     ) {
-                    if (BuildConfig.DEBUG) Log.d("MainActivity", "c:" + c);
+                if (response.isSuccessful()) {
+                    //send out
+                    EventBus.getDefault().postSticky(response.body());
+                    //SAVE TO LOCAL
+                    saveToLocal(response.body());
+                    for (CategoryEntity c: response.body()
+                         ) {
+                        if (BuildConfig.DEBUG) Log.d("MainActivity", "c:" + c);
+                    }
                 }
             }
 
@@ -157,9 +165,6 @@ public class MainActivity extends BaseActivity implements Constants {
     }
 
     private void saveToLocal(final List<CategoryEntity> body) {
-        // Create a RealmConfiguration that saves the Realm file in the app's "files" directory.
-        RealmConfiguration realmConfig = new RealmConfiguration.Builder(MainActivity.this).build();
-        Realm.setDefaultConfiguration(realmConfig);
         Realm realm = Realm.getDefaultInstance();
         realm.executeTransactionAsync(new Realm.Transaction() {
             @Override

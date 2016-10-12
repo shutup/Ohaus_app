@@ -36,6 +36,8 @@
         <activity android:name=".login.RegisterActivity"/>
         <activity android:name=".login.LoginActivity">
         </activity>
+        <activity android:name=".main.industry_application.IndustryApplicationDetailActivity">
+        </activity>
     </application>
 
 </manifest>

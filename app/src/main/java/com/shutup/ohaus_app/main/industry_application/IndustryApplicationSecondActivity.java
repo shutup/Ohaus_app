@@ -70,7 +70,8 @@ public class IndustryApplicationSecondActivity extends BaseActivity{
         mIndustryApplicationSecondMenuRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, mIndustryApplicationSecondMenuRecyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-
+                Intent intent = new Intent(IndustryApplicationSecondActivity.this, IndustryApplicationDetailActivity.class);
+                startActivity(intent);
             }
 
             @Override
