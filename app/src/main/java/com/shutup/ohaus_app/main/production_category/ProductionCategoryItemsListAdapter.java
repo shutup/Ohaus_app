@@ -1,7 +1,11 @@
 package com.shutup.ohaus_app.main.production_category;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +43,10 @@ public class ProductionCategoryItemsListAdapter extends RecyclerView.Adapter<Pro
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ProductionNormalItem productionNormalItem = mProductionNormalItems.get(position);
-        holder.mContent.setText(productionNormalItem.getContentStr());
+        SpannableStringBuilder builder = new SpannableStringBuilder(productionNormalItem.getContentStr());
+        builder.setSpan(new ForegroundColorSpan(Color.BLACK),0,3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        holder.mContent.setText(builder);
+        holder.mContent.setTextColor(Color.parseColor("#ed3058"));
         holder.mTitle.setText(productionNormalItem.getTitleStr());
         Picasso.with(mContext).load(productionNormalItem.getIconUrl()).placeholder(R.mipmap.ic_launcher).into(holder.mIcon);
 

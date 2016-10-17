@@ -15,4 +15,6 @@ public interface Constants {
     String IS_LOGIN = "IS_LOGIN";
     int IS_LOGIN_OK = 1;
     int IS_LOGIN_FAIL = 2;
+
+    int TYPE_FXJMTP = 1;
 }

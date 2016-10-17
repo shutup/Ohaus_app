@@ -14,12 +14,17 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.shutup.ohaus_app.BuildConfig;
 import com.shutup.ohaus_app.R;
-import com.shutup.ohaus_app.api.CategoryListEnitty;
+import com.shutup.ohaus_app.api.CategoryListEntity;
 import com.shutup.ohaus_app.api.OhaosiService;
+import com.shutup.ohaus_app.api.ProductCategoryEntity;
 import com.shutup.ohaus_app.api.RetrofitManager;
+import com.shutup.ohaus_app.api.TianpingEntity;
 import com.shutup.ohaus_app.common.BaseActivity;
+import com.shutup.ohaus_app.common.Constants;
 import com.shutup.ohaus_app.common.DividerItemDecoration;
 import com.shutup.ohaus_app.common.RecyclerTouchListener;
 import com.shutup.ohaus_app.common.StringUtils;
@@ -28,11 +33,14 @@ import com.shutup.ohaus_app.model.ProductionNormalItem;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -42,7 +50,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProductionCategoryItemsListActivity extends BaseActivity {
+public class ProductionCategoryItemsListActivity extends BaseActivity implements Constants{
 
     @InjectView(R.id.toolbar_title)
     TextView mToolbarTitle;
@@ -182,27 +190,49 @@ public class ProductionCategoryItemsListActivity extends BaseActivity {
             Log.d("ProductionCategoryItems", productionCategoryMenuItem2.getPid());
 
         OhaosiService ohaosiService = RetrofitManager.getInstance().createReq(OhaosiService.class);
-        Call<CategoryListEnitty> test = ohaosiService.getProductionLists(productionCategoryMenuItem2.getPid(),productionCategoryMenuItem2.getId());
-        test.enqueue(new Callback<CategoryListEnitty>() {
+        Call<ResponseBody> test = ohaosiService.getProductionLists(productionCategoryMenuItem2.getPid(),productionCategoryMenuItem2.getId());
+        test.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<CategoryListEnitty> call, Response<CategoryListEnitty> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     if (BuildConfig.DEBUG)
                         Log.d("ProductionCategoryItems", "response:" + response.body().toString());
-                    CategoryListEnitty categoryListEnitty = response.body();
-                    List<CategoryListEnitty.DataBean> dataBeans = categoryListEnitty.getData();
-                    CategoryListEnitty.DataBean dataBean;
-                    mProductionNormalItems.clear();
-                    for (int i = 0; i < dataBeans.size(); i++) {
-                        dataBean = dataBeans.get(i);
-                        mProductionNormalItems.add(new ProductionNormalItem(dataBean.getImages().get(0).getUrl(),dataBean.getName(),dataBean.getMinimumPrice(),Float.parseFloat(StringUtils.cleanPriceStr(dataBean.getMinimumPrice()))));
+                    try {
+                        String jsonStr = response.body().string();
+                        GsonBuilder builder = new GsonBuilder();
+                        Gson gson = builder.create();
+                        CategoryListEntity categoryListEntity = gson.fromJson(jsonStr,CategoryListEntity.class);
+                        JSONObject jsonObject = new JSONObject(jsonStr);
+                        JSONArray jsonArray = jsonObject.optJSONArray("data");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject mainObject = jsonArray.optJSONObject(i);
+                            int type  = StringUtils.getEntityNameByType(categoryListEntity.getData().get(i).getSubCategory());
+                            JSONArray detailsObject = mainObject.optJSONArray("data");
+                            if (type == TYPE_FXJMTP) {
+                                ArrayList<Object> data = new ArrayList<Object>();
+                                for (int j = 0; j < detailsObject.length(); j++) {
+                                    TianpingEntity tianpingEntity = gson.fromJson(detailsObject.optJSONObject(i).toString(),TianpingEntity.class);
+                                    data.add(tianpingEntity);
+                                }
+                            }
+                        }
+                        for (int i = 0; i < categoryListEntity.getData().size(); i++) {
+                            ProductCategoryEntity productCategoryEntity = categoryListEntity.getData().get(i);
+                            mProductionNormalItems.add(new ProductionNormalItem(productCategoryEntity.getNewImages().get(0).getUrl(),productCategoryEntity.getName(),"最低 ￥"+productCategoryEntity.getMinimumPrice(),productCategoryEntity.getMinimumPrice()));
+                        }
+                        refreshUI();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    refreshUI();
+
                 }
             }
 
             @Override
-            public void onFailure(Call<CategoryListEnitty> call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
 
             }
         });
