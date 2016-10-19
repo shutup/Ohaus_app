@@ -51,7 +51,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProductionCategoryItemsListActivity extends BaseActivity implements Constants{
+public class ProductionCategoryItemsListActivity extends BaseActivity implements Constants {
 
     @InjectView(R.id.toolbar_title)
     TextView mToolbarTitle;
@@ -103,7 +103,7 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
         mRecyclerViewItemsList.addOnItemTouchListener(new RecyclerTouchListener(this, mRecyclerViewItemsList, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Intent intent = new Intent(ProductionCategoryItemsListActivity.this,ProductionCategoryDetailActivity.class);
+                Intent intent = new Intent(ProductionCategoryItemsListActivity.this, ProductionCategoryDetailActivity.class);
                 startActivity(intent);
             }
 
@@ -134,7 +134,16 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick({R.id.production_category_price_option, R.id.production_category_filter_option, R.id.production_category_filter_option_bg_view})
+    @Override
+    public void onBackPressed() {
+        if (isFilterVisable) {
+            updateFilterOptions();
+        }else {
+            super.onBackPressed();
+        }
+    }
+
+    @OnClick({R.id.production_category_price_option, R.id.production_category_filter_option, R.id.production_category_filter_option_bg_view, R.id.production_category_filter_option_view})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.production_category_price_option:
@@ -142,6 +151,9 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                 break;
             case R.id.production_category_filter_option:
                 updateFilterOptions();
+                break;
+            case R.id.production_category_filter_option_view:
+                //eat click event
                 break;
             case R.id.production_category_filter_option_bg_view:
                 updateFilterOptions();
@@ -192,7 +204,7 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
             Log.d("ProductionCategoryItems", productionCategoryMenuItem2.getPid());
 
         OhaosiService ohaosiService = RetrofitManager.getInstance().createReq(OhaosiService.class);
-        Call<ResponseBody> test = ohaosiService.getProductionLists(productionCategoryMenuItem2.getPid(),productionCategoryMenuItem2.getId());
+        Call<ResponseBody> test = ohaosiService.getProductionLists(productionCategoryMenuItem2.getPid(), productionCategoryMenuItem2.getId());
         test.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -203,24 +215,24 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                         String jsonStr = response.body().string();
                         GsonBuilder builder = new GsonBuilder();
                         Gson gson = builder.create();
-                        CategoryListEntity categoryListEntity = gson.fromJson(jsonStr,CategoryListEntity.class);
+                        CategoryListEntity categoryListEntity = gson.fromJson(jsonStr, CategoryListEntity.class);
                         JSONObject jsonObject = new JSONObject(jsonStr);
                         JSONArray jsonArray = jsonObject.optJSONArray("data");
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject mainObject = jsonArray.optJSONObject(i);
-                            int type  = StringUtils.getEntityNameByType(categoryListEntity.getData().get(i).getSubCategory());
+                            int type = StringUtils.getEntityNameByType(categoryListEntity.getData().get(i).getSubCategory());
                             JSONArray detailsObject = mainObject.optJSONArray("data");
                             if (type == TYPE_FXJMTP) {
                                 ArrayList<Object> data = new ArrayList<Object>();
                                 for (int j = 0; j < detailsObject.length(); j++) {
-                                    TianpingEntity tianpingEntity = gson.fromJson(detailsObject.optJSONObject(i).toString(),TianpingEntity.class);
+                                    TianpingEntity tianpingEntity = gson.fromJson(detailsObject.optJSONObject(i).toString(), TianpingEntity.class);
                                     data.add(tianpingEntity);
                                 }
                             }
                         }
                         for (int i = 0; i < categoryListEntity.getData().size(); i++) {
                             ProductCategoryEntity productCategoryEntity = categoryListEntity.getData().get(i);
-                            mProductionNormalItems.add(new ProductionNormalItem(productCategoryEntity.getNewImages().get(0).getUrl(),productCategoryEntity.getName(),"最低 ￥"+productCategoryEntity.getMinimumPrice(),productCategoryEntity.getMinimumPrice()));
+                            mProductionNormalItems.add(new ProductionNormalItem(productCategoryEntity.getNewImages().get(0).getUrl(), productCategoryEntity.getName(), "最低 ￥" + productCategoryEntity.getMinimumPrice(), productCategoryEntity.getMinimumPrice()));
                         }
                         refreshUI();
 
