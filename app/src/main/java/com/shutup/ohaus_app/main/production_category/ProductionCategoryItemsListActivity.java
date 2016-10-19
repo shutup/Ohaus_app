@@ -1,5 +1,6 @@
 package com.shutup.ohaus_app.main.production_category;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -102,7 +103,8 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
         mRecyclerViewItemsList.addOnItemTouchListener(new RecyclerTouchListener(this, mRecyclerViewItemsList, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-
+                Intent intent = new Intent(ProductionCategoryItemsListActivity.this,ProductionCategoryDetailActivity.class);
+                startActivity(intent);
             }
 
             @Override

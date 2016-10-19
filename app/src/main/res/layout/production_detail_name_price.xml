@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/production_detail_name_price"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true">
+
+    <TextView
+        android:id="@+id/production_detail_name_price_title"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/me_left_margin"
+        android:layout_marginStart="@dimen/me_left_margin"
+        android:gravity="center|start"
+        android:text="已选" />
+
+    <Button
+        android:textColor="#ed3058"
+        android:textSize="14sp"
+        android:background="@drawable/red_border_edge"
+        android:id="@+id/production_detail_name_price_options"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="37dp"
+        android:layout_marginStart="37dp"
+        android:layout_toEndOf="@id/production_detail_name_price_title"
+        android:layout_toRightOf="@id/production_detail_name_price_title"
+        android:gravity="center"
+        tools:text="Tom" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/me_right_margin"
+        android:layout_marginRight="@dimen/me_right_margin"
+        android:src="@drawable/forward_arrow_gray" />
+</RelativeLayout>
