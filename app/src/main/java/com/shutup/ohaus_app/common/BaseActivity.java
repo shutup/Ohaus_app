@@ -19,6 +19,7 @@ import java.lang.reflect.Method;
 public class BaseActivity extends AppCompatActivity {
 
     public boolean isDark = true;
+    public String TAG = getClass().getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

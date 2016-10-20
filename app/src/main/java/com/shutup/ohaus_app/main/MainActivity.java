@@ -128,7 +128,7 @@ public class MainActivity extends BaseActivity implements Constants {
         initBanner();
         initQuickNews();
         initGoodsRecommend();
-        initRealm();
+//        initRealm();
         tryLoadData();
     }
 

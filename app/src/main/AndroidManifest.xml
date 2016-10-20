@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".common.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -34,9 +35,9 @@
         <activity android:name=".main.production_category.ProductionCategoryItemsListActivity" />
         <activity android:name=".main.industry_application.IndustryApplicationSecondActivity" />
         <activity android:name=".login.RegisterActivity" />
-        <activity android:name=".login.LoginActivity"></activity>
-        <activity android:name=".main.industry_application.IndustryApplicationDetailActivity"></activity>
-        <activity android:name=".main.production_category.ProductionCategoryDetailActivity"></activity>
+        <activity android:name=".login.LoginActivity"/>
+        <activity android:name=".main.industry_application.IndustryApplicationDetailActivity"/>
+        <activity android:name=".main.production_category.ProductionCategoryDetailActivity"/>
     </application>
 
 </manifest>

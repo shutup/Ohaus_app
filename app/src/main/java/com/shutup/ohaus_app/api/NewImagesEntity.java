@@ -1,12 +1,17 @@
 package com.shutup.ohaus_app.api;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by shutup on 2016/10/17.
  */
 
-public class NewImagesEntity {
-    private String name;
+public class NewImagesEntity extends RealmObject{
+    @PrimaryKey
     private String url;
+
+    private String name;
 
     public String getName() {
         return name;

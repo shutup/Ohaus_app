@@ -15,13 +15,21 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import com.shutup.ohaus_app.BuildConfig;
 import com.shutup.ohaus_app.R;
+import com.shutup.ohaus_app.api.CategoryEntity;
 import com.shutup.ohaus_app.api.CategoryListEntity;
 import com.shutup.ohaus_app.api.OhaosiService;
 import com.shutup.ohaus_app.api.ProductCategoryEntity;
+import com.shutup.ohaus_app.api.RealmString;
 import com.shutup.ohaus_app.api.RetrofitManager;
 import com.shutup.ohaus_app.api.TianpingEntity;
 import com.shutup.ohaus_app.common.BaseActivity;
@@ -39,13 +47,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import io.realm.Realm;
+import io.realm.RealmChangeListener;
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -80,6 +96,8 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
         ButterKnife.inject(this);
         initToolBar();
         initRecyclerView();
+
+        loadDataFromLocal();
     }
 
     @Override
@@ -214,8 +232,41 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                     try {
                         String jsonStr = response.body().string();
                         GsonBuilder builder = new GsonBuilder();
-                        Gson gson = builder.create();
-                        CategoryListEntity categoryListEntity = gson.fromJson(jsonStr, CategoryListEntity.class);
+//                        Gson gson = builder.create();
+                        Type token = new TypeToken<RealmList<RealmString>>(){}.getType();
+                        Gson gson = new GsonBuilder()
+                                .setExclusionStrategies(new ExclusionStrategy() {
+                                    @Override
+                                    public boolean shouldSkipField(FieldAttributes f) {
+                                        return f.getDeclaringClass().equals(RealmObject.class);
+                                    }
+
+                                    @Override
+                                    public boolean shouldSkipClass(Class<?> clazz) {
+                                        return false;
+                                    }
+                                })
+                                .registerTypeAdapter(token, new TypeAdapter<RealmList<RealmString>>() {
+
+                                    @Override
+                                    public void write(JsonWriter out, RealmList<RealmString> value) throws IOException {
+                                        // Ignore
+                                    }
+
+                                    @Override
+                                    public RealmList<RealmString> read(JsonReader in) throws IOException {
+                                        RealmList<RealmString> list = new RealmList<RealmString>();
+                                        in.beginArray();
+                                        while (in.hasNext()) {
+                                            list.add(new RealmString(in.nextString()));
+                                        }
+                                        in.endArray();
+                                        return list;
+                                    }
+                                })
+                                .create();
+//                        CategoryListEntity categoryListEntity = gson.fromJson(jsonStr, CategoryListEntity.class);
+                        CategoryListEntity categoryListEntity = gson.fromJson(jsonStr, new TypeToken<List<CategoryListEntity>>(){}.getType());
                         JSONObject jsonObject = new JSONObject(jsonStr);
                         JSONArray jsonArray = jsonObject.optJSONArray("data");
                         for (int i = 0; i < jsonArray.length(); i++) {
@@ -223,17 +274,19 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                             int type = StringUtils.getEntityNameByType(categoryListEntity.getData().get(i).getSubCategory());
                             JSONArray detailsObject = mainObject.optJSONArray("data");
                             if (type == TYPE_FXJMTP) {
-                                ArrayList<Object> data = new ArrayList<Object>();
+                                List<TianpingEntity> data = new ArrayList<TianpingEntity>();
                                 for (int j = 0; j < detailsObject.length(); j++) {
                                     TianpingEntity tianpingEntity = gson.fromJson(detailsObject.optJSONObject(i).toString(), TianpingEntity.class);
                                     data.add(tianpingEntity);
                                 }
+                                saveToLocalFXJMTP(data);
                             }
                         }
                         for (int i = 0; i < categoryListEntity.getData().size(); i++) {
                             ProductCategoryEntity productCategoryEntity = categoryListEntity.getData().get(i);
                             mProductionNormalItems.add(new ProductionNormalItem(productCategoryEntity.getNewImages().get(0).getUrl(), productCategoryEntity.getName(), "最低 ￥" + productCategoryEntity.getMinimumPrice(), productCategoryEntity.getMinimumPrice()));
                         }
+                        saveToLocal(categoryListEntity.getData());
                         refreshUI();
 
                     } catch (IOException e) {
@@ -252,9 +305,49 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
         });
     }
 
+    private void saveToLocal(final List<ProductCategoryEntity> data) {
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealmOrUpdate(data);
+            }
+        }, new Realm.Transaction.OnSuccess() {
+            @Override
+            public void onSuccess() {
+                if (BuildConfig.DEBUG) Log.d(TAG, "ProductCategoryEntity save success");
+            }
+        });
+    }
+
+    private void saveToLocalFXJMTP(final List<TianpingEntity> data) {
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealmOrUpdate(data);
+            }
+        }, new Realm.Transaction.OnSuccess() {
+            @Override
+            public void onSuccess() {
+                if (BuildConfig.DEBUG) Log.d(TAG, "TianpingEntity save success");
+            }
+        });
+    }
+
     private void refreshUI() {
         mProductionCategoryItemsListAdapter.notifyDataSetChanged();
     }
 
-
+    private void loadDataFromLocal() {
+        RealmQuery<ProductCategoryEntity> categoryEntityRealmQuery = RealmQuery.createQuery(Realm.getDefaultInstance(),ProductCategoryEntity.class);
+        RealmResults<ProductCategoryEntity> categoryEntities= categoryEntityRealmQuery.findAllAsync();
+        categoryEntities.addChangeListener(new RealmChangeListener<RealmResults<ProductCategoryEntity>>() {
+            @Override
+            public void onChange(RealmResults<ProductCategoryEntity> categoryEntities) {
+                //updateView(categoryEntities);
+                Log.d(TAG, "onChange: "+categoryEntities);
+            }
+        });
+    }
 }

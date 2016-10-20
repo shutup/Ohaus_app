@@ -1,9 +1,13 @@
 package com.shutup.ohaus_app.api;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by shutup on 2016/10/16.
  */
-public class TianpingEntity {
+public class TianpingEntity extends RealmObject{
+    @PrimaryKey
     private String no;
     private String desc;
     private int price;
@@ -12,7 +16,6 @@ public class TianpingEntity {
     private String adjust;
     private String autoWindCapGate;
     private String originImport;
-    private int id;
 
     public String getNo() {
         return no;
@@ -78,11 +81,4 @@ public class TianpingEntity {
         this.originImport = originImport;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 }
