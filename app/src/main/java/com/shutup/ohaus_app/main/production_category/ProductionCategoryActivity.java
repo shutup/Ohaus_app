@@ -14,6 +14,7 @@ import com.shutup.ohaus_app.R;
 import com.shutup.ohaus_app.api.CategoryEntity;
 import com.shutup.ohaus_app.api.SubsEntity;
 import com.shutup.ohaus_app.common.BaseActivity;
+import com.shutup.ohaus_app.common.Constants;
 import com.shutup.ohaus_app.common.DividerItemDecoration;
 import com.shutup.ohaus_app.common.GridSpacingItemDecoration;
 import com.shutup.ohaus_app.common.RecyclerTouchListener;
@@ -33,7 +34,7 @@ import io.realm.RealmChangeListener;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
-public class ProductionCategoryActivity extends BaseActivity {
+public class ProductionCategoryActivity extends BaseActivity implements Constants{
 
     @InjectView(R.id.toolbar_title)
     TextView mToolbarTitle;
@@ -135,6 +136,7 @@ public class ProductionCategoryActivity extends BaseActivity {
             public void onClick(View view, int position) {
                 ProductionCategoryMenuItem2 productionCategoryMenuItem2 = mProductionCategoryMenu2Adapter.getProductionCategoryMenuItem2s().get(position);
                 Intent intent = new Intent(getApplicationContext(), ProductionCategoryItemsListActivity.class);
+                intent.putExtra(PRODUCTION_TYPE,productionCategoryMenuItem2.getMenuTitle());
                 startActivity(intent);
                 EventBus.getDefault().postSticky(productionCategoryMenuItem2);
             }

@@ -47,11 +47,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -86,8 +89,10 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
 
     private ArrayList<ProductionNormalItem> mProductionNormalItems;
     private ProductionCategoryItemsListAdapter mProductionCategoryItemsListAdapter;
+    private Map<String,ArrayList<String>> filterOptions;
     private boolean isAsc = true;
     private boolean isFilterVisable = false;
+    private int type = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,6 +220,7 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
 
     @Subscribe(sticky = true)
     public void onProductionCategoryMenuItem2Receive(ProductionCategoryMenuItem2 productionCategoryMenuItem2) {
+        EventBus.getDefault().removeStickyEvent(productionCategoryMenuItem2);
         mToolbarTitle.setText(productionCategoryMenuItem2.getMenuTitle());
         if (BuildConfig.DEBUG)
             Log.d("ProductionCategoryItems", productionCategoryMenuItem2.getId());
@@ -231,8 +237,6 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                         Log.d("ProductionCategoryItems", "response:" + response.body().toString());
                     try {
                         String jsonStr = response.body().string();
-                        GsonBuilder builder = new GsonBuilder();
-//                        Gson gson = builder.create();
                         Type token = new TypeToken<RealmList<RealmString>>(){}.getType();
                         Gson gson = new GsonBuilder()
                                 .setExclusionStrategies(new ExclusionStrategy() {
@@ -265,8 +269,7 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                                     }
                                 })
                                 .create();
-//                        CategoryListEntity categoryListEntity = gson.fromJson(jsonStr, CategoryListEntity.class);
-                        CategoryListEntity categoryListEntity = gson.fromJson(jsonStr, new TypeToken<List<CategoryListEntity>>(){}.getType());
+                        CategoryListEntity categoryListEntity = gson.fromJson(jsonStr, new TypeToken<CategoryListEntity>(){}.getType());
                         JSONObject jsonObject = new JSONObject(jsonStr);
                         JSONArray jsonArray = jsonObject.optJSONArray("data");
                         for (int i = 0; i < jsonArray.length(); i++) {
@@ -276,7 +279,7 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                             if (type == TYPE_FXJMTP) {
                                 List<TianpingEntity> data = new ArrayList<TianpingEntity>();
                                 for (int j = 0; j < detailsObject.length(); j++) {
-                                    TianpingEntity tianpingEntity = gson.fromJson(detailsObject.optJSONObject(i).toString(), TianpingEntity.class);
+                                    TianpingEntity tianpingEntity = gson.fromJson(detailsObject.optJSONObject(j).toString(), TianpingEntity.class);
                                     data.add(tianpingEntity);
                                 }
                                 saveToLocalFXJMTP(data);
@@ -340,14 +343,58 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
     }
 
     private void loadDataFromLocal() {
-        RealmQuery<ProductCategoryEntity> categoryEntityRealmQuery = RealmQuery.createQuery(Realm.getDefaultInstance(),ProductCategoryEntity.class);
-        RealmResults<ProductCategoryEntity> categoryEntities= categoryEntityRealmQuery.findAllAsync();
-        categoryEntities.addChangeListener(new RealmChangeListener<RealmResults<ProductCategoryEntity>>() {
+        Intent intent = getIntent();
+        String secondTypeStr = intent.getStringExtra(PRODUCTION_TYPE);
+        type = StringUtils.getEntityNameByType(secondTypeStr);
+        final Gson gson = new GsonBuilder().create();
+        RealmQuery<ProductCategoryEntity> productCategoryEntityRealmQuery = RealmQuery.createQuery(Realm.getDefaultInstance(),ProductCategoryEntity.class);
+//        final RealmResults<ProductCategoryEntity> productCategoryEntities= productCategoryEntityRealmQuery.findAllAsync();
+        final RealmResults<ProductCategoryEntity> productCategoryEntities = productCategoryEntityRealmQuery.equalTo("subCategory",secondTypeStr).findAllAsync();
+        productCategoryEntities.addChangeListener(new RealmChangeListener<RealmResults<ProductCategoryEntity>>() {
             @Override
-            public void onChange(RealmResults<ProductCategoryEntity> categoryEntities) {
+            public void onChange(RealmResults<ProductCategoryEntity> productCategoryEntities1) {
                 //updateView(categoryEntities);
-                Log.d(TAG, "onChange: "+categoryEntities);
+                Log.d(TAG, "onChange: "+productCategoryEntities);
             }
         });
+
+        if (type == TYPE_FXJMTP) {
+            filterOptions = new HashMap<>();
+            RealmQuery<TianpingEntity> tianpingEntityRealmQuery = RealmQuery.createQuery(Realm.getDefaultInstance(),TianpingEntity.class);
+            RealmResults<TianpingEntity> tianpingEntities= tianpingEntityRealmQuery.findAllAsync();
+//            tianpingEntityRealmQuery.distinct()
+            tianpingEntities.addChangeListener(new RealmChangeListener<RealmResults<TianpingEntity>>() {
+                @Override
+                public void onChange(RealmResults<TianpingEntity> tianpingEntities) {
+                    //updateView(categoryEntities);
+                    Log.d(TAG, "onChange: "+tianpingEntities);
+                    ProductCategoryEntity p = productCategoryEntities.first();
+                    RealmList<RealmString> realmStrings = p.getFilter();
+                    for (RealmString r:realmStrings
+                         ) {
+                        String key = r.getVal();
+                        for (TianpingEntity t:tianpingEntities
+                             ) {
+                            try {
+//                                Field field = t.getClass().getDeclaredField(key);
+//                                Field field1 = t.getClass().getField(key);
+//                                field.setAccessible(true);
+//                                String value = (String) field.get(key);
+                                String value = t.getMaxRange();
+                                String jsonStr = gson.toJson(t, TianpingEntity.class).toString();
+                                JSONObject j = new JSONObject(gson.toJson(t,TianpingEntity.class));
+//                                String value = j.optString(key);
+                                if (BuildConfig.DEBUG) Log.d(TAG, value);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+            });
+        }else {
+
+        }
+
     }
 }
