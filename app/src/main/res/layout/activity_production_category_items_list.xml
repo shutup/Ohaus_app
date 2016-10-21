@@ -54,49 +54,6 @@
         </android.support.v7.widget.RecyclerView>
     </LinearLayout>
 
-    <LinearLayout
-        android:visibility="gone"
-        android:id="@+id/production_category_filter_option_bg_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#bf000000">
-        <com.zhy.android.percent.support.PercentLinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <LinearLayout
-                android:orientation="vertical"
-                android:id="@+id/production_category_filter_option_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_marginStartPercent="10%w"
-                app:layout_marginLeftPercent="10%w"
-                android:background="@android:color/white">
-                <LinearLayout
-                    android:background="@color/colorPrimary"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <RelativeLayout
-                        android:layout_marginTop="@dimen/toolbar_padding_top"
-                        android:minHeight="?attr/actionBarSize"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <ImageView
-                            android:layout_marginStart="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_centerVertical="true"
-                            android:src="@drawable/back_close_white"
-                            android:layout_width="12dp"
-                            android:layout_height="12dp" />
-                        <TextView
-                            android:textSize="18sp"
-                            android:layout_centerInParent="true"
-                            tools:text="筛选"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-                    </RelativeLayout>
-                </LinearLayout>
-            </LinearLayout>
-        </com.zhy.android.percent.support.PercentLinearLayout>
-    </LinearLayout>
+    <include layout="@layout/activity_production_category_items_list_filter_view"/>
 </FrameLayout>
 

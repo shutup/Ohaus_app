@@ -2,6 +2,7 @@
 <resources>
     <!--Common-->
     <color name="common_divider_background_color">#ffe2e2e2</color>
+    <color name="common_text_color">#ff4a4a4a</color>
     <!--<color name="colorPrimary">#ffffff</color>-->
     <color name="colorPrimary">#2d3035</color>
     <!--<color name="colorPrimary">#3F51B5</color>-->

@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -25,7 +26,6 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.shutup.ohaus_app.BuildConfig;
 import com.shutup.ohaus_app.R;
-import com.shutup.ohaus_app.api.CategoryEntity;
 import com.shutup.ohaus_app.api.CategoryListEntity;
 import com.shutup.ohaus_app.api.OhaosiService;
 import com.shutup.ohaus_app.api.ProductCategoryEntity;
@@ -47,14 +47,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -86,10 +87,16 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
     LinearLayout productionCategoryFilterOptionBgView;
     @InjectView(R.id.production_category_filter_option_view)
     LinearLayout productionCategoryFilterOptionView;
+    @InjectView(R.id.recyclerViewFilterOptions)
+    RecyclerView mRecyclerViewFilterOptions;
+    @InjectView(R.id.production_category_filter_option_view_reset)
+    Button mProductionCategoryFilterOptionViewReset;
+    @InjectView(R.id.production_category_filter_option_view_select)
+    Button mProductionCategoryFilterOptionViewSelect;
 
     private ArrayList<ProductionNormalItem> mProductionNormalItems;
     private ProductionCategoryItemsListAdapter mProductionCategoryItemsListAdapter;
-    private Map<String,ArrayList<String>> filterOptions;
+    private Map<String, ArrayList<String>> filterOptions;
     private boolean isAsc = true;
     private boolean isFilterVisable = false;
     private int type = 0;
@@ -161,12 +168,12 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
     public void onBackPressed() {
         if (isFilterVisable) {
             updateFilterOptions();
-        }else {
+        } else {
             super.onBackPressed();
         }
     }
 
-    @OnClick({R.id.production_category_price_option, R.id.production_category_filter_option, R.id.production_category_filter_option_bg_view, R.id.production_category_filter_option_view})
+    @OnClick({R.id.production_category_price_option, R.id.production_category_filter_option, R.id.production_category_filter_option_bg_view, R.id.production_category_filter_option_view, R.id.production_category_filter_option_view_reset, R.id.production_category_filter_option_view_select})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.production_category_price_option:
@@ -180,6 +187,10 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                 break;
             case R.id.production_category_filter_option_bg_view:
                 updateFilterOptions();
+                break;
+            case R.id.production_category_filter_option_view_reset:
+                break;
+            case R.id.production_category_filter_option_view_select:
                 break;
         }
     }
@@ -237,39 +248,9 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                         Log.d("ProductionCategoryItems", "response:" + response.body().toString());
                     try {
                         String jsonStr = response.body().string();
-                        Type token = new TypeToken<RealmList<RealmString>>(){}.getType();
-                        Gson gson = new GsonBuilder()
-                                .setExclusionStrategies(new ExclusionStrategy() {
-                                    @Override
-                                    public boolean shouldSkipField(FieldAttributes f) {
-                                        return f.getDeclaringClass().equals(RealmObject.class);
-                                    }
-
-                                    @Override
-                                    public boolean shouldSkipClass(Class<?> clazz) {
-                                        return false;
-                                    }
-                                })
-                                .registerTypeAdapter(token, new TypeAdapter<RealmList<RealmString>>() {
-
-                                    @Override
-                                    public void write(JsonWriter out, RealmList<RealmString> value) throws IOException {
-                                        // Ignore
-                                    }
-
-                                    @Override
-                                    public RealmList<RealmString> read(JsonReader in) throws IOException {
-                                        RealmList<RealmString> list = new RealmList<RealmString>();
-                                        in.beginArray();
-                                        while (in.hasNext()) {
-                                            list.add(new RealmString(in.nextString()));
-                                        }
-                                        in.endArray();
-                                        return list;
-                                    }
-                                })
-                                .create();
-                        CategoryListEntity categoryListEntity = gson.fromJson(jsonStr, new TypeToken<CategoryListEntity>(){}.getType());
+                        Gson gson = getCustomeGsonInstance();
+                        CategoryListEntity categoryListEntity = gson.fromJson(jsonStr, new TypeToken<CategoryListEntity>() {
+                        }.getType());
                         JSONObject jsonObject = new JSONObject(jsonStr);
                         JSONArray jsonArray = jsonObject.optJSONArray("data");
                         for (int i = 0; i < jsonArray.length(); i++) {
@@ -306,6 +287,42 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
 
             }
         });
+    }
+
+    private Gson getCustomeGsonInstance(){
+        Type token = new TypeToken<RealmList<RealmString>>() {
+        }.getType();
+        return new GsonBuilder()
+                .setExclusionStrategies(new ExclusionStrategy() {
+                    @Override
+                    public boolean shouldSkipField(FieldAttributes f) {
+                        return f.getDeclaringClass().equals(RealmObject.class);
+                    }
+
+                    @Override
+                    public boolean shouldSkipClass(Class<?> clazz) {
+                        return false;
+                    }
+                })
+                .registerTypeAdapter(token, new TypeAdapter<RealmList<RealmString>>() {
+
+                    @Override
+                    public void write(JsonWriter out, RealmList<RealmString> value) throws IOException {
+                        // Ignore
+                    }
+
+                    @Override
+                    public RealmList<RealmString> read(JsonReader in) throws IOException {
+                        RealmList<RealmString> list = new RealmList<RealmString>();
+                        in.beginArray();
+                        while (in.hasNext()) {
+                            list.add(new RealmString(in.nextString()));
+                        }
+                        in.endArray();
+                        return list;
+                    }
+                })
+                .create();
     }
 
     private void saveToLocal(final List<ProductCategoryEntity> data) {
@@ -347,54 +364,54 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
         String secondTypeStr = intent.getStringExtra(PRODUCTION_TYPE);
         type = StringUtils.getEntityNameByType(secondTypeStr);
         final Gson gson = new GsonBuilder().create();
-        RealmQuery<ProductCategoryEntity> productCategoryEntityRealmQuery = RealmQuery.createQuery(Realm.getDefaultInstance(),ProductCategoryEntity.class);
-//        final RealmResults<ProductCategoryEntity> productCategoryEntities= productCategoryEntityRealmQuery.findAllAsync();
-        final RealmResults<ProductCategoryEntity> productCategoryEntities = productCategoryEntityRealmQuery.equalTo("subCategory",secondTypeStr).findAllAsync();
+        RealmQuery<ProductCategoryEntity> productCategoryEntityRealmQuery = RealmQuery.createQuery(Realm.getDefaultInstance(), ProductCategoryEntity.class);
+        final RealmResults<ProductCategoryEntity> productCategoryEntities = productCategoryEntityRealmQuery.equalTo("subCategory", secondTypeStr).findAllAsync();
         productCategoryEntities.addChangeListener(new RealmChangeListener<RealmResults<ProductCategoryEntity>>() {
             @Override
             public void onChange(RealmResults<ProductCategoryEntity> productCategoryEntities1) {
-                //updateView(categoryEntities);
-                Log.d(TAG, "onChange: "+productCategoryEntities);
-            }
-        });
-
-        if (type == TYPE_FXJMTP) {
-            filterOptions = new HashMap<>();
-            RealmQuery<TianpingEntity> tianpingEntityRealmQuery = RealmQuery.createQuery(Realm.getDefaultInstance(),TianpingEntity.class);
-            RealmResults<TianpingEntity> tianpingEntities= tianpingEntityRealmQuery.findAllAsync();
-//            tianpingEntityRealmQuery.distinct()
-            tianpingEntities.addChangeListener(new RealmChangeListener<RealmResults<TianpingEntity>>() {
-                @Override
-                public void onChange(RealmResults<TianpingEntity> tianpingEntities) {
-                    //updateView(categoryEntities);
-                    Log.d(TAG, "onChange: "+tianpingEntities);
-                    ProductCategoryEntity p = productCategoryEntities.first();
-                    RealmList<RealmString> realmStrings = p.getFilter();
-                    for (RealmString r:realmStrings
-                         ) {
-                        String key = r.getVal();
-                        for (TianpingEntity t:tianpingEntities
-                             ) {
-                            try {
-//                                Field field = t.getClass().getDeclaredField(key);
-//                                Field field1 = t.getClass().getField(key);
-//                                field.setAccessible(true);
-//                                String value = (String) field.get(key);
-                                String value = t.getMaxRange();
-                                String jsonStr = gson.toJson(t, TianpingEntity.class).toString();
-                                JSONObject j = new JSONObject(gson.toJson(t,TianpingEntity.class));
-//                                String value = j.optString(key);
-                                if (BuildConfig.DEBUG) Log.d(TAG, value);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                Log.d(TAG, "onChange: " + productCategoryEntities1);
+                if (type == TYPE_FXJMTP) {
+                    filterOptions = new HashMap<>();
+                    RealmQuery<TianpingEntity> tianpingEntityRealmQuery = RealmQuery.createQuery(Realm.getDefaultInstance(), TianpingEntity.class);
+                    RealmResults<TianpingEntity> tianpingEntities = tianpingEntityRealmQuery.findAllAsync();
+                    tianpingEntities.addChangeListener(new RealmChangeListener<RealmResults<TianpingEntity>>() {
+                        @Override
+                        public void onChange(RealmResults<TianpingEntity> tianpingEntities) {
+                            //updateView(categoryEntities);
+                            Log.d(TAG, "onChange: " + tianpingEntities);
+                            ProductCategoryEntity p = productCategoryEntities.first();
+                            Realm realm = Realm.getDefaultInstance();
+                            List<TianpingEntity> data = realm.copyFromRealm(tianpingEntities);
+                            RealmList<RealmString> realmStrings = p.getFilter();
+                            for (RealmString r : realmStrings
+                                    ) {
+                                String key = r.getVal();
+                                Set<String> filterOptionSet = new HashSet<String>();
+                                ArrayList<String> filterOptionArray = new ArrayList<String>();
+                                for (TianpingEntity t : data
+                                        ) {
+                                    try {
+                                        String jsonStr = gson.toJson(t, TianpingEntity.class);
+                                        JSONObject j = new JSONObject(gson.toJson(t, TianpingEntity.class));
+                                        String value = j.optString(key);
+                                        filterOptionSet.add(value);
+                                        if (BuildConfig.DEBUG) Log.d(TAG, value);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                filterOptionArray = new ArrayList<String>(filterOptionSet);
+                                Collections.sort(filterOptionArray);
+                                filterOptions.put(key, filterOptionArray);
+                                if (BuildConfig.DEBUG)
+                                    Log.d("ProductionCategoryItems", "filterOptions:" + filterOptions);
                             }
                         }
-                    }
+                    });
+                } else {
+
                 }
-            });
-        }else {
-
-        }
-
+            }
+        });
     }
 }

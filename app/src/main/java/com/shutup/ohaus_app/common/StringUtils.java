@@ -12,9 +12,11 @@ import java.util.Map;
 public class StringUtils {
 
     private static Map<String,Integer> entityNameMapType = new HashMap<>();
+    private static Map<String,Class<?>> entityNameMapClassName = new HashMap<>();
 
     static {
         entityNameMapType.put("分析精密天平", 1);
+        entityNameMapClassName.put("分析精密天平",TianpingEntity.class);
     }
 
     public static String cleanPriceStr(String str) {
@@ -24,5 +26,7 @@ public class StringUtils {
     public static Integer getEntityNameByType(String type) {
         return entityNameMapType.get(type);
     }
-
+    public static Class<?> getEntityClassByName(String name) {
+        return entityNameMapClassName.get(name);
+    }
 }
