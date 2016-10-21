@@ -40,6 +40,6 @@
         android:id="@+id/production_category_filter_option_view_gridview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        
+
     </GridView>
 </LinearLayout>
