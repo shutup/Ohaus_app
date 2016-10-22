@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -97,6 +98,8 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
     private ArrayList<ProductionNormalItem> mProductionNormalItems;
     private ProductionCategoryItemsListAdapter mProductionCategoryItemsListAdapter;
     private Map<String, ArrayList<String>> filterOptions;
+    private ArrayList<FilterOptionModel> mFilterOptionModels;
+    private ProductionCategoryFilterOptionAdapter mProductionCategoryFilterOptionAdapter;
     private boolean isAsc = true;
     private boolean isFilterVisable = false;
     private int type = 0;
@@ -109,7 +112,24 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
         initToolBar();
         initRecyclerView();
 
+        initFilterRecyclerView();
         loadDataFromLocal();
+    }
+
+    private void initFilterRecyclerView() {
+        mFilterOptionModels = new ArrayList<>();
+        mProductionCategoryFilterOptionAdapter = new ProductionCategoryFilterOptionAdapter(this, mFilterOptionModels);
+        final GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(),3);
+        mRecyclerViewFilterOptions.setLayoutManager(gridLayoutManager);
+        mRecyclerViewFilterOptions.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerViewFilterOptions.addItemDecoration(new MarginDecoration(this));
+        mRecyclerViewFilterOptions.setAdapter(mProductionCategoryFilterOptionAdapter);
+        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                return mProductionCategoryFilterOptionAdapter.isHeader(mFilterOptionModels.get(position).getType()) ? gridLayoutManager.getSpanCount(): 1;
+            }
+        });
     }
 
     @Override
@@ -370,6 +390,9 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
             @Override
             public void onChange(RealmResults<ProductCategoryEntity> productCategoryEntities1) {
                 Log.d(TAG, "onChange: " + productCategoryEntities1);
+                if (productCategoryEntities1.size() == 0) {
+                    return;
+                }
                 if (type == TYPE_FXJMTP) {
                     filterOptions = new HashMap<>();
                     RealmQuery<TianpingEntity> tianpingEntityRealmQuery = RealmQuery.createQuery(Realm.getDefaultInstance(), TianpingEntity.class);
@@ -405,6 +428,8 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                                 filterOptions.put(key, filterOptionArray);
                                 if (BuildConfig.DEBUG)
                                     Log.d("ProductionCategoryItems", "filterOptions:" + filterOptions);
+                                reloadFilterOptionsArray(filterOptions);
+                                refreshFilterUI();
                             }
                         }
                     });
@@ -413,5 +438,23 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                 }
             }
         });
+    }
+
+    private void refreshFilterUI() {
+        mProductionCategoryFilterOptionAdapter.notifyDataSetChanged();
+    }
+
+    private void reloadFilterOptionsArray(Map<String,ArrayList<String>> filterOptions) {
+        mFilterOptionModels.clear();
+        for (Map.Entry<String, ArrayList<String>> entry:
+                filterOptions.entrySet()){
+            mFilterOptionModels.add(new FilterOptionModel(ProductionCategoryFilterOptionAdapter.ITEM_TYPE_HEADER,entry.getKey(),entry.getKey()));
+            for (String s:entry.getValue()
+                    ) {
+                mFilterOptionModels.add(new FilterOptionModel(ProductionCategoryFilterOptionAdapter.ITEM_TYPE_NORMAL,s,entry.getKey()));
+            }
+        }
+        if (BuildConfig.DEBUG)
+            Log.d("ProductionCategoryItems", "mFilterOptionModels.size():" + mFilterOptionModels.size());
     }
 }

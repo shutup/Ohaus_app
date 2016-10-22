@@ -8,7 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#bf000000"
-    android:visibility="visible">
+    android:visibility="gone">
 
     <com.zhy.android.percent.support.PercentLinearLayout
 
@@ -44,7 +44,8 @@
                         android:src="@drawable/back_close_white"/>
 
                     <TextView
-                        tools:text="筛选"
+                        android:background="@android:color/white"
+                        tools:text="筛选1232132"
                         android:textColor="@android:color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

@@ -54,6 +54,6 @@
         </android.support.v7.widget.RecyclerView>
     </LinearLayout>
 
-    <include layout="@layout/activity_production_category_items_list_filter_view"/>
+    <include layout="@layout/activity_production_category_items_list_filter_view" />
 </FrameLayout>
 

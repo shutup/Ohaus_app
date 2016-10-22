@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
-
+              android:layout_height="35dp">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="35dp">
+        android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/production_category_filter_option_view_item_name"
+            android:id="@+id/production_category_filter_option_view_item_section_name"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
             android:layout_width="wrap_content"
@@ -36,10 +35,5 @@
             android:layout_alignParentBottom="true"
             android:background="@color/divider_line_normal_color"/>
     </RelativeLayout>
-    <GridView
-        android:id="@+id/production_category_filter_option_view_gridview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-    </GridView>
 </LinearLayout>
