@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar android:id="@+id/toolbar"
+                                   xmlns:android="http://schemas.android.com/apk/res/android"
+                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                   xmlns:tools="http://schemas.android.com/tools"
+                                   android:layout_width="match_parent"
+                                   android:layout_height="wrap_content"
+                                   android:background="@color/colorPrimary"
+                                   android:minHeight="?attr/actionBarSize"
+                                   android:paddingTop="@dimen/toolbar_padding_top"
+                                   app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                                   app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <TextView
+                android:paddingEnd="36dp"
+                android:paddingRight="36dp"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@android:color/white"
+                android:gravity="center|end"
+                android:text="商品"/>
+            <View
+                android:layout_marginTop="10dp"
+                android:id="@+id/production_category_detail_toolbar_line_left"
+                android:background="@color/colorAccent"
+                android:layout_marginEnd="36dp"
+                android:layout_marginRight="36dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+            <TextView
+                android:paddingStart="36dp"
+                android:paddingLeft="36dp"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:gravity="center|start"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@android:color/white"
+                android:text="详情"/>
+            <View
+                android:layout_marginTop="10dp"
+                android:id="@+id/production_category_detail_toolbar_line_right"
+                android:layout_marginLeft="36dp"
+                android:layout_marginStart="36dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.v7.widget.Toolbar>

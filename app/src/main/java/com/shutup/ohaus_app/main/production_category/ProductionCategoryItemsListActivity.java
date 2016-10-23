@@ -95,11 +95,16 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
     Button mProductionCategoryFilterOptionViewReset;
     @InjectView(R.id.production_category_filter_option_view_select)
     Button mProductionCategoryFilterOptionViewSelect;
-
+    /**
+     * 一级分类
+     */
     private ProductCategoryEntity mProductionCategoryEntity;
     private ArrayList<ProductionNormalItem> mProductionNormalItems;
     private ProductionCategoryItemsListAdapter mProductionCategoryItemsListAdapter;
     private Map<String, ArrayList<String>> filterOptions;
+    /**
+     * 筛选项
+     */
     private ArrayList<FilterOptionModel> mFilterOptionModels;
     private ProductionCategoryFilterOptionAdapter mProductionCategoryFilterOptionAdapter;
     private boolean isAsc = true;
@@ -169,6 +174,7 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
         mRecyclerViewItemsList.addOnItemTouchListener(new RecyclerTouchListener(this, mRecyclerViewItemsList, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
+                EventBus.getDefault().postSticky(new ProductionCategoryDetailModel(mProductionCategoryEntity, mFilterOptionModels, mProductionNormalItems.get(position)));
                 Intent intent = new Intent(ProductionCategoryItemsListActivity.this, ProductionCategoryDetailActivity.class);
                 startActivity(intent);
             }
@@ -233,6 +239,9 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
         }
     }
 
+    /**
+     * 进行筛选
+     */
     private void doFilterOptions() {
         ArrayList<FilterOptionModel> selectedFilterOptions = new ArrayList<>();
         Map<String,ArrayList<String>> selectedFilterOptionsMap = new LinkedHashMap<>();
@@ -288,7 +297,7 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                 mProductionNormalItems.clear();
                 for (TianpingEntity t :
                         element) {
-                    mProductionNormalItems.add(new ProductionNormalItem(mProductionCategoryEntity.getNewImages().get(0).getUrl(), t.getDesc(), "价格：" + t.getPrice(), t.getPrice()));
+                    mProductionNormalItems.add(new ProductionNormalItem(mProductionCategoryEntity.getNewImages().get(0).getUrl(), t.getDesc(), "价格：" + t.getPrice(), t.getPrice(),ProductionNormalItem.TYPE_ProductionSecondCategory));
                 }
                 sortTheItems();
                 refreshUI();
@@ -298,6 +307,9 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
         showOrDismissFilterOptions();
     }
 
+    /**
+     * 重置筛选
+     */
     private void resetFilterOptions() {
         for (FilterOptionModel f: mFilterOptionModels
              ) {

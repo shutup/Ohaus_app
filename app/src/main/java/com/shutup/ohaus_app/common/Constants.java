@@ -16,6 +16,9 @@ public interface Constants {
     int IS_LOGIN_OK = 1;
     int IS_LOGIN_FAIL = 2;
 
+    String FieldProductCategoryEntity = "ProductCategoryEntity";
+    String FieldFilterOptionModelArray = "FieldFilterOptionModelArray";
+
     String PRODUCTION_TYPE = "PRODUCTION_TYPE";
     int TYPE_FXJMTP = 1;
 }

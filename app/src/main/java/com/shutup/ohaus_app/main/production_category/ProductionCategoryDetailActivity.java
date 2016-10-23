@@ -3,38 +3,43 @@ package com.shutup.ohaus_app.main.production_category;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.shutup.ohaus_app.R;
-import com.shutup.ohaus_app.api.CategoryEntity;
 import com.shutup.ohaus_app.common.BaseActivity;
+import com.shutup.ohaus_app.model.ProductionNormalItem;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class ProductionCategoryDetailActivity extends BaseActivity {
 
-    @InjectView(R.id.toolbar_title)
-    TextView mToolbarTitle;
     @InjectView(R.id.toolbar)
     Toolbar mToolbar;
+    @InjectView(R.id.productionName)
+    TextView mProductionName;
+    @InjectView(R.id.productionPrice)
+    TextView mProductionPrice;
+    @InjectView(R.id.production_category_detail_toolbar_line_left)
+    View mProductionCategoryDetailToolbarLineLeft;
+    @InjectView(R.id.production_category_detail_toolbar_line_right)
+    View mProductionCategoryDetailToolbarLineRight;
 
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        EventBus.getDefault().register(this);
-//    }
-//
-//    @Override
-//    public void onStop() {
-//        EventBus.getDefault().unregister(this);
-//        super.onStop();
-//    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +57,6 @@ public class ProductionCategoryDetailActivity extends BaseActivity {
         // Title
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("");
-            mToolbarTitle.setText(R.string.production_category_str);
         }
     }
 
@@ -65,8 +69,15 @@ public class ProductionCategoryDetailActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-//    @Subscribe(sticky = true)
-//    public void onMSg() {
-//
-//    }
+    @Subscribe(sticky = true)
+    public void onMSg(ProductionCategoryDetailModel productionCategoryDetailModel) {
+        EventBus.getDefault().removeStickyEvent(productionCategoryDetailModel);
+        if (productionCategoryDetailModel.getProductionNormalItem().getType() == ProductionNormalItem.TYPE_ProductionSecondCategory) {
+            mProductionName.setText(productionCategoryDetailModel.getProductionNormalItem().getTitleStr());
+            mProductionPrice.setText(productionCategoryDetailModel.getProductionNormalItem().getContentStr());
+        } else {
+            mProductionName.setText("");
+            mProductionPrice.setText("");
+        }
+    }
 }

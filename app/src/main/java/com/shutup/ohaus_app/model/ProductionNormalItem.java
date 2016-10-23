@@ -8,12 +8,21 @@ public class ProductionNormalItem {
     private String titleStr;
     private String contentStr;
     private float price;
+    private int type;
+
+    public static int TYPE_ProductionFirstCategory = 1;
+    public static int TYPE_ProductionSecondCategory = 1;
 
     public ProductionNormalItem(String iconUrl, String titleStr, String contentStr, float price) {
+        this(iconUrl, titleStr, contentStr, price, TYPE_ProductionFirstCategory);
+    }
+
+    public ProductionNormalItem(String iconUrl, String titleStr, String contentStr, float price, int type) {
         this.iconUrl = iconUrl;
         this.titleStr = titleStr;
         this.contentStr = contentStr;
         this.price = price;
+        this.type = type;
     }
 
     public String getIconUrl() {
@@ -48,5 +57,11 @@ public class ProductionNormalItem {
         this.price = price;
     }
 
+    public int getType() {
+        return type;
+    }
 
+    public void setType(int type) {
+        this.type = type;
+    }
 }
