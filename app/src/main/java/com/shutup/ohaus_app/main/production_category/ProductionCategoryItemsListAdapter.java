@@ -48,7 +48,7 @@ public class ProductionCategoryItemsListAdapter extends RecyclerView.Adapter<Pro
         holder.mContent.setText(builder);
         holder.mContent.setTextColor(Color.parseColor("#ed3058"));
         holder.mTitle.setText(productionNormalItem.getTitleStr());
-        Picasso.with(mContext).load(productionNormalItem.getIconUrl()).placeholder(R.mipmap.ic_launcher).into(holder.mIcon);
+        Picasso.with(mContext).load(productionNormalItem.getIconUrl()).placeholder(R.mipmap.ohaosi_icon).into(holder.mIcon);
 
     }
 

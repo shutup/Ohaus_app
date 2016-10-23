@@ -43,7 +43,7 @@ public class ProductionCategoryMenu2Adapter extends RecyclerView.Adapter<Product
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ProductionCategoryMenuItem2 productionCategoryMenuItem2 = mProductionCategoryMenuItem2s.get(position);
-        Picasso.with(mContext).load(productionCategoryMenuItem2.getImageUrl()).placeholder(R.mipmap.ic_launcher).into(holder.mRecyclerViewMenuImageView);
+        Picasso.with(mContext).load(productionCategoryMenuItem2.getImageUrl()).placeholder(R.mipmap.ohaosi_icon).into(holder.mRecyclerViewMenuImageView);
         holder.mRecyclerViewMenuTextView.setText(productionCategoryMenuItem2.getMenuTitle());
     }
 

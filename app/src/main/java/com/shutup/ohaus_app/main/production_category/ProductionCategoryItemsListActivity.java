@@ -96,6 +96,7 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
     @InjectView(R.id.production_category_filter_option_view_select)
     Button mProductionCategoryFilterOptionViewSelect;
 
+    private ProductCategoryEntity mProductionCategoryEntity;
     private ArrayList<ProductionNormalItem> mProductionNormalItems;
     private ProductionCategoryItemsListAdapter mProductionCategoryItemsListAdapter;
     private Map<String, ArrayList<String>> filterOptions;
@@ -234,13 +235,67 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
 
     private void doFilterOptions() {
         ArrayList<FilterOptionModel> selectedFilterOptions = new ArrayList<>();
+        Map<String,ArrayList<String>> selectedFilterOptionsMap = new LinkedHashMap<>();
         for (FilterOptionModel f: mFilterOptionModels
              ) {
             if (f.isSelected()) {
                 selectedFilterOptions.add(f);
             }
         }
+        if (selectedFilterOptions.size()==0) {
+            loadDataFromLocal();
+            showOrDismissFilterOptions();
+            return;
+        }
+        for (FilterOptionModel f:selectedFilterOptions
+             ) {
+            ArrayList<String> options;
+            if (selectedFilterOptionsMap.containsKey(f.getFilterOptionName())) {
+                selectedFilterOptionsMap.get(f.getFilterOptionName()).add(f.getName());
+            }else {
+                options = new ArrayList<>();
+                options.add(f.getName());
+                selectedFilterOptionsMap.put(f.getFilterOptionName(),options);
+            }
+        }
+        Realm realm = Realm.getDefaultInstance();
+        RealmQuery<TianpingEntity> query = realm.where(TianpingEntity.class);
+//        for (int i = 0; i < selectedFilterOptions.size(); i++) {
+//            FilterOptionModel f = selectedFilterOptions.get(i);
+//            if (i==0){
+//                query.equalTo(f.getFilterOptionName(),f.getName());
+//            }else {
+//                query.or().equalTo(f.getFilterOptionName(),f.getName());
+//            }
+//        }
+        for (Map.Entry<String, ArrayList<String>> m :
+                selectedFilterOptionsMap.entrySet()) {
+            query.beginGroup();
+            for (int i = 0; i <m.getValue().size(); i++) {
+                if (i == 0){
+                    query.equalTo(m.getKey(),m.getValue().get(i));
+                }else {
+                    query.or().equalTo(m.getKey(),m.getValue().get(i));
+                }
+            }
+            query.endGroup();
+        }
+        RealmResults<TianpingEntity> results = query.findAllAsync();
+        results.addChangeListener(new RealmChangeListener<RealmResults<TianpingEntity>>() {
+            @Override
+            public void onChange(RealmResults<TianpingEntity> element) {
+                if (BuildConfig.DEBUG) Log.d("ProductionCategoryItems", "element:" + element);
+                mProductionNormalItems.clear();
+                for (TianpingEntity t :
+                        element) {
+                    mProductionNormalItems.add(new ProductionNormalItem(mProductionCategoryEntity.getNewImages().get(0).getUrl(), t.getDesc(), "价格：" + t.getPrice(), t.getPrice()));
+                }
+                sortTheItems();
+                refreshUI();
+            }
+        });
         refreshFilterUI();
+        showOrDismissFilterOptions();
     }
 
     private void resetFilterOptions() {
@@ -282,7 +337,7 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
         for (int i = 0; i < mProductionNormalItems.size(); i++) {
             ProductionNormalItem p = mProductionNormalItems.get(i);
         }
-        mProductionCategoryItemsListAdapter.notifyDataSetChanged();
+        refreshUI();
     }
 
     @Subscribe(sticky = true)
@@ -322,7 +377,11 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                                 saveToLocalFXJMTP(data);
                             }
                         }
+                        mProductionNormalItems.clear();
                         for (int i = 0; i < categoryListEntity.getData().size(); i++) {
+                            if (i==0){
+                                mProductionCategoryEntity = categoryListEntity.getData().get(i);
+                            }
                             ProductCategoryEntity productCategoryEntity = categoryListEntity.getData().get(i);
                             mProductionNormalItems.add(new ProductionNormalItem(productCategoryEntity.getNewImages().get(0).getUrl(), productCategoryEntity.getName(), "最低 ￥" + productCategoryEntity.getMinimumPrice(), productCategoryEntity.getMinimumPrice()));
                         }
@@ -427,7 +486,17 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
             @Override
             public void onChange(RealmResults<ProductCategoryEntity> productCategoryEntities1) {
                 Log.d(TAG, "onChange: " + productCategoryEntities1);
-                if (productCategoryEntities1.size() == 0) {
+                if (productCategoryEntities1.size()!=0) {
+                    mProductionNormalItems.clear();
+                    for (int i = 0;i<productCategoryEntities1.size();i++) {
+                        if (i==0){
+                            mProductionCategoryEntity = productCategoryEntities1.get(i);
+                        }
+                        ProductCategoryEntity p = productCategoryEntities1.get(i);
+                        mProductionNormalItems.add(new ProductionNormalItem(p.getNewImages().get(0).getUrl(),p.getName(),"最低 ￥"+p.getMinimumPrice(),p.getMinimumPrice()));
+                        refreshUI();
+                    }
+                }else {
                     return;
                 }
                 if (type == TYPE_FXJMTP) {
@@ -455,7 +524,6 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                                         JSONObject j = new JSONObject(gson.toJson(t, TianpingEntity.class));
                                         String value = j.optString(key);
                                         filterOptionSet.add(value);
-                                        if (BuildConfig.DEBUG) Log.d(TAG, value);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
