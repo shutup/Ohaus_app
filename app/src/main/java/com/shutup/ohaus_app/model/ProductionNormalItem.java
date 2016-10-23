@@ -11,7 +11,7 @@ public class ProductionNormalItem {
     private int type;
 
     public static int TYPE_ProductionFirstCategory = 1;
-    public static int TYPE_ProductionSecondCategory = 1;
+    public static int TYPE_ProductionSecondCategory = 2;
 
     public ProductionNormalItem(String iconUrl, String titleStr, String contentStr, float price) {
         this(iconUrl, titleStr, contentStr, price, TYPE_ProductionFirstCategory);
