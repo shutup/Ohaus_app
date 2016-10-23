@@ -8,11 +8,25 @@ public class FilterOptionModel {
     private int type;
     private String name;
     private String filterOptionName;
+    private boolean isSelected;
 
-    public FilterOptionModel(int type, String name, String filterOptionName) {
+    public FilterOptionModel(int type, String name, String filterOptionName ) {
+         this(type, name, filterOptionName, false);
+    }
+
+    public FilterOptionModel(int type, String name, String filterOptionName ,boolean isSelected) {
         this.type = type;
         this.name = name;
         this.filterOptionName = filterOptionName;
+        this.isSelected = isSelected;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 
     public int getType() {

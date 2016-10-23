@@ -2,8 +2,7 @@ package com.shutup.ohaus_app.main.production_category;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckedTextView;
+import android.widget.TextView;
 
 import com.shutup.ohaus_app.R;
 
@@ -12,9 +11,9 @@ import com.shutup.ohaus_app.R;
  */
 
 public class ProductionCategoryFilterOptionItemVIewHolder extends RecyclerView.ViewHolder {
-    public Button mCheckedTextView;
+    public TextView mTextView;
     public ProductionCategoryFilterOptionItemVIewHolder(View itemView) {
         super(itemView);
-        mCheckedTextView = (Button) itemView.findViewById(R.id.production_category_filter_option_view_item_name);
+        mTextView = (TextView) itemView.findViewById(R.id.production_category_filter_option_view_item_name);
     }
 }

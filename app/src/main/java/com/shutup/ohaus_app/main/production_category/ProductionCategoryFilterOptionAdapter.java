@@ -42,7 +42,15 @@ public class ProductionCategoryFilterOptionAdapter extends RecyclerView.Adapter<
         if (isHeader(getItemViewType(position))) {
             ((ProductionCategoryFilterOptionHeaderViewHolder)holder).mTextView.setText(mFilterOptionModels.get(position).getName());
         }else {
-            ((ProductionCategoryFilterOptionItemVIewHolder)holder).mCheckedTextView.setText(mFilterOptionModels.get(position).getName());
+                if (mFilterOptionModels.get(position).isSelected()) {
+                    ((ProductionCategoryFilterOptionItemVIewHolder)holder).mTextView.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
+                    ((ProductionCategoryFilterOptionItemVIewHolder)holder).mTextView.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.filter_option_item_bg_selected));
+                }else {
+
+                    ((ProductionCategoryFilterOptionItemVIewHolder)holder).mTextView.setTextColor(mContext.getResources().getColor(R.color.common_text_color));
+                    ((ProductionCategoryFilterOptionItemVIewHolder)holder).mTextView.setBackgroundDrawable(mContext.getResources().getDrawable(R.drawable.filter_option_item_bg_normal));
+                }
+                ((ProductionCategoryFilterOptionItemVIewHolder)holder).mTextView.setText(mFilterOptionModels.get(position).getName());
         }
     }
 

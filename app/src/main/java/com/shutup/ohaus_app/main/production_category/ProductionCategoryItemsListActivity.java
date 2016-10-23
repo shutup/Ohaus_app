@@ -54,6 +54,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -116,6 +117,18 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
         loadDataFromLocal();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
     private void initFilterRecyclerView() {
         mFilterOptionModels = new ArrayList<>();
         mProductionCategoryFilterOptionAdapter = new ProductionCategoryFilterOptionAdapter(this, mFilterOptionModels);
@@ -130,18 +143,20 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                 return mProductionCategoryFilterOptionAdapter.isHeader(mFilterOptionModels.get(position).getType()) ? gridLayoutManager.getSpanCount(): 1;
             }
         });
-    }
+        mRecyclerViewFilterOptions.addOnItemTouchListener(new RecyclerTouchListener(this, mRecyclerViewFilterOptions, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                if (!mProductionCategoryFilterOptionAdapter.isHeader(mFilterOptionModels.get(position).getType())) {
+                    mFilterOptionModels.get(position).setSelected(!mFilterOptionModels.get(position).isSelected());
+                    refreshFilterUI();
+                }
+            }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
+            @Override
+            public void onLongClick(View view, int position) {
 
-    @Override
-    public void onStop() {
-        EventBus.getDefault().unregister(this);
-        super.onStop();
+            }
+        }));
     }
 
     private void initRecyclerView() {
@@ -187,7 +202,7 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
     @Override
     public void onBackPressed() {
         if (isFilterVisable) {
-            updateFilterOptions();
+            showOrDismissFilterOptions();
         } else {
             super.onBackPressed();
         }
@@ -200,22 +215,43 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                 sortTheItems();
                 break;
             case R.id.production_category_filter_option:
-                updateFilterOptions();
+                showOrDismissFilterOptions();
                 break;
             case R.id.production_category_filter_option_view:
                 //eat click event
                 break;
             case R.id.production_category_filter_option_bg_view:
-                updateFilterOptions();
+                showOrDismissFilterOptions();
                 break;
             case R.id.production_category_filter_option_view_reset:
+                resetFilterOptions();
                 break;
             case R.id.production_category_filter_option_view_select:
+                doFilterOptions();
                 break;
         }
     }
 
-    private void updateFilterOptions() {
+    private void doFilterOptions() {
+        ArrayList<FilterOptionModel> selectedFilterOptions = new ArrayList<>();
+        for (FilterOptionModel f: mFilterOptionModels
+             ) {
+            if (f.isSelected()) {
+                selectedFilterOptions.add(f);
+            }
+        }
+        refreshFilterUI();
+    }
+
+    private void resetFilterOptions() {
+        for (FilterOptionModel f: mFilterOptionModels
+             ) {
+            f.setSelected(false);
+        }
+        refreshFilterUI();
+    }
+
+    private void showOrDismissFilterOptions() {
         Animation animation = null;
         if (isFilterVisable) {
             animation = AnimationUtils.loadAnimation(this, R.anim.production_category_right_out);
@@ -291,6 +327,7 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                             mProductionNormalItems.add(new ProductionNormalItem(productCategoryEntity.getNewImages().get(0).getUrl(), productCategoryEntity.getName(), "最低 ￥" + productCategoryEntity.getMinimumPrice(), productCategoryEntity.getMinimumPrice()));
                         }
                         saveToLocal(categoryListEntity.getData());
+                        loadDataFromLocal();
                         refreshUI();
 
                     } catch (IOException e) {
@@ -394,7 +431,7 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                     return;
                 }
                 if (type == TYPE_FXJMTP) {
-                    filterOptions = new HashMap<>();
+                    filterOptions = new LinkedHashMap<String, ArrayList<String>>();
                     RealmQuery<TianpingEntity> tianpingEntityRealmQuery = RealmQuery.createQuery(Realm.getDefaultInstance(), TianpingEntity.class);
                     RealmResults<TianpingEntity> tianpingEntities = tianpingEntityRealmQuery.findAllAsync();
                     tianpingEntities.addChangeListener(new RealmChangeListener<RealmResults<TianpingEntity>>() {
@@ -448,7 +485,9 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
         mFilterOptionModels.clear();
         for (Map.Entry<String, ArrayList<String>> entry:
                 filterOptions.entrySet()){
-            mFilterOptionModels.add(new FilterOptionModel(ProductionCategoryFilterOptionAdapter.ITEM_TYPE_HEADER,entry.getKey(),entry.getKey()));
+            if (type == TYPE_FXJMTP) {
+                mFilterOptionModels.add(new FilterOptionModel(ProductionCategoryFilterOptionAdapter.ITEM_TYPE_HEADER,StringUtils.getTianpinFilterOptionName(entry.getKey()),entry.getKey()));
+            }
             for (String s:entry.getValue()
                     ) {
                 mFilterOptionModels.add(new FilterOptionModel(ProductionCategoryFilterOptionAdapter.ITEM_TYPE_NORMAL,s,entry.getKey()));

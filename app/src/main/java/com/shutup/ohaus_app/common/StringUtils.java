@@ -13,10 +13,16 @@ public class StringUtils {
 
     private static Map<String,Integer> entityNameMapType = new HashMap<>();
     private static Map<String,Class<?>> entityNameMapClassName = new HashMap<>();
+    private static Map<String,String> tianPinFilterName = new HashMap<>();
 
     static {
         entityNameMapType.put("分析精密天平", 1);
         entityNameMapClassName.put("分析精密天平",TianpingEntity.class);
+        tianPinFilterName.put("readable","精度");
+        tianPinFilterName.put("maxRange","最大量程");
+        tianPinFilterName.put("adjust","校准方式");
+        tianPinFilterName.put("originImport","进口");
+        tianPinFilterName.put("autoWindCapGate","autoWindCapGate");
     }
 
     public static String cleanPriceStr(String str) {
@@ -28,5 +34,9 @@ public class StringUtils {
     }
     public static Class<?> getEntityClassByName(String name) {
         return entityNameMapClassName.get(name);
+    }
+
+    public static String getTianpinFilterOptionName(String name) {
+        return tianPinFilterName.get(name);
     }
 }

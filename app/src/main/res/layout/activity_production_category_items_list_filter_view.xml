@@ -44,8 +44,7 @@
                         android:src="@drawable/back_close_white"/>
 
                     <TextView
-                        android:background="@android:color/white"
-                        tools:text="筛选1232132"
+                        android:text="筛选"
                         android:textColor="@android:color/white"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
