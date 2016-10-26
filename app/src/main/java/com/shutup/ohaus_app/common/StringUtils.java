@@ -30,7 +30,11 @@ public class StringUtils {
     }
 
     public static Integer getEntityNameByType(String type) {
-        return entityNameMapType.get(type);
+        if (entityNameMapType.containsKey(type)) {
+            return entityNameMapType.get(type);
+        }else {
+            return 0;
+        }
     }
     public static Class<?> getEntityClassByName(String name) {
         return entityNameMapClassName.get(name);
