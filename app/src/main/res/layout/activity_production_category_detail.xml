@@ -1,102 +1,208 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_production_category_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f8f8f8"
-    tools:context="com.shutup.ohaus_app.main.production_category.ProductionCategoryDetailActivity">
-    <LinearLayout
-        android:layout_alignParentTop="true"
-        android:id="@+id/top_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <include layout="@layout/toolbar_with_segment"/>
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/bottom_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+    >
 
-        <include layout="@layout/bottom_toolbar" />
-    </LinearLayout>
-
-    <ScrollView
+    <RelativeLayout
+        android:id="@+id/activity_production_category_detail"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/top_layout"
-        android:layout_above="@id/bottom_layout">
+        android:layout_height="match_parent"
+        android:background="#f8f8f8"
+        android:visibility="visible"
+        tools:context="com.shutup.ohaus_app.main.production_category.ProductionCategoryDetailActivity">
 
         <LinearLayout
+            android:id="@+id/top_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_alignParentTop="true">
 
-            <com.zhy.android.percent.support.PercentLinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+            <include layout="@layout/toolbar_with_segment"/>
+        </LinearLayout>
 
-                >
+        <LinearLayout
+            android:id="@+id/bottom_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
 
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:src="@mipmap/ic_launcher"
-                    app:layout_heightPercent="70%h"
-                    app:layout_widthPercent="100%w" />
-            </com.zhy.android.percent.support.PercentLinearLayout>
+            <include layout="@layout/bottom_toolbar"/>
+        </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/divider_line_normal_color" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/bottom_layout"
+            android:layout_below="@id/top_layout">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/productionName"
+                <com.zhy.android.percent.support.PercentLinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:src="@mipmap/ic_launcher"
+                        app:layout_heightPercent="70%h"
+                        />
+                </com.zhy.android.percent.support.PercentLinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/divider_line_normal_color"/>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginTop="10dp"
-                    tools:text="天平" />
+                    android:background="@android:color/white"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:textColor="@color/colorAccent"
-                    android:id="@+id/productionPrice"
+                    <TextView
+                        android:id="@+id/productionName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="10dp"
+                        tools:text="天平"/>
+
+                    <TextView
+                        android:id="@+id/productionPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="22dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/colorAccent"
+                        tools:text="$ 1000"/>
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="22dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginStart="15dp"
                     android:layout_marginTop="10dp"
-                    tools:text="$ 1000" />
-            </LinearLayout>
+                    android:background="@android:color/white">
 
-            <LinearLayout
+                    <include layout="@layout/production_detail_name_price"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@android:color/white">
+
+                    <!--<include layout="@layout/production_detail_name_price"/>-->
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#bf000000"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/white"
+            app:layout_heightPercent="70%h">
+
+            <RelativeLayout
+                android:layout_marginLeft="110dp"
+                android:layout_marginStart="110dp"
+                android:id="@+id/production_category_filter_option_top_bar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@android:color/white">
+                android:layout_height="80dp">
 
-                <include layout="@layout/production_detail_name_price" />
-            </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
+                    android:orientation="vertical">
 
-            <LinearLayout
+                    <TextView
+                        android:id="@+id/production_category_filter_option_view_price_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:gravity="center"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="18sp"
+                        tools:text="$ 12345"/>
+
+                    <TextView
+                        android:id="@+id/production_category_filter_option_view_model_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="#9b9b9b"
+                        android:textSize="10sp"
+                        tools:text="型号：3213"/>
+
+                    <TextView
+                        android:id="@+id/production_category_filter_option_view_order_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="#9b9b9b"
+                        android:textSize="10sp"
+                        tools:text="订货号：89897"/>
+                </LinearLayout>
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/production_category_filter_option_view_btn_ok"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@android:color/white">
+                android:layout_height="44dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/loginBtnValid"
+                android:text="确定"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"/>
 
-                <include layout="@layout/production_detail_name_price" />
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
-</RelativeLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerViewFilterOptionsDetails"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@id/production_category_filter_option_view_btn_ok"
+                android:layout_below="@id/production_category_filter_option_top_bar"
+                >
+            </android.support.v7.widget.RecyclerView>
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/production_category_filter_option_view_item_icon"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:src="@mipmap/ohaosi_icon"
+            android:background="@drawable/detail_filter_option_view_item_icon_bg"
+            android:layout_marginTop="149dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+
+</FrameLayout>
+
