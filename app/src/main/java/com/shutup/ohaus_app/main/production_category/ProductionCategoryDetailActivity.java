@@ -200,6 +200,8 @@ public class ProductionCategoryDetailActivity extends BaseActivity {
     public void onBackPressed() {
         if (isFilterVisable) {
             showOrDismissFilterOptions();
+        }else {
+            super.onBackPressed();
         }
     }
 

@@ -23,6 +23,7 @@ import com.shutup.ohaus_app.model.ProductionCategoryMenuItem2;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -201,7 +202,7 @@ public class ProductionCategoryActivity extends BaseActivity implements Constant
         return super.onOptionsItemSelected(item);
     }
 
-    @Subscribe(sticky = true)
+    @Subscribe(sticky = true,threadMode = ThreadMode.ASYNC)
     public void onMSg(List<CategoryEntity> categoryEntities) {
         loadDataFromNetWork(categoryEntities);
         EventBus.getDefault().removeStickyEvent(categoryEntities);
