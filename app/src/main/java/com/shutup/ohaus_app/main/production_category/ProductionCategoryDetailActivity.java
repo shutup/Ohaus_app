@@ -5,8 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,6 +25,7 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 public class ProductionCategoryDetailActivity extends BaseActivity {
 
@@ -43,8 +47,6 @@ public class ProductionCategoryDetailActivity extends BaseActivity {
     TextView mProductionCategoryFilterOptionViewOrderLabel;
     @InjectView(R.id.production_category_filter_option_top_bar)
     RelativeLayout mProductionCategoryFilterOptionTopBar;
-    @InjectView(R.id.production_category_filter_option_view_btn_ok)
-    Button mProductionCategoryFilterOptionViewBtnOk;
     @InjectView(R.id.recyclerViewFilterOptionsDetails)
     RecyclerView mRecyclerViewFilterOptionsDetails;
     @InjectView(R.id.production_category_filter_option_view_item_icon)
@@ -53,10 +55,19 @@ public class ProductionCategoryDetailActivity extends BaseActivity {
     TextView mProductionDetailNamePriceTitle;
     @InjectView(R.id.production_detail_name_price_options)
     Button mProductionDetailNamePriceOptions;
+    @InjectView(R.id.production_detail_name_price)
+    RelativeLayout mProductionDetailNamePrice;
+    @InjectView(R.id.production_category_filter_option_view_btn_ok)
+    Button mProductionCategoryFilterOptionViewBtnOk;
+    @InjectView(R.id.production_category_filter_option_layout)
+    LinearLayout mProductionCategoryFilterOptionLayout;
+    @InjectView(R.id.production_category_filter_option_layout_bg)
+    RelativeLayout mProductionCategoryFilterOptionLayoutBg;
 
     private ProductCategoryEntity mProductCategoryEntity;
     private ArrayList<FilterOptionModel> mFilterOptionModels;
     private ProductionNormalItem mProductionNormalItem;
+    private boolean isFilterVisable = false;
 
     @Override
     public void onStart() {
@@ -108,5 +119,43 @@ public class ProductionCategoryDetailActivity extends BaseActivity {
             mProductionName.setText("");
             mProductionPrice.setText("");
         }
+    }
+
+    @OnClick({R.id.production_detail_name_price, R.id.production_category_filter_option_view_btn_ok, R.id.production_category_filter_option_layout, R.id.production_category_filter_option_layout_bg})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.production_detail_name_price:
+                showOrDismissFilterOptions();
+                break;
+            case R.id.production_category_filter_option_view_btn_ok:
+                break;
+            case R.id.production_category_filter_option_layout:
+                showOrDismissFilterOptions();
+                break;
+            case R.id.production_category_filter_option_layout_bg:
+                //eat the touch event
+                break;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isFilterVisable) {
+            showOrDismissFilterOptions();
+        }
+    }
+
+    private void showOrDismissFilterOptions() {
+        Animation animation = null;
+        if (isFilterVisable) {
+            animation = AnimationUtils.loadAnimation(this, R.anim.production_category_down_out);
+            mProductionCategoryFilterOptionLayout.setAnimation(animation);
+            mProductionCategoryFilterOptionLayout.setVisibility(View.INVISIBLE);
+        } else {
+            animation = AnimationUtils.loadAnimation(this, R.anim.production_category_up_in);
+            mProductionCategoryFilterOptionLayout.setAnimation(animation);
+            mProductionCategoryFilterOptionLayout.setVisibility(View.VISIBLE);
+        }
+        isFilterVisable = !isFilterVisable;
     }
 }

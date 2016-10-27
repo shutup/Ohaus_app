@@ -384,6 +384,7 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                                 List<TianpingEntity> data = new ArrayList<TianpingEntity>();
                                 for (int j = 0; j < detailsObject.length(); j++) {
                                     TianpingEntity tianpingEntity = gson.fromJson(detailsObject.optJSONObject(j).toString(), TianpingEntity.class);
+                                    tianpingEntity.setPid(categoryListEntity.getData().get(i).getId());
                                     data.add(tianpingEntity);
                                 }
                                 saveToLocalFXJMTP(data);
