@@ -17,6 +17,8 @@
         android:text="已选" />
 
     <Button
+        android:enabled="false"
+        android:clickable="false"
         android:textColor="#ed3058"
         android:textSize="14sp"
         android:background="@drawable/red_border_edge"

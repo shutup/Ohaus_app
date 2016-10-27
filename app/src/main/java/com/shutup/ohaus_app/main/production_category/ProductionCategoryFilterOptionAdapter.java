@@ -19,6 +19,11 @@ public class ProductionCategoryFilterOptionAdapter extends RecyclerView.Adapter<
     public static int ITEM_TYPE_NORMAL = 2;
 
     private Context mContext;
+
+    public void setFilterOptionModels(ArrayList<FilterOptionModel> filterOptionModels) {
+        mFilterOptionModels = filterOptionModels;
+    }
+
     private ArrayList<FilterOptionModel> mFilterOptionModels;
 
     public ProductionCategoryFilterOptionAdapter(Context context, ArrayList<FilterOptionModel> filterOptionModels) {

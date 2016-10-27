@@ -16,10 +16,11 @@ public class TianpingEntity extends RealmObject{
     private String adjust;
     private String autoWindCapGate;
     private String originImport;
+
     /**
      *
      */
-    private String pid;
+    private ProductCategoryEntity productCategoryEntity;
 
     public String getNo() {
         return no;
@@ -85,12 +86,11 @@ public class TianpingEntity extends RealmObject{
         this.originImport = originImport;
     }
 
-    public String getPid() {
-        return pid;
+    public ProductCategoryEntity getProductCategoryEntity() {
+        return productCategoryEntity;
     }
 
-    public void setPid(String pid) {
-        this.pid = pid;
+    public void setProductCategoryEntity(ProductCategoryEntity productCategoryEntity) {
+        this.productCategoryEntity = productCategoryEntity;
     }
-
 }

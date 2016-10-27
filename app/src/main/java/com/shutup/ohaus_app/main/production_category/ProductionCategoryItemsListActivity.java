@@ -174,7 +174,7 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
         mRecyclerViewItemsList.addOnItemTouchListener(new RecyclerTouchListener(this, mRecyclerViewItemsList, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                EventBus.getDefault().postSticky(new ProductionCategoryDetailModel(mProductionCategoryEntity, mFilterOptionModels, mProductionNormalItems.get(position)));
+                EventBus.getDefault().postSticky(new ProductionCategoryDetailModel(mProductionNormalItems.get(position).getProductCategoryEntity(), mFilterOptionModels, mProductionNormalItems.get(position)));
                 Intent intent = new Intent(ProductionCategoryItemsListActivity.this, ProductionCategoryDetailActivity.class);
                 startActivity(intent);
             }
@@ -297,7 +297,7 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                 mProductionNormalItems.clear();
                 for (TianpingEntity t :
                         element) {
-                    mProductionNormalItems.add(new ProductionNormalItem(mProductionCategoryEntity.getNewImages().get(0).getUrl(), t.getDesc(), "价格：" + t.getPrice(), t.getPrice(),ProductionNormalItem.TYPE_ProductionSecondCategory));
+                    mProductionNormalItems.add(new ProductionNormalItem(t.getProductCategoryEntity().getNewImages().get(0).getUrl(), t.getDesc(), "价格：" + t.getPrice(), t.getPrice(),ProductionNormalItem.TYPE_ProductionSecondCategory,t.getProductCategoryEntity()));
                 }
                 sortTheItems();
                 refreshUI();
@@ -384,7 +384,7 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                                 List<TianpingEntity> data = new ArrayList<TianpingEntity>();
                                 for (int j = 0; j < detailsObject.length(); j++) {
                                     TianpingEntity tianpingEntity = gson.fromJson(detailsObject.optJSONObject(j).toString(), TianpingEntity.class);
-                                    tianpingEntity.setPid(categoryListEntity.getData().get(i).getId());
+                                    tianpingEntity.setProductCategoryEntity(categoryListEntity.getData().get(i));
                                     data.add(tianpingEntity);
                                 }
                                 saveToLocalFXJMTP(data);
@@ -392,11 +392,8 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                         }
                         mProductionNormalItems.clear();
                         for (int i = 0; i < categoryListEntity.getData().size(); i++) {
-                            if (i==0){
-                                mProductionCategoryEntity = categoryListEntity.getData().get(i);
-                            }
                             ProductCategoryEntity productCategoryEntity = categoryListEntity.getData().get(i);
-                            mProductionNormalItems.add(new ProductionNormalItem(productCategoryEntity.getNewImages().get(0).getUrl(), productCategoryEntity.getName(), "最低 ￥" + productCategoryEntity.getMinimumPrice(), productCategoryEntity.getMinimumPrice()));
+                            mProductionNormalItems.add(new ProductionNormalItem(productCategoryEntity.getNewImages().get(0).getUrl(), productCategoryEntity.getName(), "最低 ￥" + productCategoryEntity.getMinimumPrice(), productCategoryEntity.getMinimumPrice(),productCategoryEntity));
                         }
                         saveToLocal(categoryListEntity.getData());
                         loadDataFromLocal();
@@ -502,11 +499,8 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                 if (productCategoryEntities1.size()!=0) {
                     mProductionNormalItems.clear();
                     for (int i = 0;i<productCategoryEntities1.size();i++) {
-                        if (i==0){
-                            mProductionCategoryEntity = productCategoryEntities1.get(i);
-                        }
                         ProductCategoryEntity p = productCategoryEntities1.get(i);
-                        mProductionNormalItems.add(new ProductionNormalItem(p.getNewImages().get(0).getUrl(),p.getName(),"最低 ￥"+p.getMinimumPrice(),p.getMinimumPrice()));
+                        mProductionNormalItems.add(new ProductionNormalItem(p.getNewImages().get(0).getUrl(),p.getName(),"最低 ￥"+p.getMinimumPrice(),p.getMinimumPrice(),p));
                         refreshUI();
                     }
                 }else {

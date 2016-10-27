@@ -1,6 +1,8 @@
 package com.shutup.ohaus_app.main.production_category;
 
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import com.shutup.ohaus_app.R;
 import com.shutup.ohaus_app.api.ProductCategoryEntity;
 import com.shutup.ohaus_app.common.BaseActivity;
+import com.shutup.ohaus_app.common.RecyclerTouchListener;
 import com.shutup.ohaus_app.model.ProductionNormalItem;
 
 import org.greenrobot.eventbus.EventBus;
@@ -68,6 +71,7 @@ public class ProductionCategoryDetailActivity extends BaseActivity {
     private ArrayList<FilterOptionModel> mFilterOptionModels;
     private ProductionNormalItem mProductionNormalItem;
     private boolean isFilterVisable = false;
+    private ProductionCategoryFilterOptionAdapter mProductionCategoryFilterOptionAdapter;
 
     @Override
     public void onStart() {
@@ -87,6 +91,41 @@ public class ProductionCategoryDetailActivity extends BaseActivity {
         setContentView(R.layout.activity_production_category_detail);
         ButterKnife.inject(this);
         initToolbar();
+        initFilterRecyclerView();
+    }
+
+    private void initFilterRecyclerView() {
+        mFilterOptionModels = new ArrayList<>();
+        mProductionCategoryFilterOptionAdapter = new ProductionCategoryFilterOptionAdapter(this, mFilterOptionModels);
+        final GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(),3);
+        mRecyclerViewFilterOptionsDetails.setLayoutManager(gridLayoutManager);
+        mRecyclerViewFilterOptionsDetails.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerViewFilterOptionsDetails.addItemDecoration(new MarginDecoration(this));
+        mRecyclerViewFilterOptionsDetails.setAdapter(mProductionCategoryFilterOptionAdapter);
+        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                return mProductionCategoryFilterOptionAdapter.isHeader(mFilterOptionModels.get(position).getType()) ? gridLayoutManager.getSpanCount(): 1;
+            }
+        });
+        mRecyclerViewFilterOptionsDetails.addOnItemTouchListener(new RecyclerTouchListener(this, mRecyclerViewFilterOptionsDetails, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                if (!mProductionCategoryFilterOptionAdapter.isHeader(mFilterOptionModels.get(position).getType())) {
+                    mFilterOptionModels.get(position).setSelected(!mFilterOptionModels.get(position).isSelected());
+                    refreshFilterUI();
+                }
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
+    }
+
+    private void refreshFilterUI() {
+        mProductionCategoryFilterOptionAdapter.notifyDataSetChanged();
     }
 
     private void initToolbar() {
@@ -112,6 +151,25 @@ public class ProductionCategoryDetailActivity extends BaseActivity {
     @Subscribe(sticky = true)
     public void onMSg(ProductionCategoryDetailModel productionCategoryDetailModel) {
         EventBus.getDefault().removeStickyEvent(productionCategoryDetailModel);
+
+        StringBuilder filterOptionStr = new StringBuilder();
+        boolean isFirst = false;
+        mFilterOptionModels.clear();
+        for (int i =0 ;i<productionCategoryDetailModel.getFilterOptionModels().size();i++) {
+            FilterOptionModel f = productionCategoryDetailModel.getFilterOptionModels().get(i);
+            if (f.isSelected()) {
+                if (!isFirst) {
+                    filterOptionStr.append(f.getName());
+                    isFirst = true;
+                }else {
+                    filterOptionStr.append("/"+f.getName());
+                }
+            }
+            mFilterOptionModels.add(f);
+        }
+        refreshFilterUI();
+        mProductionDetailNamePriceOptions.setText(filterOptionStr.toString());
+        mProductCategoryEntity = productionCategoryDetailModel.getProductCategoryEntity();
         if (productionCategoryDetailModel.getProductionNormalItem().getType() == ProductionNormalItem.TYPE_ProductionSecondCategory) {
             mProductionName.setText(productionCategoryDetailModel.getProductionNormalItem().getTitleStr());
             mProductionPrice.setText(productionCategoryDetailModel.getProductionNormalItem().getContentStr());
