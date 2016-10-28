@@ -163,7 +163,7 @@
                             android:layout_weight="1"
                             android:gravity="center"
                             android:textColor="#9b9b9b"
-                            android:textSize="10sp"
+                            android:textSize="12sp"
                             tools:text="型号：3213"/>
 
                         <TextView
@@ -173,7 +173,7 @@
                             android:layout_weight="1"
                             android:gravity="center"
                             android:textColor="#9b9b9b"
-                            android:textSize="10sp"
+                            android:textSize="12sp"
                             tools:text="订货号：89897"/>
                     </LinearLayout>
                 </RelativeLayout>

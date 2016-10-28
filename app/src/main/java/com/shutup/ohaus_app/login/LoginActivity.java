@@ -27,8 +27,6 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends BaseActivity implements Constants{
 
@@ -69,11 +67,7 @@ public class LoginActivity extends BaseActivity implements Constants{
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() == 11) {
-                    isPhoneOk = true;
-                } else {
-                    isPhoneOk = false;
-                }
+                isPhoneOk = s.length() == 11;
                 setLoginBtnStatus();
             }
 
@@ -91,11 +85,7 @@ public class LoginActivity extends BaseActivity implements Constants{
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.length() >= 6) {
-                    isPwdOk = true;
-                } else {
-                    isPwdOk = false;
-                }
+                isPwdOk = s.length() >= 6;
                 setLoginBtnStatus();
             }
 

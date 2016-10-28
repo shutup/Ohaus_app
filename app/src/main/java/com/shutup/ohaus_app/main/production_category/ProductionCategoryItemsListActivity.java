@@ -52,7 +52,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -381,7 +380,7 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                             int type = StringUtils.getEntityNameByType(categoryListEntity.getData().get(i).getSubCategory());
                             JSONArray detailsObject = mainObject.optJSONArray("data");
                             if (type == TYPE_FXJMTP) {
-                                List<TianpingEntity> data = new ArrayList<TianpingEntity>();
+                                List<TianpingEntity> data = new ArrayList<>();
                                 for (int j = 0; j < detailsObject.length(); j++) {
                                     TianpingEntity tianpingEntity = gson.fromJson(detailsObject.optJSONObject(j).toString(), TianpingEntity.class);
                                     tianpingEntity.setProductCategoryEntity(categoryListEntity.getData().get(i));
@@ -439,7 +438,7 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
 
                     @Override
                     public RealmList<RealmString> read(JsonReader in) throws IOException {
-                        RealmList<RealmString> list = new RealmList<RealmString>();
+                        RealmList<RealmString> list = new RealmList<>();
                         in.beginArray();
                         while (in.hasNext()) {
                             list.add(new RealmString(in.nextString()));
@@ -507,7 +506,7 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                     return;
                 }
                 if (type == TYPE_FXJMTP) {
-                    filterOptions = new LinkedHashMap<String, ArrayList<String>>();
+                    filterOptions = new LinkedHashMap<>();
                     RealmQuery<TianpingEntity> tianpingEntityRealmQuery = RealmQuery.createQuery(Realm.getDefaultInstance(), TianpingEntity.class);
                     RealmResults<TianpingEntity> tianpingEntities = tianpingEntityRealmQuery.findAllAsync();
                     tianpingEntities.addChangeListener(new RealmChangeListener<RealmResults<TianpingEntity>>() {
@@ -522,8 +521,8 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                             for (RealmString r : realmStrings
                                     ) {
                                 String key = r.getVal();
-                                Set<String> filterOptionSet = new HashSet<String>();
-                                ArrayList<String> filterOptionArray = new ArrayList<String>();
+                                Set<String> filterOptionSet = new HashSet<>();
+                                ArrayList<String> filterOptionArray = new ArrayList<>();
                                 for (TianpingEntity t : data
                                         ) {
                                     try {
@@ -535,14 +534,14 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                                         e.printStackTrace();
                                     }
                                 }
-                                filterOptionArray = new ArrayList<String>(filterOptionSet);
+                                filterOptionArray = new ArrayList<>(filterOptionSet);
                                 Collections.sort(filterOptionArray);
                                 filterOptions.put(key, filterOptionArray);
                                 if (BuildConfig.DEBUG)
                                     Log.d("ProductionCategoryItems", "filterOptions:" + filterOptions);
-                                reloadFilterOptionsArray(filterOptions);
-                                refreshFilterUI();
                             }
+                            reloadFilterOptionsArray(filterOptions);
+                            refreshFilterUI();
                         }
                     });
                 } else {

@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.shutup.ohaus_app.R;
 import com.shutup.ohaus_app.common.BaseActivity;
-import com.shutup.ohaus_app.common.Constants;
 import com.shutup.ohaus_app.common.RecyclerTouchListener;
 
 import org.greenrobot.eventbus.EventBus;
