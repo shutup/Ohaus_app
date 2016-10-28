@@ -1,131 +1,78 @@
 package com.shutup.ohaus_app.main.production_category;
 
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.shutup.ohaus_app.R;
-import com.shutup.ohaus_app.api.ProductCategoryEntity;
 import com.shutup.ohaus_app.common.BaseActivity;
-import com.shutup.ohaus_app.common.RecyclerTouchListener;
-import com.shutup.ohaus_app.model.ProductionNormalItem;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
 public class ProductionCategoryDetailActivity extends BaseActivity {
-
     @InjectView(R.id.toolbar)
     Toolbar mToolbar;
-    @InjectView(R.id.productionName)
-    TextView mProductionName;
-    @InjectView(R.id.productionPrice)
-    TextView mProductionPrice;
-    @InjectView(R.id.production_category_detail_toolbar_line_left)
-    View mProductionCategoryDetailToolbarLineLeft;
-    @InjectView(R.id.production_category_detail_toolbar_line_right)
-    View mProductionCategoryDetailToolbarLineRight;
-    @InjectView(R.id.production_category_filter_option_view_price_label)
-    TextView mProductionCategoryFilterOptionViewPriceLabel;
-    @InjectView(R.id.production_category_filter_option_view_model_label)
-    TextView mProductionCategoryFilterOptionViewModelLabel;
-    @InjectView(R.id.production_category_filter_option_view_order_label)
-    TextView mProductionCategoryFilterOptionViewOrderLabel;
-    @InjectView(R.id.production_category_filter_option_top_bar)
-    RelativeLayout mProductionCategoryFilterOptionTopBar;
-    @InjectView(R.id.recyclerViewFilterOptionsDetails)
-    RecyclerView mRecyclerViewFilterOptionsDetails;
-    @InjectView(R.id.production_category_filter_option_view_item_icon)
-    ImageView mProductionCategoryFilterOptionViewItemIcon;
-    @InjectView(R.id.production_detail_name_price_title)
-    TextView mProductionDetailNamePriceTitle;
-    @InjectView(R.id.production_detail_name_price_options)
-    Button mProductionDetailNamePriceOptions;
-    @InjectView(R.id.production_detail_name_price)
-    RelativeLayout mProductionDetailNamePrice;
-    @InjectView(R.id.production_category_filter_option_view_btn_ok)
-    Button mProductionCategoryFilterOptionViewBtnOk;
-    @InjectView(R.id.production_category_filter_option_layout)
-    LinearLayout mProductionCategoryFilterOptionLayout;
-    @InjectView(R.id.production_category_filter_option_layout_bg)
-    RelativeLayout mProductionCategoryFilterOptionLayoutBg;
+    @InjectView(R.id.production_detail_view_pager)
+    ViewPager mProductionDetailViewPager;
+    @InjectView(R.id.tabLayout)
+    TabLayout mTabLayout;
 
-    private ProductCategoryEntity mProductCategoryEntity;
-    private ArrayList<FilterOptionModel> mFilterOptionModels;
-    private ProductionNormalItem mProductionNormalItem;
-    private boolean isFilterVisable = false;
-    private ProductionCategoryFilterOptionAdapter mProductionCategoryFilterOptionAdapter;
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    public void onStop() {
-        EventBus.getDefault().unregister(this);
-        super.onStop();
-    }
-
+    private FragmentPagerAdapter mFragmentPagerAdapter;
+    private List<Fragment> mFragments;
+    private List<String> mFragmentTitles;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_production_category_detail);
         ButterKnife.inject(this);
         initToolbar();
-        initFilterRecyclerView();
+        initFragments();
+        initTabLayout();
     }
 
-    private void initFilterRecyclerView() {
-        mFilterOptionModels = new ArrayList<>();
-        mProductionCategoryFilterOptionAdapter = new ProductionCategoryFilterOptionAdapter(this, mFilterOptionModels);
-        final GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(),3);
-        mRecyclerViewFilterOptionsDetails.setLayoutManager(gridLayoutManager);
-        mRecyclerViewFilterOptionsDetails.setItemAnimator(new DefaultItemAnimator());
-        mRecyclerViewFilterOptionsDetails.addItemDecoration(new MarginDecoration(this));
-        mRecyclerViewFilterOptionsDetails.setAdapter(mProductionCategoryFilterOptionAdapter);
-        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                return mProductionCategoryFilterOptionAdapter.isHeader(mFilterOptionModels.get(position).getType()) ? gridLayoutManager.getSpanCount(): 1;
-            }
-        });
-        mRecyclerViewFilterOptionsDetails.addOnItemTouchListener(new RecyclerTouchListener(this, mRecyclerViewFilterOptionsDetails, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                if (!mProductionCategoryFilterOptionAdapter.isHeader(mFilterOptionModels.get(position).getType())) {
-                    mFilterOptionModels.get(position).setSelected(!mFilterOptionModels.get(position).isSelected());
-                    refreshFilterUI();
-                }
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
+    private void initTabLayout() {
+        mTabLayout.setupWithViewPager(mProductionDetailViewPager);
     }
 
-    private void refreshFilterUI() {
-        mProductionCategoryFilterOptionAdapter.notifyDataSetChanged();
+    private void initFragments() {
+        mFragmentTitles = new ArrayList<>();
+        mFragmentTitles.add("商品");
+        mFragmentTitles.add("详情");
+
+        mFragments = new ArrayList<>();
+        mFragments.add(new ProductionDetailInfoFragment());
+        mFragments.add(new ProductionDetailDetailFragment());
+        mFragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+
+            @Override
+            public int getCount() {
+                return mFragments.size();
+            }
+
+            @Override
+            public Fragment getItem(int position) {
+                return mFragments.get(position);
+            }
+
+            @Override
+            public CharSequence getPageTitle(int position) {
+                return mFragmentTitles.get(position);
+            }
+        };
+        mProductionDetailViewPager.setAdapter(mFragmentPagerAdapter);
     }
 
     private void initToolbar() {
@@ -146,76 +93,5 @@ public class ProductionCategoryDetailActivity extends BaseActivity {
             finish(); // close this activity and return to preview activity (if there is any)
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Subscribe(sticky = true)
-    public void onMSg(ProductionCategoryDetailModel productionCategoryDetailModel) {
-        EventBus.getDefault().removeStickyEvent(productionCategoryDetailModel);
-
-        StringBuilder filterOptionStr = new StringBuilder();
-        boolean isFirst = false;
-        mFilterOptionModels.clear();
-        for (int i =0 ;i<productionCategoryDetailModel.getFilterOptionModels().size();i++) {
-            FilterOptionModel f = productionCategoryDetailModel.getFilterOptionModels().get(i);
-            if (f.isSelected()) {
-                if (!isFirst) {
-                    filterOptionStr.append(f.getName());
-                    isFirst = true;
-                }else {
-                    filterOptionStr.append("/"+f.getName());
-                }
-            }
-            mFilterOptionModels.add(f);
-        }
-        refreshFilterUI();
-        mProductionDetailNamePriceOptions.setText(filterOptionStr.toString());
-        mProductCategoryEntity = productionCategoryDetailModel.getProductCategoryEntity();
-        if (productionCategoryDetailModel.getProductionNormalItem().getType() == ProductionNormalItem.TYPE_ProductionSecondCategory) {
-            mProductionName.setText(productionCategoryDetailModel.getProductionNormalItem().getTitleStr());
-            mProductionPrice.setText(productionCategoryDetailModel.getProductionNormalItem().getContentStr());
-        } else {
-            mProductionName.setText("");
-            mProductionPrice.setText("");
-        }
-    }
-
-    @OnClick({R.id.production_detail_name_price, R.id.production_category_filter_option_view_btn_ok, R.id.production_category_filter_option_layout, R.id.production_category_filter_option_layout_bg})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.production_detail_name_price:
-                showOrDismissFilterOptions();
-                break;
-            case R.id.production_category_filter_option_view_btn_ok:
-                break;
-            case R.id.production_category_filter_option_layout:
-                showOrDismissFilterOptions();
-                break;
-            case R.id.production_category_filter_option_layout_bg:
-                //eat the touch event
-                break;
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (isFilterVisable) {
-            showOrDismissFilterOptions();
-        }else {
-            super.onBackPressed();
-        }
-    }
-
-    private void showOrDismissFilterOptions() {
-        Animation animation = null;
-        if (isFilterVisable) {
-            animation = AnimationUtils.loadAnimation(this, R.anim.production_category_down_out);
-            mProductionCategoryFilterOptionLayout.setAnimation(animation);
-            mProductionCategoryFilterOptionLayout.setVisibility(View.INVISIBLE);
-        } else {
-            animation = AnimationUtils.loadAnimation(this, R.anim.production_category_up_in);
-            mProductionCategoryFilterOptionLayout.setAnimation(animation);
-            mProductionCategoryFilterOptionLayout.setVisibility(View.VISIBLE);
-        }
-        isFilterVisable = !isFilterVisable;
     }
 }

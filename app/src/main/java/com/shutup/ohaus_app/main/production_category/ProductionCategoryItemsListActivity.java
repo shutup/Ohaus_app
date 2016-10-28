@@ -511,11 +511,12 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                             Realm realm = Realm.getDefaultInstance();
                             List<TianpingEntity> data = realm.copyFromRealm(tianpingEntities);
                             RealmList<RealmString> realmStrings = p.getFilter();
-                            Set<String> filterOptionSet = new HashSet<>();
-                            ArrayList<String> filterOptionArray = null;
+                            Set<String> filterOptionSet;
+                            ArrayList<String> filterOptionArray;
                             for (RealmString r : realmStrings
                                     ) {
                                 String key = r.getVal();
+                                filterOptionSet = new HashSet<>();
                                 for (TianpingEntity t : data
                                         ) {
                                     try {

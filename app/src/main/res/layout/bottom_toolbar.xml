@@ -12,6 +12,7 @@
         android:background="@color/common_divider_background_color" />
 
     <LinearLayout
+        android:baselineAligned="false"
         android:layout_width="match_parent"
         android:layout_height="49dp"
         android:orientation="horizontal">

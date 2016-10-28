@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <View
+            android:id="@+id/center_divider_line"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/common_divider_background_color"/>
+        <TextView
+            android:layout_toLeftOf="@id/center_divider_line"
+            android:layout_toStartOf="@id/center_divider_line"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="end|center"
+            android:layout_marginRight="36dp"
+            android:layout_marginEnd="36dp"
+            android:textColor="@color/common_text_color"
+            android:textSize="13sp"
+            android:text="商品介绍"/>
+        <TextView
+            android:layout_toRightOf="@id/center_divider_line"
+            android:layout_toEndOf="@id/center_divider_line"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="start|center"
+            android:layout_marginLeft="36dp"
+            android:layout_marginStart="36dp"
+            android:textColor="@color/common_text_color"
+            android:textSize="13sp"
+            android:text="规格参数"/>
+
+    </RelativeLayout>
+
+    <com.zhy.android.percent.support.PercentLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/production_detail_layout_image"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_heightPercent="100%w"
+            android:src="@mipmap/ohaosi_icon"
+            />
+    </com.zhy.android.percent.support.PercentLinearLayout>
+</LinearLayout>
