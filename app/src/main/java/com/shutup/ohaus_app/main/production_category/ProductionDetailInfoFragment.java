@@ -128,8 +128,6 @@ public class ProductionDetailInfoFragment extends Fragment {
 
     @Subscribe(sticky = true)
     public void onMSg(ProductionCategoryDetailModel productionCategoryDetailModel) {
-        EventBus.getDefault().removeStickyEvent(productionCategoryDetailModel);
-
         StringBuilder filterOptionStr = new StringBuilder();
         boolean isFirst = false;
         mFilterOptionModels.clear();

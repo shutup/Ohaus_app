@@ -1,105 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             xmlns:app="http://schemas.android.com/apk/res-auto">
+             android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/activity_production_category_detail"
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#f8f8f8"
-        android:visibility="visible"
-        tools:context="com.shutup.ohaus_app.main.production_category.ProductionCategoryDetailActivity">
-
+        android:layout_height="wrap_content"
+        >
         <LinearLayout
-            android:id="@+id/bottom_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true">
+            android:orientation="vertical">
 
-            <include layout="@layout/bottom_toolbar"/>
-        </LinearLayout>
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/bottom_layout">
-
-            <LinearLayout
+            <com.zhy.android.percent.support.PercentLinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                >
 
-                <com.zhy.android.percent.support.PercentLinearLayout
+                <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    >
+                    android:layout_height="0dp"
+                    android:src="@mipmap/ic_launcher"
+                    app:layout_heightPercent="80%w"
+                    />
 
-                    <ImageView
-                        app:layout_heightPercent="80%w"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:src="@mipmap/ic_launcher"
-                        />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/divider_line_normal_color"/>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/divider_line_normal_color"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/white"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/productionName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="15dp"
-                            android:layout_marginStart="15dp"
-                            android:layout_marginTop="10dp"
-                            tools:text="天平"/>
-
-                        <TextView
-                            android:id="@+id/productionPrice"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="22dp"
-                            android:layout_marginLeft="15dp"
-                            android:layout_marginStart="15dp"
-                            android:layout_marginTop="10dp"
-                            android:textColor="@color/colorAccent"
-                            tools:text="$ 1000"/>
-                    </LinearLayout>
-
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/productionName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
-                        android:background="@android:color/white">
+                        tools:text="天平"/>
 
-                        <include layout="@layout/production_detail_name_price"/>
-                    </LinearLayout>
-
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/productionPrice"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="22dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="15dp"
                         android:layout_marginTop="10dp"
-                        android:background="@android:color/white">
+                        android:textColor="@color/colorAccent"
+                        tools:text="$ 1000"/>
+                </LinearLayout>
 
-                        <!--<include layout="@layout/production_detail_name_price"/>-->
-                    </LinearLayout>
-                </com.zhy.android.percent.support.PercentLinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@android:color/white">
 
+                    <include layout="@layout/production_detail_name_price"/>
+                </LinearLayout>
 
-            </LinearLayout>
-        </ScrollView>
-    </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@android:color/white">
+
+                    <!--<include layout="@layout/production_detail_name_price"/>-->
+                </LinearLayout>
+            </com.zhy.android.percent.support.PercentLinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/production_category_filter_option_layout"
@@ -115,11 +96,11 @@
 
             <RelativeLayout
                 android:id="@+id/production_category_filter_option_layout_bg"
-                app:layout_heightPercent="70%h"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_alignParentBottom="true"
-                android:background="@android:color/white">
+                android:background="@android:color/white"
+                app:layout_heightPercent="70%h">
 
                 <RelativeLayout
                     android:id="@+id/production_category_filter_option_top_bar"
@@ -189,7 +170,6 @@
 
             <ImageView
                 android:id="@+id/production_category_filter_option_view_item_icon"
-                app:layout_marginTopPercent="26%h"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_alignParentLeft="true"
@@ -198,7 +178,8 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
                 android:background="@drawable/detail_filter_option_view_item_icon_bg"
-                android:src="@mipmap/ohaosi_icon"/>
+                android:src="@mipmap/ohaosi_icon"
+                app:layout_marginTopPercent="26%h"/>
         </com.zhy.android.percent.support.PercentRelativeLayout>
     </LinearLayout>
 </FrameLayout>
