@@ -100,8 +100,6 @@ public class MainActivity extends BaseActivity implements Constants {
     RecyclerView mQuickNewsRecycleView;
     @InjectView(R.id.goods_recommend_recycle_view)
     RecyclerView mGoodsRecommendRecycleView;
-    @InjectView(R.id.activity_main_scroll_view)
-    ScrollView mActivityMainScrollView;
 
     private ActionBarDrawerToggle mDrawerToggle;
     private ArrayList<MenuItem> mMenuItems;

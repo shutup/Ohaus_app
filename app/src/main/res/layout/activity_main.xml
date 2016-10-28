@@ -5,33 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_below="@+id/toolbar">
-
     <!-- Content -->
-    <ScrollView
-        android:id="@+id/activity_main_scroll_view"
-        android:scrollbars="none"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:background="#fff0f0f0"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <include layout="@layout/toolbar"/>
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#fff0f0f0"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <include layout="@layout/top_banner_layout"/>
 
-            <include layout="@layout/toolbar"/>
+                <include layout="@layout/activity_main_center_menu"/>
 
-            <include layout="@layout/top_banner_layout"/>
+                <include layout="@layout/activity_main_quick_news"/>
 
-            <include layout="@layout/activity_main_center_menu"/>
-
-            <include layout="@layout/activity_main_quick_news"/>
-
-            <include layout="@layout/activity_main_goods_recommend"/>
-        </LinearLayout>
-    </ScrollView>
-
-
+                <include layout="@layout/activity_main_goods_recommend"/>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
     <!-- Side Drawer -->
     <LinearLayout
         android:id="@+id/drawer_view"
@@ -76,8 +76,6 @@
             android:layout_weight="1"
             android:divider="@android:color/transparent"
             android:dividerHeight="@dimen/menu_list_divider_height">
-
         </ListView>
     </LinearLayout>
-
 </android.support.v4.widget.DrawerLayout>

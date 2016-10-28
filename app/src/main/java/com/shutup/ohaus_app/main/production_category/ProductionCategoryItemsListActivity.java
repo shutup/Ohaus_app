@@ -97,7 +97,6 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
     /**
      * 一级分类
      */
-    private ProductCategoryEntity mProductionCategoryEntity;
     private ArrayList<ProductionNormalItem> mProductionNormalItems;
     private ProductionCategoryItemsListAdapter mProductionCategoryItemsListAdapter;
     private Map<String, ArrayList<String>> filterOptions;
@@ -318,7 +317,10 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
     }
 
     private void showOrDismissFilterOptions() {
-        Animation animation = null;
+        if (mFilterOptionModels.size() == 0) {
+            loadDataFromLocal();
+        }
+        Animation animation ;
         if (isFilterVisable) {
             animation = AnimationUtils.loadAnimation(this, R.anim.production_category_right_out);
             productionCategoryFilterOptionBgView.setAnimation(animation);
@@ -345,14 +347,13 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
             }
         });
         isAsc = !isAsc;
-        for (int i = 0; i < mProductionNormalItems.size(); i++) {
-            ProductionNormalItem p = mProductionNormalItems.get(i);
-        }
         refreshUI();
     }
 
     @Subscribe(sticky = true)
     public void onProductionCategoryMenuItem2Receive(ProductionCategoryMenuItem2 productionCategoryMenuItem2) {
+        if (BuildConfig.DEBUG)
+            Log.d("ProductionCategoryItems", "onProductionCategoryMenuItem2Receive:System.currentTimeMillis():" + System.currentTimeMillis());
         EventBus.getDefault().removeStickyEvent(productionCategoryMenuItem2);
         mToolbarTitle.setText(productionCategoryMenuItem2.getMenuTitle());
         if (BuildConfig.DEBUG)
@@ -394,16 +395,14 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                             ProductCategoryEntity productCategoryEntity = categoryListEntity.getData().get(i);
                             mProductionNormalItems.add(new ProductionNormalItem(productCategoryEntity.getNewImages().get(0).getUrl(), productCategoryEntity.getName(), "最低 ￥" + productCategoryEntity.getMinimumPrice(), productCategoryEntity.getMinimumPrice(),productCategoryEntity));
                         }
-                        saveToLocal(categoryListEntity.getData());
-                        loadDataFromLocal();
+                        if (categoryListEntity.getData().size() != 0) {
+                            saveToLocal(categoryListEntity.getData());
+                        }
                         refreshUI();
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
+                    }catch (JSONException | IOException e) {
                         e.printStackTrace();
                     }
-
                 }
             }
 
@@ -480,10 +479,6 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
         });
     }
 
-    private void refreshUI() {
-        mProductionCategoryItemsListAdapter.notifyDataSetChanged();
-    }
-
     private void loadDataFromLocal() {
         Intent intent = getIntent();
         String secondTypeStr = intent.getStringExtra(PRODUCTION_TYPE);
@@ -494,14 +489,14 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
         productCategoryEntities.addChangeListener(new RealmChangeListener<RealmResults<ProductCategoryEntity>>() {
             @Override
             public void onChange(RealmResults<ProductCategoryEntity> productCategoryEntities1) {
-                Log.d(TAG, "onChange: " + productCategoryEntities1);
                 if (productCategoryEntities1.size()!=0) {
                     mProductionNormalItems.clear();
+                    ProductCategoryEntity p ;
                     for (int i = 0;i<productCategoryEntities1.size();i++) {
-                        ProductCategoryEntity p = productCategoryEntities1.get(i);
+                        p = productCategoryEntities1.get(i);
                         mProductionNormalItems.add(new ProductionNormalItem(p.getNewImages().get(0).getUrl(),p.getName(),"最低 ￥"+p.getMinimumPrice(),p.getMinimumPrice(),p));
-                        refreshUI();
                     }
+                    refreshUI();
                 }else {
                     return;
                 }
@@ -512,22 +507,20 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                     tianpingEntities.addChangeListener(new RealmChangeListener<RealmResults<TianpingEntity>>() {
                         @Override
                         public void onChange(RealmResults<TianpingEntity> tianpingEntities) {
-                            //updateView(categoryEntities);
-                            Log.d(TAG, "onChange: " + tianpingEntities);
                             ProductCategoryEntity p = productCategoryEntities.first();
                             Realm realm = Realm.getDefaultInstance();
                             List<TianpingEntity> data = realm.copyFromRealm(tianpingEntities);
                             RealmList<RealmString> realmStrings = p.getFilter();
+                            Set<String> filterOptionSet = new HashSet<>();
+                            ArrayList<String> filterOptionArray = null;
                             for (RealmString r : realmStrings
                                     ) {
                                 String key = r.getVal();
-                                Set<String> filterOptionSet = new HashSet<>();
-                                ArrayList<String> filterOptionArray = new ArrayList<>();
                                 for (TianpingEntity t : data
                                         ) {
                                     try {
                                         String jsonStr = gson.toJson(t, TianpingEntity.class);
-                                        JSONObject j = new JSONObject(gson.toJson(t, TianpingEntity.class));
+                                        JSONObject j = new JSONObject(jsonStr);
                                         String value = j.optString(key);
                                         filterOptionSet.add(value);
                                     } catch (JSONException e) {
@@ -537,8 +530,6 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                                 filterOptionArray = new ArrayList<>(filterOptionSet);
                                 Collections.sort(filterOptionArray);
                                 filterOptions.put(key, filterOptionArray);
-                                if (BuildConfig.DEBUG)
-                                    Log.d("ProductionCategoryItems", "filterOptions:" + filterOptions);
                             }
                             reloadFilterOptionsArray(filterOptions);
                             refreshFilterUI();
@@ -549,6 +540,10 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                 }
             }
         });
+    }
+
+    private void refreshUI() {
+        mProductionCategoryItemsListAdapter.notifyDataSetChanged();
     }
 
     private void refreshFilterUI() {
@@ -567,7 +562,5 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                 mFilterOptionModels.add(new FilterOptionModel(ProductionCategoryFilterOptionAdapter.ITEM_TYPE_NORMAL,s,entry.getKey()));
             }
         }
-        if (BuildConfig.DEBUG)
-            Log.d("ProductionCategoryItems", "mFilterOptionModels.size():" + mFilterOptionModels.size());
     }
 }
