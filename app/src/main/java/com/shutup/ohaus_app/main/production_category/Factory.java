@@ -14,14 +14,16 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import io.realm.RealmObject;
+import io.realm.RealmResults;
 
 /**
  * Created by shutup on 2016/11/5.
  */
 
-public class Factory implements Constants{
+public abstract class Factory implements Constants{
     public static List<RealmObject> parseAllDetailItems(String jsonStr,Gson gson,CategoryListEntity categoryListEntity) {
         JSONObject jsonObject = null;
         try {
@@ -45,4 +47,21 @@ public class Factory implements Constants{
         }
         return data;
     }
+
+    protected ArrayList<FilterOptionModel> convertToFilterOptionsArray(int type, Map<String,ArrayList<String>> filterOptions) {
+        ArrayList<FilterOptionModel> mFilterOptionModels = new ArrayList<>();
+        for (Map.Entry<String, ArrayList<String>> entry:
+                filterOptions.entrySet()){
+            if (type == TYPE_FXJMTP) {
+                mFilterOptionModels.add(new FilterOptionModel(ProductionCategoryFilterOptionAdapter.ITEM_TYPE_HEADER,StringUtils.getTianpinFilterOptionName(entry.getKey()),entry.getKey()));
+            }
+            for (String s:entry.getValue()
+                    ) {
+                mFilterOptionModels.add(new FilterOptionModel(ProductionCategoryFilterOptionAdapter.ITEM_TYPE_NORMAL,s,entry.getKey()));
+            }
+        }
+        return mFilterOptionModels;
+    }
+
+    public abstract Map<String, ArrayList<FilterOptionModel>> makeData(Gson gson, RealmResults<ProductCategoryEntity> productCategoryEntities) ;
 }

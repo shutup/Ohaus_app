@@ -103,7 +103,7 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
      */
     private ArrayList<ProductionNormalItem> mProductionNormalItems;
     private ProductionCategoryItemsListAdapter mProductionCategoryItemsListAdapter;
-    private Map<String, ArrayList<String>> filterOptions;
+    private Map<String, ArrayList<FilterOptionModel>> mFilterOptionModelsMap;
     /**
      * 筛选项
      */
@@ -176,7 +176,9 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
         mRecyclerViewItemsList.addOnItemTouchListener(new RecyclerTouchListener(this, mRecyclerViewItemsList, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                EventBus.getDefault().postSticky(new ProductionCategoryDetailModel(mProductionNormalItems.get(position).getProductCategoryEntity(), mFilterOptionModels, mProductionNormalItems.get(position)));
+                ProductCategoryEntity p = mProductionNormalItems.get(position).getProductCategoryEntity();
+                ArrayList<FilterOptionModel> f = setOptionSelected(mFilterOptionModelsMap.get(p.getName()),mFilterOptionModels);
+                EventBus.getDefault().postSticky(new ProductionCategoryDetailModel(p, f, mProductionNormalItems.get(position)));
                 Intent intent = new Intent(ProductionCategoryItemsListActivity.this, ProductionCategoryDetailActivity.class);
                 startActivity(intent);
             }
@@ -187,6 +189,19 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
             }
         }));
         mRecyclerViewItemsList.setAdapter(mProductionCategoryItemsListAdapter);
+    }
+
+    private ArrayList<FilterOptionModel> setOptionSelected(ArrayList<FilterOptionModel> filterOptionModels, ArrayList<FilterOptionModel> mFilterOptionModels) {
+        for (FilterOptionModel f :
+                filterOptionModels) {
+            for (FilterOptionModel ff:
+                 mFilterOptionModels) {
+                if (ff.isSelected() && ff.getType()==f.getType() && ff.getFilterOptionName().equalsIgnoreCase(f.getFilterOptionName()) && ff.getName().equalsIgnoreCase(f.getName())) {
+                    f.setSelected(true);
+                }
+            }
+        }
+        return filterOptionModels;
     }
 
     private void initToolBar() {
@@ -488,36 +503,10 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
         }
 
         if (type == TYPE_FXJMTP) {
-            filterOptions = new LinkedHashMap<>();
-            RealmQuery<TianpingEntity> tianpingEntityRealmQuery = RealmQuery.createQuery(Realm.getDefaultInstance(), TianpingEntity.class);
-            RealmResults<TianpingEntity> tianpingEntities = tianpingEntityRealmQuery.findAll();
-            ProductCategoryEntity p = productCategoryEntities.first();
-            Realm realm = Realm.getDefaultInstance();
-            List<TianpingEntity> data = realm.copyFromRealm(tianpingEntities);
-            RealmList<RealmString> realmStrings = p.getFilter();
-            Set<String> filterOptionSet;
-            ArrayList<String> filterOptionArray;
-            for (RealmString r : realmStrings
-                    ) {
-                String key = r.getVal();
-                filterOptionSet = new HashSet<>();
-                for (TianpingEntity t : data
-                        ) {
-                    try {
-                        String jsonStr = gson.toJson(t, TianpingEntity.class);
-                        JSONObject j = new JSONObject(jsonStr);
-                        String value = j.optString(key);
-                        filterOptionSet.add(value);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                filterOptionArray = new ArrayList<>(filterOptionSet);
-                Collections.sort(filterOptionArray);
-                filterOptions.put(key, filterOptionArray);
-            }
-            test(productCategoryEntities,tianpingEntities,gson);
-            reloadFilterOptionsArray(filterOptions);
+            Factory f = new TianpinFactory();
+            mFilterOptionModelsMap = f.makeData(gson, productCategoryEntities);
+            mFilterOptionModels = mFilterOptionModelsMap.get(CATEGORY_FILTER_ALL);
+            mProductionCategoryFilterOptionAdapter.setFilterOptionModels(mFilterOptionModels);
             EventBus.getDefault().post(Message.obtain(null,REFRESH_FILTER_UI));
         } else {
 
@@ -536,42 +525,6 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                 mFilterOptionModels.add(new FilterOptionModel(ProductionCategoryFilterOptionAdapter.ITEM_TYPE_NORMAL,s,entry.getKey()));
             }
         }
-    }
-
-    private void test(RealmResults<ProductCategoryEntity> productCategoryEntities, RealmResults<TianpingEntity> tianpingEntities, Gson gson) {
-        Map<String, Map<String, ArrayList<String>>> filterOfAll = new LinkedHashMap<>();
-        Map<String, ArrayList<String>> filterOptions;
-        Realm realm = Realm.getDefaultInstance();
-        List<TianpingEntity> data = realm.copyFromRealm(tianpingEntities);
-        for (ProductCategoryEntity p :productCategoryEntities) {
-            filterOptions = new LinkedHashMap<>();
-            RealmList<RealmString> realmStrings = p.getFilter();
-            Set<String> filterOptionSet;
-            ArrayList<String> filterOptionArray;
-            for (RealmString r : realmStrings
-                    ) {
-                String key = r.getVal();
-                filterOptionSet = new HashSet<>();
-                for (TianpingEntity t : data
-                        ) {
-                    if (p.getName().equalsIgnoreCase(t.getProductCategoryEntity().getName())) {
-                        try {
-                            String jsonStr = gson.toJson(t, TianpingEntity.class);
-                            JSONObject j = new JSONObject(jsonStr);
-                            String value = j.optString(key);
-                            filterOptionSet.add(value);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                filterOptionArray = new ArrayList<>(filterOptionSet);
-                Collections.sort(filterOptionArray);
-                filterOptions.put(key, filterOptionArray);
-            }
-            filterOfAll.put(p.getName(),filterOptions);
-        }
-        if (BuildConfig.DEBUG) Log.d("ProductionCategoryItems", "filterOfAll:" + filterOfAll);
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND)

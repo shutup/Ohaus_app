@@ -25,4 +25,6 @@ public interface Constants {
 
     String PRODUCTION_TYPE = "PRODUCTION_TYPE";
     int TYPE_FXJMTP = 1;
+
+    String CATEGORY_FILTER_ALL = "CATEGORY_FILTER_ALL";
 }
