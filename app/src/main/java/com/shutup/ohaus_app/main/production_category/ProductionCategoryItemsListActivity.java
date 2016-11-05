@@ -43,7 +43,6 @@ import com.shutup.ohaus_app.model.ProductionNormalItem;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -116,7 +115,6 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
         ButterKnife.inject(this);
         initToolBar();
         initRecyclerView();
-
         initFilterRecyclerView();
         loadDataFromLocal();
     }
@@ -351,7 +349,7 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
     }
 
     @Subscribe(sticky = true)
-    public void onProductionCategoryMenuItem2Receive(ProductionCategoryMenuItem2 productionCategoryMenuItem2) {
+    public void onProductionCategoryMenuItem2Receive(final ProductionCategoryMenuItem2 productionCategoryMenuItem2) {
         if (BuildConfig.DEBUG)
             Log.d("ProductionCategoryItems", "onProductionCategoryMenuItem2Receive:System.currentTimeMillis():" + System.currentTimeMillis());
         EventBus.getDefault().removeStickyEvent(productionCategoryMenuItem2);
@@ -374,33 +372,18 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                         Gson gson = getCustomeGsonInstance();
                         CategoryListEntity categoryListEntity = gson.fromJson(jsonStr, new TypeToken<CategoryListEntity>() {
                         }.getType());
-                        JSONObject jsonObject = new JSONObject(jsonStr);
-                        JSONArray jsonArray = jsonObject.optJSONArray("data");
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject mainObject = jsonArray.optJSONObject(i);
-                            int type = StringUtils.getEntityNameByType(categoryListEntity.getData().get(i).getSubCategory());
-                            JSONArray detailsObject = mainObject.optJSONArray("data");
-                            if (type == TYPE_FXJMTP) {
-                                List<TianpingEntity> data = new ArrayList<>();
-                                for (int j = 0; j < detailsObject.length(); j++) {
-                                    TianpingEntity tianpingEntity = gson.fromJson(detailsObject.optJSONObject(j).toString(), TianpingEntity.class);
-                                    tianpingEntity.setProductCategoryEntity(categoryListEntity.getData().get(i));
-                                    data.add(tianpingEntity);
-                                }
-                                saveToLocalFXJMTP(data);
-                            }
-                        }
+                        saveToLocalDetailItem(Factory.parseAllDetailItems(jsonStr, gson, categoryListEntity));
                         mProductionNormalItems.clear();
                         for (int i = 0; i < categoryListEntity.getData().size(); i++) {
                             ProductCategoryEntity productCategoryEntity = categoryListEntity.getData().get(i);
-                            mProductionNormalItems.add(new ProductionNormalItem(productCategoryEntity.getNewImages().get(0).getUrl(), productCategoryEntity.getName(), "最低 ￥" + productCategoryEntity.getMinimumPrice(), productCategoryEntity.getMinimumPrice(),productCategoryEntity));
+                            mProductionNormalItems.add(new ProductionNormalItem(productCategoryEntity.getNewImages().get(0).getUrl(), productCategoryEntity.getName(), getResources().getString(R.string.production_category_item_lower_price,productCategoryEntity.getMinimumPrice()) , productCategoryEntity.getMinimumPrice(),productCategoryEntity));
                         }
                         if (categoryListEntity.getData().size() != 0) {
                             saveToLocal(categoryListEntity.getData());
                         }
                         refreshUI();
 
-                    }catch (JSONException | IOException e) {
+                    }catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
@@ -464,7 +447,7 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
         });
     }
 
-    private void saveToLocalFXJMTP(final List<TianpingEntity> data) {
+    private void saveToLocalDetailItem(final List<RealmObject> data) {
         Realm realm = Realm.getDefaultInstance();
         realm.executeTransactionAsync(new Realm.Transaction() {
             @Override
@@ -481,7 +464,7 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
 
     private void loadDataFromLocal() {
         Intent intent = getIntent();
-        String secondTypeStr = intent.getStringExtra(PRODUCTION_TYPE);
+        final String secondTypeStr = intent.getStringExtra(PRODUCTION_TYPE);
         type = StringUtils.getEntityNameByType(secondTypeStr);
         final Gson gson = new GsonBuilder().create();
         RealmQuery<ProductCategoryEntity> productCategoryEntityRealmQuery = RealmQuery.createQuery(Realm.getDefaultInstance(), ProductCategoryEntity.class);
@@ -494,7 +477,7 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                     ProductCategoryEntity p ;
                     for (int i = 0;i<productCategoryEntities1.size();i++) {
                         p = productCategoryEntities1.get(i);
-                        mProductionNormalItems.add(new ProductionNormalItem(p.getNewImages().get(0).getUrl(),p.getName(),"最低 ￥"+p.getMinimumPrice(),p.getMinimumPrice(),p));
+                        mProductionNormalItems.add(new ProductionNormalItem(p.getNewImages().get(0).getUrl(),p.getName(),getResources().getString(R.string.production_category_item_lower_price,p.getMinimumPrice()),p.getMinimumPrice(),p));
                     }
                     refreshUI();
                 }else {

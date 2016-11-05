@@ -51,4 +51,5 @@
     <string name="forget_pwd_str">忘记密码?</string>
     <string name="production_detail_layout_left_title_str">商品介绍</string>
     <string name="production_detail_layout_right_title_str">规格参数</string>
+    <string name="production_category_item_lower_price">"最低 ￥%d"</string>
 </resources>
