@@ -3,6 +3,9 @@ package com.shutup.ohaus_app.main.production_category;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Message;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,6 +46,7 @@ import com.shutup.ohaus_app.model.ProductionNormalItem;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -51,6 +55,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -116,13 +121,14 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
         initToolBar();
         initRecyclerView();
         initFilterRecyclerView();
-        loadDataFromLocal();
     }
+
 
     @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+        EventBus.getDefault().post(Message.obtain(null,LOAD_FROM_DB));
     }
 
     @Override
@@ -248,7 +254,7 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
             }
         }
         if (selectedFilterOptions.size()==0) {
-            loadDataFromLocal();
+            EventBus.getDefault().post(Message.obtain(null,LOAD_FROM_DB));
             showOrDismissFilterOptions();
             return;
         }
@@ -316,7 +322,7 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
 
     private void showOrDismissFilterOptions() {
         if (mFilterOptionModels.size() == 0) {
-            loadDataFromLocal();
+            EventBus.getDefault().post(Message.obtain(null,LOAD_FROM_DB));
         }
         Animation animation ;
         if (isFilterVisable) {
@@ -468,70 +474,54 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
         type = StringUtils.getEntityNameByType(secondTypeStr);
         final Gson gson = new GsonBuilder().create();
         RealmQuery<ProductCategoryEntity> productCategoryEntityRealmQuery = RealmQuery.createQuery(Realm.getDefaultInstance(), ProductCategoryEntity.class);
-        final RealmResults<ProductCategoryEntity> productCategoryEntities = productCategoryEntityRealmQuery.equalTo("subCategory", secondTypeStr).findAllAsync();
-        productCategoryEntities.addChangeListener(new RealmChangeListener<RealmResults<ProductCategoryEntity>>() {
-            @Override
-            public void onChange(RealmResults<ProductCategoryEntity> productCategoryEntities1) {
-                if (productCategoryEntities1.size()!=0) {
-                    mProductionNormalItems.clear();
-                    ProductCategoryEntity p ;
-                    for (int i = 0;i<productCategoryEntities1.size();i++) {
-                        p = productCategoryEntities1.get(i);
-                        mProductionNormalItems.add(new ProductionNormalItem(p.getNewImages().get(0).getUrl(),p.getName(),getResources().getString(R.string.production_category_item_lower_price,p.getMinimumPrice()),p.getMinimumPrice(),p));
-                    }
-                    refreshUI();
-                }else {
-                    return;
-                }
-                if (type == TYPE_FXJMTP) {
-                    filterOptions = new LinkedHashMap<>();
-                    RealmQuery<TianpingEntity> tianpingEntityRealmQuery = RealmQuery.createQuery(Realm.getDefaultInstance(), TianpingEntity.class);
-                    RealmResults<TianpingEntity> tianpingEntities = tianpingEntityRealmQuery.findAllAsync();
-                    tianpingEntities.addChangeListener(new RealmChangeListener<RealmResults<TianpingEntity>>() {
-                        @Override
-                        public void onChange(RealmResults<TianpingEntity> tianpingEntities) {
-                            ProductCategoryEntity p = productCategoryEntities.first();
-                            Realm realm = Realm.getDefaultInstance();
-                            List<TianpingEntity> data = realm.copyFromRealm(tianpingEntities);
-                            RealmList<RealmString> realmStrings = p.getFilter();
-                            Set<String> filterOptionSet;
-                            ArrayList<String> filterOptionArray;
-                            for (RealmString r : realmStrings
-                                    ) {
-                                String key = r.getVal();
-                                filterOptionSet = new HashSet<>();
-                                for (TianpingEntity t : data
-                                        ) {
-                                    try {
-                                        String jsonStr = gson.toJson(t, TianpingEntity.class);
-                                        JSONObject j = new JSONObject(jsonStr);
-                                        String value = j.optString(key);
-                                        filterOptionSet.add(value);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                                filterOptionArray = new ArrayList<>(filterOptionSet);
-                                Collections.sort(filterOptionArray);
-                                filterOptions.put(key, filterOptionArray);
-                            }
-                            reloadFilterOptionsArray(filterOptions);
-                            refreshFilterUI();
-                        }
-                    });
-                } else {
-
-                }
+        final RealmResults<ProductCategoryEntity> productCategoryEntities = productCategoryEntityRealmQuery.equalTo("subCategory", secondTypeStr).findAll();
+        if (productCategoryEntities.size()!=0) {
+            mProductionNormalItems.clear();
+            ProductCategoryEntity p ;
+            for (int i = 0;i<productCategoryEntities.size();i++) {
+                p = productCategoryEntities.get(i);
+                mProductionNormalItems.add(new ProductionNormalItem(p.getNewImages().get(0).getUrl(),p.getName(),getResources().getString(R.string.production_category_item_lower_price,p.getMinimumPrice()),p.getMinimumPrice(),p));
             }
-        });
-    }
+            EventBus.getDefault().post(Message.obtain(null,REFRESH_UI));
+        }else {
+            return;
+        }
 
-    private void refreshUI() {
-        mProductionCategoryItemsListAdapter.notifyDataSetChanged();
-    }
+        if (type == TYPE_FXJMTP) {
+            filterOptions = new LinkedHashMap<>();
+            RealmQuery<TianpingEntity> tianpingEntityRealmQuery = RealmQuery.createQuery(Realm.getDefaultInstance(), TianpingEntity.class);
+            RealmResults<TianpingEntity> tianpingEntities = tianpingEntityRealmQuery.findAll();
+            ProductCategoryEntity p = productCategoryEntities.first();
+            Realm realm = Realm.getDefaultInstance();
+            List<TianpingEntity> data = realm.copyFromRealm(tianpingEntities);
+            RealmList<RealmString> realmStrings = p.getFilter();
+            Set<String> filterOptionSet;
+            ArrayList<String> filterOptionArray;
+            for (RealmString r : realmStrings
+                    ) {
+                String key = r.getVal();
+                filterOptionSet = new HashSet<>();
+                for (TianpingEntity t : data
+                        ) {
+                    try {
+                        String jsonStr = gson.toJson(t, TianpingEntity.class);
+                        JSONObject j = new JSONObject(jsonStr);
+                        String value = j.optString(key);
+                        filterOptionSet.add(value);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                filterOptionArray = new ArrayList<>(filterOptionSet);
+                Collections.sort(filterOptionArray);
+                filterOptions.put(key, filterOptionArray);
+            }
+            test(productCategoryEntities,tianpingEntities,gson);
+            reloadFilterOptionsArray(filterOptions);
+            EventBus.getDefault().post(Message.obtain(null,REFRESH_FILTER_UI));
+        } else {
 
-    private void refreshFilterUI() {
-        mProductionCategoryFilterOptionAdapter.notifyDataSetChanged();
+        }
     }
 
     private void reloadFilterOptionsArray(Map<String,ArrayList<String>> filterOptions) {
@@ -546,5 +536,68 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
                 mFilterOptionModels.add(new FilterOptionModel(ProductionCategoryFilterOptionAdapter.ITEM_TYPE_NORMAL,s,entry.getKey()));
             }
         }
+    }
+
+    private void test(RealmResults<ProductCategoryEntity> productCategoryEntities, RealmResults<TianpingEntity> tianpingEntities, Gson gson) {
+        Map<String, Map<String, ArrayList<String>>> filterOfAll = new LinkedHashMap<>();
+        Map<String, ArrayList<String>> filterOptions;
+        Realm realm = Realm.getDefaultInstance();
+        List<TianpingEntity> data = realm.copyFromRealm(tianpingEntities);
+        for (ProductCategoryEntity p :productCategoryEntities) {
+            filterOptions = new LinkedHashMap<>();
+            RealmList<RealmString> realmStrings = p.getFilter();
+            Set<String> filterOptionSet;
+            ArrayList<String> filterOptionArray;
+            for (RealmString r : realmStrings
+                    ) {
+                String key = r.getVal();
+                filterOptionSet = new HashSet<>();
+                for (TianpingEntity t : data
+                        ) {
+                    if (p.getName().equalsIgnoreCase(t.getProductCategoryEntity().getName())) {
+                        try {
+                            String jsonStr = gson.toJson(t, TianpingEntity.class);
+                            JSONObject j = new JSONObject(jsonStr);
+                            String value = j.optString(key);
+                            filterOptionSet.add(value);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                filterOptionArray = new ArrayList<>(filterOptionSet);
+                Collections.sort(filterOptionArray);
+                filterOptions.put(key, filterOptionArray);
+            }
+            filterOfAll.put(p.getName(),filterOptions);
+        }
+        if (BuildConfig.DEBUG) Log.d("ProductionCategoryItems", "filterOfAll:" + filterOfAll);
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void loadFromDataBase(Message message){
+        if (message.what == LOAD_FROM_DB) {
+            loadDataFromLocal();
+        }
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refreshUI(Message message) {
+        if (message.what == REFRESH_UI) {
+            refreshUI();
+        }
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refreshFilterUI(Message message) {
+        if (message.what == REFRESH_FILTER_UI){
+            refreshFilterUI();
+        }
+    }
+
+    private void refreshUI() {
+        mProductionCategoryItemsListAdapter.notifyDataSetChanged();
+    }
+
+    private void refreshFilterUI() {
+        mProductionCategoryFilterOptionAdapter.notifyDataSetChanged();
     }
 }
