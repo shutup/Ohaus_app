@@ -338,6 +338,9 @@ public class ProductionCategoryItemsListActivity extends BaseActivity implements
     private void showOrDismissFilterOptions() {
         if (mFilterOptionModels.size() == 0) {
             EventBus.getDefault().post(Message.obtain(null,LOAD_FROM_DB));
+        }else{
+            if (BuildConfig.DEBUG)
+                Log.d("ProductionCategoryItems", "mFilterOptionModels.size():" + mFilterOptionModels.size());
         }
         Animation animation ;
         if (isFilterVisable) {
